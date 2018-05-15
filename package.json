@@ -1,0 +1,22 @@
+{
+  "name": "dynamic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests/test.js"
+  },
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "escodegen": "^1.9.1",
+    "esprima": "^4.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.1.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC"
+}

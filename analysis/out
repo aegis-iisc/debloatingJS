@@ -1,0 +1,272 @@
+stub List ../../../stubList.txt
+pathToRoot ../tests
+file (/home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics.js:1:1:37:1)
+(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:15:1:19:2)
+(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:1:1:47:1)
+(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/line.js:33:22:37:2)
+(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:33:20:37:2)
+
+(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics.js:1:1:37:1),(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:15:1:19:2),(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:1:1:47:1),(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/line.js:33:22:37:2),(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:33:20:37:2),
+{ '0': 
+   { fileName: '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics',
+     funcLoc: '1:1:37:1' },
+  '1': 
+   { fileName: '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second',
+     funcLoc: '15:1:19:2' },
+  '2': 
+   { fileName: '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second',
+     funcLoc: '1:1:47:1' },
+  '3': 
+   { fileName: '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/line',
+     funcLoc: '33:22:37:2' },
+  '4': 
+   { fileName: '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second',
+     funcLoc: '33:20:37:2' },
+  '5': { fileName: '', funcLoc: undefined } }
+0
+START 1
+Line Number 1 is not a function definition for /home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics SKIPPING
+1
+START 15
+finding the function at 15:1:19:2 at line 15 in file /home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second
+/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second
+Node 
+Function unused_function
+{ start: { line: 15, column: 0 }, end: { line: 19, column: 1 } }
+function start 15
+Returned function name unused_function
+Function Name unused_function
+Transforming the AST for the function unused_function
+Replacing unused_function with unused_function
+Creating stub for declaration
+
+CALL STMT
+[ ExpressionStatement {
+    type: 'ExpressionStatement',
+    expression: 
+     AssignmentExpression {
+       type: 'AssignmentExpression',
+       operator: '=',
+       left: [Object],
+       right: [Object] } },
+  ExpressionStatement {
+    type: 'ExpressionStatement',
+    expression: 
+     AssignmentExpression {
+       type: 'AssignmentExpression',
+       operator: '=',
+       left: [Object],
+       right: [Object] } } ]
+################################## MODIFIED AST ##########################
+Final Program  
+const line = require('./line.js');
+var exports = module.exports = {};
+const math = Math;
+var unused_diameter = 2;
+exports.area = function (radius) {
+    return math.PI * radius * radius;
+};
+{
+    var original_unused_function;
+    function _unused_function(_param) {
+        var _var1;
+                if (original_unused_function == null) {
+            lazyLoad(unused_function);
+            original_unused_function = this.eval(cachedCode[unused_function]);
+            unused_function = original_unused_function;
+        }
+    }
+        original_unused_function.apply(this, _param);
+}
+exports.perimeter = function (radius) {
+    return 2 * math.PI * radius;
+};
+exports.drawCircle = function (radius) {
+    if (this.isNontrivial(radius)) {
+        l = line.drawLine(exports.perimeter(radius));
+        line.trim();
+    }
+};
+exports.diameter = function (radius) {
+    var unused_dimeter = 2;
+    return 2 * unused_dimeter;
+};
+exports.isNontrivial = function (radius) {
+    if (radius >= 0)
+        return true;
+    else
+        return false;
+};
+___________________________________________________________
+2
+START 1
+Line Number 1 is not a function definition for /home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second SKIPPING
+3
+START 33
+finding the function at 33:22:37:2 at line 33 in file /home/ashish/work/NEU/jalangi2/project/dynamic/tests/line
+/home/ashish/work/NEU/jalangi2/project/dynamic/tests/line
+The expression Statement
+ExpressionStatement {
+  type: 'ExpressionStatement',
+  expression: 
+   AssignmentExpression {
+     type: 'AssignmentExpression',
+     operator: '=',
+     left: 
+      StaticMemberExpression {
+        type: 'MemberExpression',
+        computed: false,
+        object: [Object],
+        property: [Object],
+        range: [Object],
+        loc: [Object] },
+     right: 
+      FunctionExpression {
+        type: 'FunctionExpression',
+        id: null,
+        params: [],
+        body: [Object],
+        generator: false,
+        expression: false,
+        async: false,
+        range: [Object],
+        loc: [Object] },
+     range: [ 384, 421 ],
+     loc: { start: [Object], end: [Object] } },
+  range: [ 384, 422 ],
+  loc: { start: { line: 33, column: 0 }, end: { line: 37, column: 2 } } }
+Returned function name exports.extraCheks
+Function Name exports.extraCheks
+Transforming the AST for the function exports.extraCheks
+Replacing [object Object] with exports.extraCheks
+################################## MODIFIED AST ##########################
+computed false
+GPK
+GPK-expr
+GPK-res line_size
+Final Program  
+var exports = module.exports = {};
+var exports = module.exports = {};
+exports.line = { line_size: 0 };
+exports.drawLine = function (size) {
+    if (size > 0) {
+        for (i = 0; i < size; i += 1) {
+            process.stdout.write('-');
+        }
+        return size;
+    } else {
+        return size;
+    }
+};
+exports.trim = function () {
+    if (this.line.size > 0) {
+        this.lize.size = this.line.size - 1;
+    }
+};
+exports.extraCheks = function () {
+    var _var1;
+        if (original_exports.extraCheks == null) {
+        lazyLoad(exports.extraCheks);
+        original_exports.extraCheks = this.eval(cachedCode[exports.extraCheks]);
+        exports.extraCheks = original_exports.extraCheks;
+    }
+        original_exports.extraCheks.apply(this);
+};
+___________________________________________________________
+4
+START 33
+finding the function at 33:20:37:2 at line 33 in file /home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second
+/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second
+Node 
+Function unused_function
+{ start: { line: 15, column: 0 }, end: { line: 19, column: 1 } }
+function start 15
+The expression Statement
+ExpressionStatement {
+  type: 'ExpressionStatement',
+  expression: 
+   AssignmentExpression {
+     type: 'AssignmentExpression',
+     operator: '=',
+     left: 
+      StaticMemberExpression {
+        type: 'MemberExpression',
+        computed: false,
+        object: [Object],
+        property: [Object],
+        range: [Object],
+        loc: [Object] },
+     right: 
+      FunctionExpression {
+        type: 'FunctionExpression',
+        id: null,
+        params: [Object],
+        body: [Object],
+        generator: false,
+        expression: false,
+        async: false,
+        range: [Object],
+        loc: [Object] },
+     range: [ 599, 694 ],
+     loc: { start: [Object], end: [Object] } },
+  range: [ 599, 695 ],
+  loc: { start: { line: 33, column: 0 }, end: { line: 37, column: 2 } } }
+Returned function name exports.diameter
+Function Name exports.diameter
+Transforming the AST for the function exports.diameter
+Replacing [object Object] with exports.diameter
+Identifier {
+  type: 'Identifier',
+  name: 'radius',
+  range: [ 628, 634 ],
+  loc: 
+   { start: { line: 33, column: 29 },
+     end: { line: 33, column: 35 } } }
+################################## MODIFIED AST ##########################
+Final Program  
+const line = require('./line.js');
+var exports = module.exports = {};
+const math = Math;
+var unused_diameter = 2;
+exports.area = function (radius) {
+    return math.PI * radius * radius;
+};
+function unused_function() {
+    console.log('Unused Function');
+}
+exports.perimeter = function (radius) {
+    return 2 * math.PI * radius;
+};
+exports.drawCircle = function (radius) {
+    if (this.isNontrivial(radius)) {
+        l = line.drawLine(exports.perimeter(radius));
+        line.trim();
+    }
+};
+exports.diameter = function (radius) {
+    var _var1;
+        if (original_exports.diameter == null) {
+        lazyLoad(exports.diameter);
+        original_exports.diameter = this.eval(cachedCode[exports.diameter]);
+        exports.diameter = original_exports.diameter;
+    }
+        original_exports.diameter.apply(this, radius);
+};
+exports.isNontrivial = function (radius) {
+    if (radius >= 0)
+        return true;
+    else
+        return false;
+};
+___________________________________________________________
+5
+TypeError: Cannot read property 'toString' of undefined
+    at Object.<anonymous> (/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/S2STransformer.js:115:39)
+    at Module._compile (module.js:410:26)
+    at Object.Module._extensions..js (module.js:417:10)
+    at Module.load (module.js:344:32)
+    at Function.Module._load (module.js:301:12)
+    at Function.Module.runMain (module.js:442:10)
+    at startup (node.js:136:18)
+    at node.js:966:3
+___________________________________________________________
