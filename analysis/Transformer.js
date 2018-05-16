@@ -127,47 +127,47 @@ exports.replaceNaive = function(inputAST) {
 exports.replace = function (ast, funName){
     console.log("Transforming the AST for the function " + funName);
     var result = estraverse.replace(ast, {
-            enter: function (node) {
+        enter: function (node) {
 
-                if (node.type == 'FunctionDeclaration') {
-                    if (node.id.name == funName) {
-                        return exports.createStubFunctionDeclaration(node.id.name);
-                    } else {
-                        estraverse.VisitorOption.skip;
-                    }
-
+            if (node.type == 'FunctionDeclaration') {
+                if (node.id.name == funName) {
+                    return exports.createStubFunctionDeclaration(node.id.name);
+                } else {
+                    estraverse.VisitorOption.skip;
                 }
-                if (node.type == 'ExpressionStatement') {
-                    if (node.expression.type == 'AssignmentExpression') {
-                        var left = node.expression.left;
-                        var right = node.expression.right;
-                        /*
-                        If right is a FunctionExpression, get the  name of the function from the left
-                         */
-                        if (right.type == 'FunctionExpression') {
-                            if (left.type == 'MemberExpression') {
-                                var leftVarBaseName = left.object.name;
-                                var leftVarExtName = left.property.name;
-                                var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
-                                result = leftVarPath;
-                                if(leftVarPath === funName){
-                                    console.log("Replacing "+node+ ' with '+funName);
-                                    return exports.createStubFunctionExpression(funName, right.params, left);
-                                }else{
-                                    estraverse.VisitorOption.skip;
-                                }
-
-                            }
-                        }
-
-                    }
-                }
-            },
-            leave: function (node) {
-                estraverse.VisitorOption.skip;
 
             }
-        });
+            if (node.type == 'ExpressionStatement') {
+                if (node.expression.type == 'AssignmentExpression') {
+                    var left = node.expression.left;
+                    var right = node.expression.right;
+                    /*
+                    If right is a FunctionExpression, get the  name of the function from the left
+                     */
+                    if (right.type == 'FunctionExpression') {
+                        if (left.type == 'MemberExpression') {
+                            var leftVarBaseName = left.object.name;
+                            var leftVarExtName = left.property.name;
+                            var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                            result = leftVarPath;
+                            if(leftVarPath === funName){
+                                console.log("Replacing "+node+ ' with '+funName);
+                                return exports.createStubFunctionExpression(funName, right.params, left);
+                            }else{
+                                estraverse.VisitorOption.skip;
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        },
+        leave: function (node) {
+            estraverse.VisitorOption.skip;
+
+        }
+    });
 
 };
 
@@ -189,20 +189,20 @@ exports.createStubFunctionDeclaration = function (funName){ // returns the code 
 
     _ifStatement['consequent'] = esprima.parse('lazyLoad('+funName+');'+callEvalStmt).body[0];
 
-  /*  console.log()
-    console.log("CALL STMT");
-    console.log(_callEvalStmt);
-*/
+    /*  console.log()
+      console.log("CALL STMT");
+      console.log(_callEvalStmt);
+  */
     var _stubFunDecl = {type: 'FunctionDeclaration', params: [{type: 'Identifier', name: '_param'}], id: {type: 'Identifier', name: '_'+funName},
         body: { type: 'BlockStatement',
-                        body: [
-                                {type: 'VariableDeclaration',
-                                        declarations: [{type: 'VariableDeclarator',
-                                                            id: {type: 'Identifier', name: '_var1'}, init: null}
-                                                      ], kind: 'var'}, _ifStatement] },
-                        generator: false,
-                        async: false,
-                        expression: false
+            body: [
+                {type: 'VariableDeclaration',
+                    declarations: [{type: 'VariableDeclarator',
+                        id: {type: 'Identifier', name: '_var1'}, init: null}
+                    ], kind: 'var'}, _ifStatement] },
+        generator: false,
+        async: false,
+        expression: false
 
     };
 
@@ -211,23 +211,23 @@ exports.createStubFunctionDeclaration = function (funName){ // returns the code 
 
     var _BlockStatement = {
         type: 'BlockStatement',
-            body: [{type: 'VariableDeclaration', declarations: [{type: 'VariableDeclarator', id: {type: 'Identifier', name: "original_"+funName}, init: null}], kind: 'var'},
+        body: [{type: 'VariableDeclaration', declarations: [{type: 'VariableDeclarator', id: {type: 'Identifier', name: "original_"+funName}, init: null}], kind: 'var'},
             _stubFunDecl, _returnStatement]};
 
     return _BlockStatement;
 
     var _realFunction = escodegen.generate({
         type:  'BlockStatement',
-            body: [{type: 'VariableDeclaration', declarations:[{type: 'VariableDeclarator', id: {type: 'Identifier', name: "original_"+funName}, init: null}], kind: 'var'},
-                {type: 'FunctionDeclaration', params: [{type: 'Identifier', name: '_param'}], id: {type: 'Identifier', name:'real_'+funName}, body: { type: 'BlockStatement', body: [
-                    {type: 'VariableDeclaration', declarations: [{type: 'VariableDeclarator', id: {type: 'Identifier', name: '_var1'}, init: null}], kind: 'var'}]},
-            generator: false,
-            async: false,
-            expression: false
+        body: [{type: 'VariableDeclaration', declarations:[{type: 'VariableDeclarator', id: {type: 'Identifier', name: "original_"+funName}, init: null}], kind: 'var'},
+            {type: 'FunctionDeclaration', params: [{type: 'Identifier', name: '_param'}], id: {type: 'Identifier', name:'real_'+funName}, body: { type: 'BlockStatement', body: [
+                        {type: 'VariableDeclaration', declarations: [{type: 'VariableDeclarator', id: {type: 'Identifier', name: '_var1'}, init: null}], kind: 'var'}]},
+                generator: false,
+                async: false,
+                expression: false
 
-        }]}
+            }]}
 
-        );
+    );
 
     return _realFunction;
 
