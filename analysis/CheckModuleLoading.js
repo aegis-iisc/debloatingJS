@@ -6,6 +6,23 @@
 */
 var fs = require('fs');
 var utf8 = require('utf8');
+var argparse = require('argparse');
+var arguments =  process.argv.slice(2);
+
+var parser = new argparse.ArgumentParser({
+    version : 0.1,
+    addHelp : true,
+    description : "The source to source transformer for the feature reduction of JS"
+
+});
+/*
+parser.addArgument(['-input'], {help: 'potential stub list' } );
+var args = parser.parseArgs();
+if(!args.input){
+    console.log("ERROR: Insufficient inputs, try -h option");
+}*/
+
+
 //const https = require("https");
 
 /*
@@ -18,11 +35,18 @@ Set.prototype.difference = function (setB){
 
     return difference;
 }*/
+
+// TODO : read the set of tests of a node js application and run the dynamic analysis for each test to collect the output
+
 (function (sandbox){
+
+   /* var input = args.input;
+    console.log("--input "+input);
+*/
 
     // laoded functions list outfut file path
     var loadedFunctionsOut = "loadedfunctions.txt";
-    const loadedFunctionsOutJSON = "laodedfunctions.json";
+    const loadedFunctionsOutJSON = "loadedfunctions.json";
     //invoked functions list output file path
     var invokedFunctionsOut = "invokedfunctions.txt";
     const invokedFunctionsOutJSON = "invokedfunctions.json";
@@ -55,7 +79,7 @@ Set.prototype.difference = function (setB){
                 // write the function and the file name to the log
                 functionsLoaded[id] = J$.iidToLocation(id, iid);
                 loadedFunctionNames[id] = name;
-                collectivefunctionsLoaded[id] = {loadingLocation : J$.iidToLocation(id, iid), loadedFunName : name};
+                //collectivefunctionsLoaded[id] = {loadingLocation : J$.iidToLocation(id, iid), loadedFunName : name, isLiteral: false};
             }
 
         };
@@ -65,13 +89,13 @@ Set.prototype.difference = function (setB){
 
             if( typeof val === 'function'){
                 //    console.log("function Name " +val.name);
-                if (hasGetterSetter)
-                    console.log(" GT-ST "+val.toString());
+                //if (hasGetterSetter)
+                    //console.log(" GT-ST "+val.toString());
                 var giid = J$.getGlobalIID(iid);
                 // write the function and the file name to the log
                 functionsLoaded[giid] = J$.iidToLocation(giid,iid);
                 loadedFunctionNames[giid] = val.toString().slice(0, 20);
-                collectivefunctionsLoaded[giid] = {loadingLocation : J$.iidToLocation(giid, iid), loadedFunName : val.toString().slice(0,20)};
+                collectivefunctionsLoaded[giid] = {loadingLocation : J$.iidToLocation(giid, iid), loadedFunName : val.toString().slice(0,20) ,isLiteral : true};
 
             }
 
@@ -219,7 +243,7 @@ Set.prototype.difference = function (setB){
         for (var id in collectiveObj){
             if(collectiveObj.hasOwnProperty(id)){
                 if (str === 'Loaded'){
-                    var ldFunction = {functionName : collectiveObj[id].loadedFunName, location: collectiveObj[id].loadingLocation};
+                    var ldFunction = {functionName : collectiveObj[id].loadedFunName, location: collectiveObj[id].loadingLocation, isLiteral: collectiveObj[id].isLiteral};
                     loadedFunctions.push(ldFunction);
 
                 }else if (str === 'Called'){
@@ -256,7 +280,7 @@ Set.prototype.difference = function (setB){
 
 
 
-}(J$));
+}(J$))
 
 /* to run
  node $JALANGI_HOME/src/js/commands/jalangi.js --inlineIID --inlineSource --analysis CheckModuleLoading.js ../tests/test-loading-semantics.js
