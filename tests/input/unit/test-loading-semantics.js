@@ -12,7 +12,7 @@ console.log("The circle with radius "+radius + " has Area "+area + " and Perimet
 
 //console.log("HTTPS "+https.toString());
 
-Circle = {radius, area, perimeter};
+//Circle = {radius, area, perimeter};
 
 
 function makeACircle (radius){

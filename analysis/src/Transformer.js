@@ -1,5 +1,5 @@
 /*
- A module defining all major transofrmations for the original nodejs application.
+ A module defining all major transformations for the original nodejs or unit application.
  exports a bunch of APIs which can be used to find and replace a component of a given AST.
  Finally writes the modified files to the output directory provided by the user.
 

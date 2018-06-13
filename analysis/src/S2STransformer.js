@@ -115,7 +115,9 @@ if(!args.sl || !args.in || !args.o){
             for(fileN in updatedASTList){
                 var trimmedFileN = fileN.substring(fileN.lastIndexOf('/')+1);
                 var f= trimmedFileN.replace(/([a-z]|[A-Z]|[0-9])\//g, '-');
-                console.log("fileName-to-be-written " + f+'_modified.js');
+                console.log("path "+pathToOutput);
+
+                console.log("fileName-to-be-written " +pathToOutput + f+'_modified.js');
                 fs.writeFileSync(pathToOutput + f + '_modified.js', escodegen.generate(updatedASTList[fileN]));
             }
                        } catch (Fileerror) {

@@ -7,7 +7,7 @@
 var fs = require('fs');
 var utf8 = require('utf8');
 var argparse = require('argparse');
-var arguments =  process.argv.slice(2);
+var argument =  process.argv.slice(2);
 
 var parser = new argparse.ArgumentParser({
     version : 0.1,
@@ -15,26 +15,6 @@ var parser = new argparse.ArgumentParser({
     description : "The source to source transformer for the feature reduction of JS"
 
 });
-/*
-parser.addArgument(['-input'], {help: 'potential stub list' } );
-var args = parser.parseArgs();
-if(!args.input){
-    console.log("ERROR: Insufficient inputs, try -h option");
-}*/
-
-
-//const https = require("https");
-
-/*
-Set.prototype.difference = function (setB){
-
-    var difference = new Set(this);
-    for (var elem of setB){
-        difference.delete(elem)
-    }
-
-    return difference;
-}*/
 
 // TODO : read the set of tests of a node js application and run the dynamic analysis for each test to collect the output
 
@@ -43,19 +23,24 @@ Set.prototype.difference = function (setB){
    /* var input = args.input;
     console.log("--input "+input);
 */
+    console.log(argument);
+    // extracting outputpaths
+    var inputFileName = argument[argument.length-1];
+    var inputFilePrefix = inputFileName.substring(0, inputFileName.lastIndexOf('.'));
+    var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
+    console.log("Prefix" +outputFilePrefix);
 
     // laoded functions list outfut file path
-    var loadedFunctionsOut = "loadedfunctions.txt";
-    const loadedFunctionsOutJSON = "loadedfunctions.json";
+    var loadedFunctionsOut = outputFilePrefix+ "_loadedfunctions.txt";
+    const loadedFunctionsOutJSON = outputFilePrefix+ "_loadedfunctions.json";
     //invoked functions list output file path
-    var invokedFunctionsOut = "invokedfunctions.txt";
-    const invokedFunctionsOutJSON = "invokedfunctions.json";
+    var invokedFunctionsOut = outputFilePrefix +"_invokedfunctions.txt";
+    const invokedFunctionsOutJSON = outputFilePrefix+ "_invokedfunctions.json";
 
-    var stubListOut = "stubList.txt";
-    const stubListOutJSON = "stubList.json";
+    var stubListOut = outputFilePrefix+"_stubList.txt";
+    const stubListOutJSON = outputFilePrefix+"_stubList.json";
 
     function MyAnalysis(){
-
 
         // collective ojects for loaded and invoked functions
         // collectiveFunctionLoaded = {giid : {laodingLocation : ...  loadedFunName : ...}
@@ -71,6 +56,8 @@ Set.prototype.difference = function (setB){
         var functionDefLocation  = {};
 
         var calledFunctionsbase = {};
+
+
         // Loaded functions are either declared
         this.declare = function(iid, name, val, isArgument, argumentIndex, isCatchParam){
             if (typeof val === 'function'){
@@ -255,6 +242,7 @@ Set.prototype.difference = function (setB){
         }
 
         if (str === 'Loaded'){
+            console.log("Loaded output "+loadedFunctionsOutJSON);
             fs.writeFileSync(loadedFunctionsOutJSON, JSON.stringify(loadedFunctions));
         }else{
             fs.writeFileSync(invokedFunctionsOutJSON, JSON.stringify(invokedFunctions));
