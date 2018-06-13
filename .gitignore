@@ -8,7 +8,7 @@ node-projects/
 
 output/
 
-test/
+#test/
 
 garbage/
 *.swp
