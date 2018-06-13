@@ -1,0 +1,13 @@
+#ignore the scribble directory
+scribble/
+
+#ignore the node_modules
+node_modules/
+
+node-projects/
+
+output/
+
+test/
+
+*.swp

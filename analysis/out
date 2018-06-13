@@ -1,12 +1,6 @@
-stub List ../../../stubList.txt
+stub List ../../../stubList.json
 pathToRoot ../tests
-file (/home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics.js:1:1:37:1)
-(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:15:1:19:2)
-(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:1:1:47:1)
-(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/line.js:33:22:37:2)
-(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:33:20:37:2)
-
-(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics.js:1:1:37:1),(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:15:1:19:2),(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:1:1:47:1),(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/line.js:33:22:37:2),(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:33:20:37:2),
+StubList [{"stubLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics.js:1:1:37:1)"},{"stubLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:15:1:19:2)"},{"stubLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:1:1:47:1)"},{"stubLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/line.js:33:22:37:2)"},{"stubLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second.js:33:20:37:2)"}]
 { '0': 
    { fileName: '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics',
      funcLoc: '1:1:37:1' },
@@ -21,13 +15,9 @@ file (/home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantic
      funcLoc: '33:22:37:2' },
   '4': 
    { fileName: '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second',
-     funcLoc: '33:20:37:2' },
-  '5': { fileName: '', funcLoc: undefined } }
+     funcLoc: '33:20:37:2' } }
 0
-START 1
-Line Number 1 is not a function definition for /home/ashish/work/NEU/jalangi2/project/dynamic/tests/test-loading-semantics SKIPPING
 1
-START 15
 finding the function at 15:1:19:2 at line 15 in file /home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second
 /home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second
 Node 
@@ -37,28 +27,46 @@ function start 15
 Returned function name unused_function
 Function Name unused_function
 Transforming the AST for the function unused_function
-Replacing unused_function with unused_function
 Creating stub for declaration
-
-CALL STMT
-[ ExpressionStatement {
-    type: 'ExpressionStatement',
-    expression: 
-     AssignmentExpression {
-       type: 'AssignmentExpression',
-       operator: '=',
-       left: [Object],
-       right: [Object] } },
-  ExpressionStatement {
-    type: 'ExpressionStatement',
-    expression: 
-     AssignmentExpression {
-       type: 'AssignmentExpression',
-       operator: '=',
-       left: [Object],
-       right: [Object] } } ]
-################################## MODIFIED AST ##########################
+function lazyLoad(funName) {
+    var code = fs.readFileSync(srcFile);
+    var ast = esprima.parse(code);
+    cachedCode[srcFile] = {};
+    estraverse.traverse(ast, {
+        enter: function (node, parent) {
+            if (node.type == 'FunctionDeclaration') {
+                var functionName = node.id.name;
+                var functionBody = node.body;
+                cachedCode[srcFile][functionName] = functionBody;
+            } else if (node.type == 'ExpressionStatement') {
+                if (node.expression.type == 'AssignmentExpression') {
+                    var left = node.expression.left;
+                    var right = node.expression.right;
+                    if (startLineNumber == node.loc.start.line) {
+                        if (right.type == 'FunctionExpression') {
+                            if (left.type == 'MemberExpression') {
+                                console.log('The expression Statement');
+                                var leftVarBaseName = left.object.name;
+                                var leftVarExtName = left.property.name;
+                                var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                                var functionName = leftVarPath;
+                                var functionBody = right.body;
+                                cachedCode[srcFile][functionName] = functionBody;
+                            }
+                        }
+                    }
+                } else {
+                    estraverse.VisitorOption.skip;
+                }
+            } else {
+                estraverse.VisitorOption.skip;
+            }
+        }
+    });
+}
+################################## MODIFIED ##########################
 Final Program  
+var cachedCode = {};
 const line = require('./line.js');
 var exports = module.exports = {};
 const math = Math;
@@ -72,8 +80,7 @@ exports.area = function (radius) {
         var _var1;
                 if (original_unused_function == null) {
             lazyLoad(unused_function);
-            original_unused_function = this.eval(cachedCode[unused_function]);
-            unused_function = original_unused_function;
+            undefined;
         }
     }
         original_unused_function.apply(this, _param);
@@ -97,12 +104,46 @@ exports.isNontrivial = function (radius) {
     else
         return false;
 };
+function lazyLoad(funName) {
+    var code = fs.readFileSync(srcFile);
+    var ast = esprima.parse(code);
+    cachedCode[srcFile] = {};
+    estraverse.traverse(ast, {
+        enter: function (node, parent) {
+            if (node.type == 'FunctionDeclaration') {
+                var functionName = node.id.name;
+                var functionBody = node.body;
+                cachedCode[srcFile][functionName] = functionBody;
+            } else if (node.type == 'ExpressionStatement') {
+                if (node.expression.type == 'AssignmentExpression') {
+                    var left = node.expression.left;
+                    var right = node.expression.right;
+                    if (startLineNumber == node.loc.start.line) {
+                        if (right.type == 'FunctionExpression') {
+                            if (left.type == 'MemberExpression') {
+                                console.log('The expression Statement');
+                                var leftVarBaseName = left.object.name;
+                                var leftVarExtName = left.property.name;
+                                var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                                var functionName = leftVarPath;
+                                var functionBody = right.body;
+                                cachedCode[srcFile][functionName] = functionBody;
+                            }
+                        }
+                    }
+                } else {
+                    estraverse.VisitorOption.skip;
+                }
+            } else {
+                estraverse.VisitorOption.skip;
+            }
+        }
+    });
+}
+fileName-to-be-written /hom-ashis-wor-NE-jalangi-projec-dynami-test-exported_circle_second
 ___________________________________________________________
 2
-START 1
-Line Number 1 is not a function definition for /home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second SKIPPING
 3
-START 33
 finding the function at 33:22:37:2 at line 33 in file /home/ashish/work/NEU/jalangi2/project/dynamic/tests/line
 /home/ashish/work/NEU/jalangi2/project/dynamic/tests/line
 The expression Statement
@@ -139,12 +180,45 @@ Returned function name exports.extraCheks
 Function Name exports.extraCheks
 Transforming the AST for the function exports.extraCheks
 Replacing [object Object] with exports.extraCheks
-################################## MODIFIED AST ##########################
-computed false
-GPK
-GPK-expr
-GPK-res line_size
+function lazyLoad(funName) {
+    var code = fs.readFileSync(srcFile);
+    var ast = esprima.parse(code);
+    cachedCode[srcFile] = {};
+    estraverse.traverse(ast, {
+        enter: function (node, parent) {
+            if (node.type == 'FunctionDeclaration') {
+                var functionName = node.id.name;
+                var functionBody = node.body;
+                cachedCode[srcFile][functionName] = functionBody;
+            } else if (node.type == 'ExpressionStatement') {
+                if (node.expression.type == 'AssignmentExpression') {
+                    var left = node.expression.left;
+                    var right = node.expression.right;
+                    if (startLineNumber == node.loc.start.line) {
+                        if (right.type == 'FunctionExpression') {
+                            if (left.type == 'MemberExpression') {
+                                console.log('The expression Statement');
+                                var leftVarBaseName = left.object.name;
+                                var leftVarExtName = left.property.name;
+                                var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                                var functionName = leftVarPath;
+                                var functionBody = right.body;
+                                cachedCode[srcFile][functionName] = functionBody;
+                            }
+                        }
+                    }
+                } else {
+                    estraverse.VisitorOption.skip;
+                }
+            } else {
+                estraverse.VisitorOption.skip;
+            }
+        }
+    });
+}
+################################## MODIFIED ##########################
 Final Program  
+var cachedCode = {};
 var exports = module.exports = {};
 var exports = module.exports = {};
 exports.line = { line_size: 0 };
@@ -172,9 +246,45 @@ exports.extraCheks = function () {
     }
         original_exports.extraCheks.apply(this);
 };
+function lazyLoad(funName) {
+    var code = fs.readFileSync(srcFile);
+    var ast = esprima.parse(code);
+    cachedCode[srcFile] = {};
+    estraverse.traverse(ast, {
+        enter: function (node, parent) {
+            if (node.type == 'FunctionDeclaration') {
+                var functionName = node.id.name;
+                var functionBody = node.body;
+                cachedCode[srcFile][functionName] = functionBody;
+            } else if (node.type == 'ExpressionStatement') {
+                if (node.expression.type == 'AssignmentExpression') {
+                    var left = node.expression.left;
+                    var right = node.expression.right;
+                    if (startLineNumber == node.loc.start.line) {
+                        if (right.type == 'FunctionExpression') {
+                            if (left.type == 'MemberExpression') {
+                                console.log('The expression Statement');
+                                var leftVarBaseName = left.object.name;
+                                var leftVarExtName = left.property.name;
+                                var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                                var functionName = leftVarPath;
+                                var functionBody = right.body;
+                                cachedCode[srcFile][functionName] = functionBody;
+                            }
+                        }
+                    }
+                } else {
+                    estraverse.VisitorOption.skip;
+                }
+            } else {
+                estraverse.VisitorOption.skip;
+            }
+        }
+    });
+}
+fileName-to-be-written /hom-ashis-wor-NE-jalangi-projec-dynami-test-line
 ___________________________________________________________
 4
-START 33
 finding the function at 33:20:37:2 at line 33 in file /home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second
 /home/ashish/work/NEU/jalangi2/project/dynamic/tests/exported_circle_second
 Node 
@@ -222,8 +332,45 @@ Identifier {
   loc: 
    { start: { line: 33, column: 29 },
      end: { line: 33, column: 35 } } }
-################################## MODIFIED AST ##########################
+function lazyLoad(funName) {
+    var code = fs.readFileSync(srcFile);
+    var ast = esprima.parse(code);
+    cachedCode[srcFile] = {};
+    estraverse.traverse(ast, {
+        enter: function (node, parent) {
+            if (node.type == 'FunctionDeclaration') {
+                var functionName = node.id.name;
+                var functionBody = node.body;
+                cachedCode[srcFile][functionName] = functionBody;
+            } else if (node.type == 'ExpressionStatement') {
+                if (node.expression.type == 'AssignmentExpression') {
+                    var left = node.expression.left;
+                    var right = node.expression.right;
+                    if (startLineNumber == node.loc.start.line) {
+                        if (right.type == 'FunctionExpression') {
+                            if (left.type == 'MemberExpression') {
+                                console.log('The expression Statement');
+                                var leftVarBaseName = left.object.name;
+                                var leftVarExtName = left.property.name;
+                                var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                                var functionName = leftVarPath;
+                                var functionBody = right.body;
+                                cachedCode[srcFile][functionName] = functionBody;
+                            }
+                        }
+                    }
+                } else {
+                    estraverse.VisitorOption.skip;
+                }
+            } else {
+                estraverse.VisitorOption.skip;
+            }
+        }
+    });
+}
+################################## MODIFIED ##########################
 Final Program  
+var cachedCode = {};
 const line = require('./line.js');
 var exports = module.exports = {};
 const math = Math;
@@ -258,15 +405,41 @@ exports.isNontrivial = function (radius) {
     else
         return false;
 };
-___________________________________________________________
-5
-TypeError: Cannot read property 'toString' of undefined
-    at Object.<anonymous> (/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/S2STransformer.js:115:39)
-    at Module._compile (module.js:410:26)
-    at Object.Module._extensions..js (module.js:417:10)
-    at Module.load (module.js:344:32)
-    at Function.Module._load (module.js:301:12)
-    at Function.Module.runMain (module.js:442:10)
-    at startup (node.js:136:18)
-    at node.js:966:3
+function lazyLoad(funName) {
+    var code = fs.readFileSync(srcFile);
+    var ast = esprima.parse(code);
+    cachedCode[srcFile] = {};
+    estraverse.traverse(ast, {
+        enter: function (node, parent) {
+            if (node.type == 'FunctionDeclaration') {
+                var functionName = node.id.name;
+                var functionBody = node.body;
+                cachedCode[srcFile][functionName] = functionBody;
+            } else if (node.type == 'ExpressionStatement') {
+                if (node.expression.type == 'AssignmentExpression') {
+                    var left = node.expression.left;
+                    var right = node.expression.right;
+                    if (startLineNumber == node.loc.start.line) {
+                        if (right.type == 'FunctionExpression') {
+                            if (left.type == 'MemberExpression') {
+                                console.log('The expression Statement');
+                                var leftVarBaseName = left.object.name;
+                                var leftVarExtName = left.property.name;
+                                var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                                var functionName = leftVarPath;
+                                var functionBody = right.body;
+                                cachedCode[srcFile][functionName] = functionBody;
+                            }
+                        }
+                    }
+                } else {
+                    estraverse.VisitorOption.skip;
+                }
+            } else {
+                estraverse.VisitorOption.skip;
+            }
+        }
+    });
+}
+fileName-to-be-written /hom-ashis-wor-NE-jalangi-projec-dynami-test-exported_circle_second
 ___________________________________________________________
