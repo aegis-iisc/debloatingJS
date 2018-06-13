@@ -10,4 +10,5 @@ output/
 
 test/
 
+garbage/
 *.swp

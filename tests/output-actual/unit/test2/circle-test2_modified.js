@@ -1,23 +1,19 @@
-var original_exports_diameter = null;
-var original_exports_diameter = null;
-var original_exports_diameter = null;
-var original_exports_diameter = null;
 var original_unused_function = null;
 var original_unused_function = null;
 var original_unused_function = null;
 var original_unused_function = null;
-var srcFile = null / work / NEU / jalangi2 / project / dynamic / tests / input / unit / exported_circle_second;
+var srcFile = null / work / NEU / jalangi2 / project / dynamic / tests / input / unit / test2 / circle - test2;
 var fs = require('fs');
 var esprima = require('esprima');
 var estraverse = require('estraverse');
 var cutility = require('./cutility.js');
 var escodegen = require('escodegen');
 var cachedCode = {};
-const line = require('./line_modified.js');
+const line = require('./line-test2_modified.js');
 var exports = module.exports = {};
 const math = Math;
-var unused_diameter = 2;
 exports.area = function (radius) {
+    line.drawLine(radius);
     return math.PI * radius * radius;
 };
 {
@@ -32,30 +28,7 @@ exports.area = function (radius) {
                 original_unused_function.apply(this);
     }
 }
-exports.perimeter = function (radius) {
-    return 2 * math.PI * radius;
-};
-exports.drawCircle = function (radius) {
-    if (this.isNontrivial(radius)) {
-        l = line.drawLine(exports.perimeter(radius));
-        line.trim();
-    }
-};
-exports.diameter = function (radius) {
-        if (original_exports.diameter == null) {
-        lazyLoad(exports.diameter, srcFile);
-        var loadedBody = loadAndInvoke('exports.diameter', srcFile);
-        eval('original_exports.diameter = ' + loadedBody);
-        exports.diameter = original_exports.diameter;
-    }
-        original_exports.diameter.apply(this, radius);
-};
-exports.isNontrivial = function (radius) {
-    if (radius >= 0)
-        return true;
-    else
-        return false;
-};
+exports.unused_function = unused_function;
 function lazyLoad(funName, fileName) {
     var code = fs.readFileSync(fileName, 'utf8');
     var ast = esprima.parse(code.toString(), {

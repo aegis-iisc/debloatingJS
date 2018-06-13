@@ -1,61 +1,26 @@
-var original_exports_diameter = null;
-var original_exports_diameter = null;
-var original_exports_diameter = null;
-var original_exports_diameter = null;
-var original_unused_function = null;
-var original_unused_function = null;
-var original_unused_function = null;
-var original_unused_function = null;
-var srcFile = null / work / NEU / jalangi2 / project / dynamic / tests / exported_circle_second;
+var original_foo = null;
+var original_foo = null;
+var original_foo = null;
+var original_foo = null;
+var srcFile = null / work / NEU / jalangi2 / project / dynamic / tests / input / unit / test1;
 var fs = require('fs');
 var esprima = require('esprima');
 var estraverse = require('estraverse');
 var cutility = require('./cutility.js');
 var escodegen = require('escodegen');
 var cachedCode = {};
-const line = require('./line_modified.js');
-var exports = module.exports = {};
-const math = Math;
-var unused_diameter = 2;
-exports.area = function (radius) {
-    return math.PI * radius * radius;
-};
 {
-    var original_unused_function;
-    function _unused_function() {
-                if (original_unused_function == null) {
-            lazyLoad('unused_function', srcFile);
-            var loadedBody = loadAndInvoke('unused_function', srcFile);
-            eval('original_unused_function = ' + loadedBody);
-            unused_function = original_unused_function;
+    var original_foo;
+    function _foo() {
+                if (original_foo == null) {
+            lazyLoad('foo', srcFile);
+            var loadedBody = loadAndInvoke('foo', srcFile);
+            eval('original_foo = ' + loadedBody);
+            foo = original_foo;
         }
-                original_unused_function.apply(this);
+                original_foo.apply(this);
     }
 }
-exports.perimeter = function (radius) {
-    return 2 * math.PI * radius;
-};
-exports.drawCircle = function (radius) {
-    if (this.isNontrivial(radius)) {
-        l = line.drawLine(exports.perimeter(radius));
-        line.trim();
-    }
-};
-exports.diameter = function (radius) {
-        if (original_exports.diameter == null) {
-        lazyLoad(exports.diameter, srcFile);
-        var loadedBody = loadAndInvoke('exports.diameter', srcFile);
-        eval('original_exports.diameter = ' + loadedBody);
-        exports.diameter = original_exports.diameter;
-    }
-        original_exports.diameter.apply(this, radius);
-};
-exports.isNontrivial = function (radius) {
-    if (radius >= 0)
-        return true;
-    else
-        return false;
-};
 function lazyLoad(funName, fileName) {
     var code = fs.readFileSync(fileName, 'utf8');
     var ast = esprima.parse(code.toString(), {
