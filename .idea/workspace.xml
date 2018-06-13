@@ -2,29 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="661c26bd-6045-42ce-8603-698fa54b03e5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/analysis/CheckModuleLoading.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/analysis/S2STransformer.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/analysis/Transformer.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/analysis/Utility.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/analysis/cutility.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/analysis/invokedfunctions.json" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/analysis/laodedfunctions.json" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/analysis/stubList.json" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/commons.js" afterPath="$PROJECT_DIR$/commons.js" />
-      <change beforePath="$PROJECT_DIR$/invokedfunctions.json" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/laodedfunctions.json" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/loadedfunctions.json" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/outputexported_circle_second_modified.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/outputline_modified.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/package.json" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/stubList.json" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/tests/input/unit/test-loading-semantics.js" afterPath="$PROJECT_DIR$/tests/input/unit/test-loading-semantics.js" />
-      <change beforePath="$PROJECT_DIR$/tests/input/unit/test2/test2.js" afterPath="$PROJECT_DIR$/tests/input/unit/test2/test2.js" />
-      <change beforePath="$PROJECT_DIR$/tests/output-actual/unit/exported_circle_second_modified.js" afterPath="$PROJECT_DIR$/tests/output-actual/unit/exported_circle_second_modified.js" />
-      <change beforePath="$PROJECT_DIR$/tests/output-actual/unit/line_modified.js" afterPath="$PROJECT_DIR$/tests/output-actual/unit/line_modified.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -38,7 +16,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1683">
@@ -70,7 +48,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CheckModuleLoadingTest.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CheckModuleLoadingTest.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-1513">
@@ -447,7 +425,7 @@
       <workItem from="1526423495953" duration="39689000" />
       <workItem from="1526911469645" duration="41956000" />
       <workItem from="1527021383766" duration="45263000" />
-      <workItem from="1528119704115" duration="111781000" />
+      <workItem from="1528119704115" duration="112806000" />
     </task>
     <servers />
   </component>
@@ -484,7 +462,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="455599000" />
+    <option name="totallyTimeSpent" value="456624000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="24" width="1922" height="1033" extended-state="6" />
@@ -949,14 +927,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1513">
-          <caret line="70" column="7" lean-forward="false" selection-start-line="70" selection-start-column="7" selection-end-line="70" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/output-actual/unit/test1_modified.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -969,6 +939,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1683">
           <caret line="99" column="52" lean-forward="false" selection-start-line="99" selection-start-column="52" selection-end-line="99" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1513">
+          <caret line="70" column="7" lean-forward="false" selection-start-line="70" selection-start-column="7" selection-end-line="70" selection-end-column="7" />
           <folding />
         </state>
       </provider>
