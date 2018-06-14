@@ -8,8 +8,8 @@ var utf8 = require('utf8');
 //const $jalangi_home =
 //shell.env
 
-const $nodePath = process.env.NODE_PATH;
-const $JALANGI_HOME = process.env.JALANGI_HOME;
+const $nodePath = '/usr/local/bin/node'; //process.env.NODE_PATH;
+const $JALANGI_HOME = '/Users/saba/Documents/northeastern/research/jalangi/jalangi2'; //process.env.JALANGI_HOME;
 
 var exports = module.exports = {};
 function runTest(fileName){
@@ -106,12 +106,12 @@ exports.jalangiAnalysis = function (analysis, inputFile, testsRoot){
 };
 function verifyGeneratedLoaded(testName, isNode){
     if(!isNode)
-        var testRoot = './tests/input/unit/'
+        var testRoot = './tests/input/unit/';
     else
-        var testRoot = './tests/input/nodejs/'
+        var testRoot = './tests/input/nodejs/';
 
     var outputRoot = testRoot.replace('input', 'output-actual');
-    var loadedJSONFile = outputRoot+testName+'_laodedfunctions.json';
+    var loadedJSONFile = outputRoot+testName+'_loadedfunctions.json';
     var writtentLoadedFunctions = fs.readFileSync(loadedJSONFile);
 
     return writtentLoadedFunctions.length;

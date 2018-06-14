@@ -1,8 +1,8 @@
-J$.iids = {"9":[2,5,2,12],"17":[2,17,2,31],"25":[2,5,2,32],"27":[2,5,2,16],"33":[2,5,2,33],"41":[1,1,3,2],"49":[1,1,3,2],"57":[1,1,3,2],"65":[1,1,3,2],"73":[1,1,3,2],"81":[1,1,3,2],"89":[1,1,3,2],"97":[1,1,3,2],"105":[1,1,3,2],"nBranches":0,"originalCodeFileName":"/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test1.js","instrumentedCodeFileName":"/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test1_jalangi_.js","code":"function foo () {\n    console.log('hello world!');\n}"};
+J$.iids = {"9":[2,5,2,12],"17":[2,17,2,31],"25":[2,5,2,32],"27":[2,5,2,16],"33":[2,5,2,33],"41":[1,1,3,2],"49":[1,1,3,2],"57":[1,1,3,2],"65":[1,1,3,2],"73":[1,1,3,2],"81":[1,1,3,2],"89":[1,1,3,2],"97":[1,1,3,2],"105":[1,1,3,2],"nBranches":0,"originalCodeFileName":"/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test1.js","instrumentedCodeFileName":"/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test1_jalangi_.js","code":"function foo () {\n    console.log('hello world!');\n}"};
 jalangiLabel1:
     while (true) {
         try {
-            J$.Se(57, '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test1_jalangi_.js', '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test1.js');
+            J$.Se(57, '/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test1_jalangi_.js', '/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test1.js');
             function foo() {
                 jalangiLabel0:
                     while (true) {
