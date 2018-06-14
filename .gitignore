@@ -9,6 +9,6 @@ node-projects/
 output/
 
 #test/
-
+.idea/
 garbage/
 *.swp

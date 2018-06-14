@@ -12,7 +12,7 @@ function runTests (testName, isNode) {
     });
 
     it('check-size-loaded-functions', function () {
-        var size = commons.verifyGeneratedLoaded(testName, false);
+        var size = commons. verifyGeneratedLoaded(testName, false);
         console.log("size "+size);
         assert(size !== 0); // TODO compare contents of two files
     });
