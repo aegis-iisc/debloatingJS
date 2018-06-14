@@ -8,8 +8,8 @@ var utf8 = require('utf8');
 //const $jalangi_home =
 //shell.env
 
-const $nodePath = '/usr/local/bin/node'; //process.env.NODE_PATH;
-const $JALANGI_HOME = '/Users/saba/Documents/northeastern/research/jalangi/jalangi2'; //process.env.JALANGI_HOME;
+const $nodePath = process.env.NODE_PATH;
+const $JALANGI_HOME = process.env.JALANGI_HOME;
 
 var exports = module.exports = {};
 function runTest(fileName){
