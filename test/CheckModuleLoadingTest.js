@@ -1,3 +1,4 @@
+
 var assert = require('assert');
 const commons = require("../commons.js");
 
@@ -11,36 +12,28 @@ function runTests (testName, isNode) {
     });
 
     it('check-size-loaded-functions', function () {
-        var exit = commons.jalangiAnalysis('CheckModuleLoading', testName);
-        assert(exit === 0);
         var size = commons.verifyGeneratedLoaded(testName, false);
         console.log("size "+size);
-        assert(size !== 0);
-
-
-    });
-    it('check-size-executed-functions', function () {
-        var exit = commons.jalangiAnalysis('CheckModuleLoading', testName);
-        assert(exit === 0);
-        // pass the fileName and a boolean stat
-        var size = commons.verifyGeneratedExecuted(testName, false);
-        console.log("size "+size);
-        assert(size !== 0);
-
+        assert(size !== 0); // TODO compare contents of two files
     });
 
+    // TODO this can be removed
+    /*    it('check-size-executed-functions', function () {
+            // pass the fileName and a boolean stat
+            var size = commons.verifyGeneratedExecuted(testName, false);
+            console.log("size "+size);
+            assert(size !== 0);
+
+        });
+    */
     it('check-size-stubList', function () {
-        var exit = commons.jalangiAnalysis('CheckModuleLoading', testName);
-        assert(exit === 0);
         // pass the fileName and a boolean stat
         var size = commons.verifyGeneratedStubList(testName, false);
         console.log("size "+size);
-        assert(size !== 0);
-
+        assert(size !== 0); // TODO compare contents of two files
     });
 
-
-
+    // TODO merge the next two tests
     it('check-exit-code-Main-run-unit', function () {
         if(!isNode) {
             var exit = commons.runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputFile ' + testName + '.js', '--transformer S2STransformer.js ']);
@@ -48,8 +41,8 @@ function runTests (testName, isNode) {
         }else{// node csae to be handled later
             assert(true);
         }
-
     });
+
     it('check-exit-code-Main-run-dir', function () {
         if(!isNode) {
             var exit = commons.runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputDir ' + testName + '.js', '--transformer S2STransformer.js']);
@@ -59,14 +52,18 @@ function runTests (testName, isNode) {
         }
 
     });
-    it('check-exit-code-Main-run-node', function () {
-        if (isNode) {// handle later
-              var exit = commons.runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputDir ' + testName + '.js', '--transformer S2STransformer.js', '--node']);
-                assert(exit === 0);
-        }else
-            assert(true);
-    });
-
+    // TODO move to separate file
+    /*
+        it('check-exit-code-Main-run-node', function () {
+            if (isNode) {// handle later
+                  var exit = commons.runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputDir ' + testName + '.js', '--transformer S2STransformer.js', '--node']);
+                    assert(exit === 0);
+            }else
+                assert(true);
+        });
+    */
+    // TODO next two tests are unnecessary
+    /*
     // check the output and the error for the Main
     it('check-output-Main-run-unit', function () {
 
@@ -82,40 +79,39 @@ function runTests (testName, isNode) {
         assert(stderr === 0);
 
     });
+    */
 
-/*
-    it('check-output-Main-run-dir', function () {
+    /*
+        it('check-output-Main-run-dir', function () {
 
-        var exit = commons.runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputDir '+testName, '--transformer S2STransformer.js']);
-        assert(exit === 0);
+            var exit = commons.runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputDir '+testName, '--transformer S2STransformer.js']);
+            assert(exit === 0);
 
-    });
-    it('check-output-Main-run-node', function () {
+        });
+        it('check-output-Main-run-node', function () {
 
-        var exit = commons.runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputDir test2', '--transformer S2STransformer.js'], );
-        assert(exit === 0);
+            var exit = commons.runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputDir test2', '--transformer S2STransformer.js'], );
+            assert(exit === 0);
 
-    });
-*/
+        });
+    */
     // Checks over the transformed Application
     it('check-exit-by-executing-transformed-application', function (){
 
         var modifiedTestName = commons.getModifiedPathOrDir(testName, isNode);
         var exit = commons.runWithNode(modifiedTestName, []);
         assert(exit === 0);
-
-
-
     });
 
 
+    // TODO compare actual output
     it('check-out-by-executing-transformed-application', function (){
         var modifiedTestName = commons.getModifiedPathOrDir(testName, isNode);
         var stdout = commons.runWithNode(modifiedTestName, [], 'stdout');
         console.log("OUT "+stdout);
     });
 
-
+    // TODO compare actual errors
     it('check-error-by-executing-transformed-application', function (){
         var modifiedTestName = commons.getModifiedPathOrDir(testName, isNode);
         var stderr = commons.runWithNode(modifiedTestName, [], 'stderr');
@@ -125,23 +121,35 @@ function runTests (testName, isNode) {
     });
 
 
+    /*
+        it('compare-size-original-transformed', function (){
 
-    it('compare-size-original-transformed', function (){
+        });
 
-    });
+        // idependent tests
+        // independently running the transformer
+        it('check-exit-code-Transformer-execution-independent', function () {
 
-    // idependent tests
-    // independently running the transformer
-    it('check-exit-code-Transformer-execution-independent', function () {
-
-        var exitcode = commons.runTransformer('./analysis/src/S2STransformer.js', 'testName_stubList.json', './tests', './tests/output-actual/unit/');
-        assert(exitcode === 0);
-    });
-
+            var exitcode = commons.runTransformer('./analysis/src/S2STransformer.js', 'testName_stubList.json', './tests', './tests/output-actual/unit/');
+            assert(exitcode === 0);
+        });
+    */
 }
 
 
-runTests('test1');
+describe('unit-tests', function () {
+    describe('test1', function () {
+        runTests('test1');
+    });
+    describe('test3', function () {
+        runTests('test3');
+    });
+    describe('test4', function () {
+        runTests('test4');
+    });
+});
+
+
 
 /*
 describe('unit-tests', function () {

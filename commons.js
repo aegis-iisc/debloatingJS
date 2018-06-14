@@ -111,7 +111,7 @@ function verifyGeneratedLoaded(testName, isNode){
         var testRoot = './tests/input/nodejs/'
 
     var outputRoot = testRoot.replace('input', 'output-actual');
-    var loadedJSONFile = outputRoot+testName+'_laodedfunctions.json';
+    var loadedJSONFile = outputRoot+testName+'_loadedfunctions.json';
     var writtentLoadedFunctions = fs.readFileSync(loadedJSONFile);
 
     return writtentLoadedFunctions.length;
