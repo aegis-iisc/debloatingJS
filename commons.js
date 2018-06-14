@@ -106,9 +106,9 @@ exports.jalangiAnalysis = function (analysis, inputFile, testsRoot){
 };
 function verifyGeneratedLoaded(testName, isNode){
     if(!isNode)
-        var testRoot = './tests/input/unit/'
+        var testRoot = './tests/input/unit/';
     else
-        var testRoot = './tests/input/nodejs/'
+        var testRoot = './tests/input/nodejs/';
 
     var outputRoot = testRoot.replace('input', 'output-actual');
     var loadedJSONFile = outputRoot+testName+'_loadedfunctions.json';
