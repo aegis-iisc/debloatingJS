@@ -1,25 +1,30 @@
-var original_foo = null;
-var original_foo = null;
-var original_foo = null;
-var original_foo = null;
-var srcFile = '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test1.js';
+var original_bar = null;
+var original_bar = null;
+var original_bar = null;
+var original_bar = null;
+var original_bar = null;
+var srcFile = '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test4.js';
 var fs = require('fs');
 var esprima = require('esprima');
 var estraverse = require('estraverse');
 var escodegen = require('escodegen');
 var cachedCode = {};
+function foo() {
+    console.log('hello world!');
+}
 {
-    var original_foo;
-    function  foo() {
-                if (original_foo == null) {
-            lazyLoad('foo', srcFile);
-            var loadedBody = loadAndInvoke('foo', srcFile);
-            eval('original_foo = ' + loadedBody);
-            foo = original_foo;
+    var original_bar;
+    function  bar() {
+                if (original_bar == null) {
+            lazyLoad('bar', srcFile);
+            var loadedBody = loadAndInvoke('bar', srcFile);
+            eval('original_bar = ' + loadedBody);
+            bar = original_bar;
         }
-                original_foo.apply(this);
+                original_bar.apply(this);
     }
 }
+foo();
 function lazyLoad(funName, fileName) {
     var code = fs.readFileSync(fileName, 'utf8');
     var ast = esprima.parse(code.toString(), {

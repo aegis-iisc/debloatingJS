@@ -110,7 +110,7 @@ exports.createStubFunctionDeclaration = function (funName, params){ // returns t
     var _returnStatement = esprima.parse(returnStatement);
 
 
-    var _stubFunDecl = {type: 'FunctionDeclaration', params: params, id: {type: 'Identifier', name: '_'+funName},
+    var _stubFunDecl = {type: 'FunctionDeclaration', params: params, id: {type: 'Identifier', name: ' '+funName},
         body: { type: 'BlockStatement',
             body: [_ifStatement, _returnStatement] },
         generator: false,
@@ -326,7 +326,7 @@ exports.addHeaderInstructions = function (ast){
     var headerInstructions = 'var fs = require(\'fs\');\n' +
         'var esprima = require(\'esprima\');\n' +
         'var estraverse = require(\'estraverse\');\n' +
-        'var cutility = require(\'./cutility.js\');\n' +
+       // 'var cutility = require(\'./cutility.js\');\n' +
         'var escodegen = require(\'escodegen\');';
 
     var _headerInstructions = esprima.parse(headerInstructions.toString(), {range: true, loc : true, tokens: true});
@@ -409,7 +409,7 @@ exports.addOriginalDeclaration = function(astForInput, functionName){
 exports.addSrcfileDeclaration = function (astForInput, filename) {
     console.log("SRC "+filename);
     var srcFileDeclaration ='';
-    var srcFileDeclaration = srcFileDeclaration+' var srcFile = '+filename+ ';';
+    var srcFileDeclaration = srcFileDeclaration+' var srcFile = \''+filename+ '.js\';';
     var _srcFileDeclaration = esprima.parse(srcFileDeclaration.toString(), {range: true, loc: true, tokens: false});
 
     // add just after the require statements
