@@ -2,7 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="661c26bd-6045-42ce-8603-698fa54b03e5" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/_loadedfunctions.json" afterPath="$PROJECT_DIR$/_loadedfunctions.json" />
+      <change beforePath="$PROJECT_DIR$/_stubList.json" afterPath="$PROJECT_DIR$/_stubList.json" />
+      <change beforePath="$PROJECT_DIR$/analysis/src/CheckModuleLoading.js" afterPath="$PROJECT_DIR$/analysis/src/CheckModuleLoading.js" />
+      <change beforePath="$PROJECT_DIR$/analysis/src/Main.js" afterPath="$PROJECT_DIR$/analysis/src/Main.js" />
+      <change beforePath="$PROJECT_DIR$/analysis/src/Transformer.js" afterPath="$PROJECT_DIR$/analysis/src/Transformer.js" />
+      <change beforePath="$PROJECT_DIR$/analysis/src/Utility.js" afterPath="$PROJECT_DIR$/analysis/src/Utility.js" />
+      <change beforePath="$PROJECT_DIR$/commons.js" afterPath="$PROJECT_DIR$/commons.js" />
+      <change beforePath="$PROJECT_DIR$/node_modules/argparse/package.json" afterPath="$PROJECT_DIR$/node_modules/argparse/package.json" />
+      <change beforePath="$PROJECT_DIR$/node_modules/escodegen/package.json" afterPath="$PROJECT_DIR$/node_modules/escodegen/package.json" />
+      <change beforePath="$PROJECT_DIR$/node_modules/esprima/package.json" afterPath="$PROJECT_DIR$/node_modules/esprima/package.json" />
       <change beforePath="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" afterPath="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" />
+      <change beforePath="$PROJECT_DIR$/tests/input/unit/test1_jalangi_.js" afterPath="$PROJECT_DIR$/tests/input/unit/test1_jalangi_.js" />
+      <change beforePath="$PROJECT_DIR$/tests/input/unit/test1_jalangi_.json" afterPath="$PROJECT_DIR$/tests/input/unit/test1_jalangi_.json" />
+      <change beforePath="$PROJECT_DIR$/tests/output-actual/unit/test1_modified.js" afterPath="$PROJECT_DIR$/tests/output-actual/unit/test1_modified.js" />
+      <change beforePath="$PROJECT_DIR$/tests/output-actual/unit/test4_invokedfunctions.json" afterPath="$PROJECT_DIR$/tests/output-actual/unit/test4_invokedfunctions.json" />
+      <change beforePath="$PROJECT_DIR$/tests/output-actual/unit/test4_modified.js" afterPath="$PROJECT_DIR$/tests/output-actual/unit/test4_modified.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,8 +35,8 @@
       <file leaf-file-name="Main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="356">
-              <caret line="61" column="20" lean-forward="false" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
+            <state relative-caret-position="935">
+              <caret line="55" column="34" lean-forward="false" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -29,67 +45,25 @@
       <file leaf-file-name="Transformer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-426">
-              <caret line="112" column="103" lean-forward="false" selection-start-line="112" selection-start-column="103" selection-end-line="112" selection-end-column="103" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="S2STransformer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1462">
-              <caret line="86" column="47" lean-forward="false" selection-start-line="86" selection-start-column="47" selection-end-line="86" selection-end-column="47" />
+            <state relative-caret-position="2159">
+              <caret line="133" column="27" lean-forward="false" selection-start-line="133" selection-start-column="27" selection-end-line="133" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CheckModuleLoadingTest.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
+      <file leaf-file-name="Utility.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis/src/Utility.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1836">
-              <caret line="24" column="31" lean-forward="true" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+            <state relative-caret-position="374">
+              <caret line="22" column="67" lean-forward="false" selection-start-line="22" selection-start-column="67" selection-end-line="22" selection-end-column="67" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CheckModuleLoading.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/analysis/src/CheckModuleLoading.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="28" column="83" lean-forward="false" selection-start-line="28" selection-start-column="83" selection-end-line="28" selection-end-column="83" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test1_modified.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/output-actual/unit/test1_modified.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="exported_circle_second.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/input/unit/exported_circle_second.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="27" lean-forward="false" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="line.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/input/unit/line.js">
+      <file leaf-file-name="test1_persistent.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/output-expected/unit/test1_persistent.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -98,11 +72,61 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="test4.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/output-expected/unit/test4.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test1_loadedfunctions.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/output-expected/unit/test1_loadedfunctions.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="S2STransformer.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="219" column="0" lean-forward="false" selection-start-line="218" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CheckModuleLoadingTest.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2244">
+              <caret line="162" column="0" lean-forward="true" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ModifiedExecutionTests.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/ModifiedExecutionTests.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="commons.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/commons.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="113" column="62" lean-forward="false" selection-start-line="113" selection-start-column="46" selection-end-line="113" selection-end-column="62" />
+            <state relative-caret-position="493">
+              <caret line="207" column="57" lean-forward="false" selection-start-line="207" selection-start-column="57" selection-end-line="207" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -119,8 +143,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>generateFunctionP</find>
-      <find>generateFunctionPa</find>
       <find>sourceNodeWhenNeeded</find>
       <find>generateFunc</find>
       <find>generateFun</find>
@@ -149,6 +171,8 @@
       <find>populateGlobalModified</find>
       <find>console</find>
       <find>pathToOutput</find>
+      <find>Script</find>
+      <find>script</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -175,15 +199,17 @@
         <option value="$PROJECT_DIR$/tests/input/unit/circle-test2.js" />
         <option value="$PROJECT_DIR$/analysis/CheckModuleLoading.js" />
         <option value="$PROJECT_DIR$/analysis/src/S2STransformer.js" />
-        <option value="$PROJECT_DIR$/analysis/src/CheckModuleLoading.js" />
         <option value="$PROJECT_DIR$/tests/input/unit/test-loading-semantics.js" />
         <option value="$PROJECT_DIR$/tests/input/unit/test1.js" />
         <option value="$PROJECT_DIR$/tests/input/unit/test2.js" />
         <option value="$PROJECT_DIR$/scribble/testErrorAndOut.js" />
-        <option value="$PROJECT_DIR$/analysis/src/Main.js" />
-        <option value="$PROJECT_DIR$/commons.js" />
         <option value="$PROJECT_DIR$/tests/output-actual/unit/test1_modified.js" />
         <option value="$PROJECT_DIR$/analysis/src/Transformer.js" />
+        <option value="$PROJECT_DIR$/analysis/src/CheckModuleLoading.js" />
+        <option value="$PROJECT_DIR$/analysis/src/Main.js" />
+        <option value="$PROJECT_DIR$/analysis/src/Utility.js" />
+        <option value="$PROJECT_DIR$/commons.js" />
+        <option value="$PROJECT_DIR$/test/ModifiedExecutionTests.js" />
         <option value="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" />
       </list>
     </option>
@@ -226,6 +252,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -242,12 +269,13 @@
               <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
               <item name="dynamic" type="462c0819:PsiDirectoryNode" />
               <item name="analysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="output" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
               <item name="dynamic" type="462c0819:PsiDirectoryNode" />
-              <item name="scribble" type="462c0819:PsiDirectoryNode" />
+              <item name="analysis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
@@ -263,20 +291,32 @@
               <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
               <item name="dynamic" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
+              <item name="output-actual" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
               <item name="dynamic" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
+              <item name="output-actual" type="462c0819:PsiDirectoryNode" />
+              <item name="unit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="output-expected" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="output-expected" type="462c0819:PsiDirectoryNode" />
               <item name="unit" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -343,23 +383,18 @@
         <name value="Main" />
       </test-names>
     </configuration>
-    <configuration name="S2STransformer.S2STransformer executes successfully" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+    <configuration name="check-exit-code-Main-run-unit" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>false</pass-parent-env>
-      <envs>
-        <env name="PATH" value="path/path" />
-        <env name="NODE_PATH" value="/usr/bin/node" />
-        <env name="JALANGI_HOME" value="$PROJECT_DIR$/../.." />
-      </envs>
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
       <ui>bdd</ui>
       <extra-mocha-options />
       <test-kind>TEST</test-kind>
       <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
       <test-names>
-        <name value="S2STransformer" />
-        <name value="S2STransformer executes successfully" />
+        <name value="check-exit-code-Main-run-unit" />
       </test-names>
     </configuration>
     <configuration name="require parameters update" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
@@ -382,7 +417,7 @@
       <working-directory>$PROJECT_DIR$</working-directory>
       <pass-parent-env>false</pass-parent-env>
       <envs>
-        <env name="PATH" value="path/path" />
+        <env name="PATH" value="/usr/bin:/bin" />
         <env name="NODE_PATH" value="/usr/bin/node" />
         <env name="JALANGI_HOME" value="$PROJECT_DIR$/../.." />
       </envs>
@@ -396,19 +431,19 @@
       <item index="1" class="java.lang.String" itemvalue="Node.js.functionLoader" />
       <item index="2" class="java.lang.String" itemvalue="Node.js.S2S" />
       <item index="3" class="java.lang.String" itemvalue="Node.js.TestTransformer" />
-      <item index="4" class="java.lang.String" itemvalue="Mocha.S2STransformer.S2STransformer executes successfully" />
-      <item index="5" class="java.lang.String" itemvalue="Mocha.require parameters update" />
-      <item index="6" class="java.lang.String" itemvalue="Node.js.CheckModuleLoading.js" />
-      <item index="7" class="java.lang.String" itemvalue="Mocha.CheckModuleLoading" />
-      <item index="8" class="java.lang.String" itemvalue="Mocha.Main" />
+      <item index="4" class="java.lang.String" itemvalue="Mocha.require parameters update" />
+      <item index="5" class="java.lang.String" itemvalue="Mocha.CheckModuleLoading" />
+      <item index="6" class="java.lang.String" itemvalue="Mocha.Main" />
+      <item index="7" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
+      <item index="8" class="java.lang.String" itemvalue="Node.js.CheckModuleLoading.js" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Mocha.Main" />
-        <item index="1" class="java.lang.String" itemvalue="Mocha.CheckModuleLoading" />
-        <item index="2" class="java.lang.String" itemvalue="Node.js.CheckModuleLoading.js" />
-        <item index="3" class="java.lang.String" itemvalue="Mocha.require parameters update" />
-        <item index="4" class="java.lang.String" itemvalue="Mocha.S2STransformer.S2STransformer executes successfully" />
+        <item index="0" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
+        <item index="1" class="java.lang.String" itemvalue="Mocha.Main" />
+        <item index="2" class="java.lang.String" itemvalue="Mocha.CheckModuleLoading" />
+        <item index="3" class="java.lang.String" itemvalue="Node.js.CheckModuleLoading.js" />
+        <item index="4" class="java.lang.String" itemvalue="Mocha.require parameters update" />
       </list>
     </recent_temporary>
   </component>
@@ -440,44 +475,47 @@
       <workItem from="1526911469645" duration="41956000" />
       <workItem from="1527021383766" duration="45263000" />
       <workItem from="1528119704115" duration="112806000" />
-      <workItem from="1528989791295" duration="4599000" />
+      <workItem from="1528989791295" duration="9171000" />
+      <workItem from="1529330492117" duration="5632000" />
+      <workItem from="1529340963820" duration="688000" />
+      <workItem from="1529417358702" duration="20184000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 11h 25m 02s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 12h 05m 47s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 11h 25m 28s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 12h 06m 41s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 11h 25m 52s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 12h 48m 27s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 11h 26m 49s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 12h 51m 45s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 11h 27m 31s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 12h 55m 35s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 11h 42m 38s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 12h 57m 24s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 11h 53m 28s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 13h 09m 09s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 12h 44m 35s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 13h 11m 02s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 12h 46m 47s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 13h 12m 11s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.14 at 12h 54m 12s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.06.19 at 13h 23m 18s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="461223000" />
+    <option name="totallyTimeSpent" value="492299000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="24" width="1922" height="1033" extended-state="6" />
@@ -487,10 +525,10 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30237582" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3012959" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298351" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.325054" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -568,46 +606,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/argparse/lib/argparse.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="50" lean-forward="false" selection-start-line="2" selection-start-column="50" selection-end-line="2" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/javascript/nodejs/4.2.6/core-modules/fs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="449" column="3" lean-forward="false" selection-start-line="449" selection-start-column="3" selection-end-line="449" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/S2STransformer_1.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/esutils/lib/ast.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/Utility.js" />
-    <entry file="file://$PROJECT_DIR$/node_modules/escodegen/escodegen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44523">
-          <caret line="2619" column="14" lean-forward="false" selection-start-line="2619" selection-start-column="14" selection-end-line="2619" selection-end-column="14" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/exported_circle_jalangi_.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -677,7 +675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="40" lean-forward="false" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -721,7 +718,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="151" column="60" lean-forward="false" selection-start-line="151" selection-start-column="60" selection-end-line="151" selection-end-column="60" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -729,9 +725,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-16">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -739,9 +732,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -749,7 +739,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -758,9 +747,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -776,9 +762,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-697">
           <caret line="49" column="38" lean-forward="false" selection-start-line="49" selection-start-column="31" selection-end-line="49" selection-end-column="38" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -786,17 +769,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="28" column="10" lean-forward="false" selection-start-line="28" selection-start-column="10" selection-end-line="28" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/test2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="6" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/input/unit/test2.js" />
     <entry file="file://$PROJECT_DIR$/tests/input/unit/test1.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -808,14 +784,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="15" lean-forward="false" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1462">
-          <caret line="86" column="47" lean-forward="false" selection-start-line="86" selection-start-column="47" selection-end-line="86" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -835,16 +803,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-426">
-          <caret line="112" column="103" lean-forward="false" selection-start-line="112" selection-start-column="103" selection-end-line="112" selection-end-column="103" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/output-actual/unit/test1_modified.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -853,34 +811,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/javascript/nodejs/library/node-globals-stub.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="61" column="20" lean-forward="false" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commons.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="113" column="62" lean-forward="false" selection-start-line="113" selection-start-column="46" selection-end-line="113" selection-end-column="62" />
+        <state relative-caret-position="-3213">
+          <caret line="6" column="9" lean-forward="false" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/analysis/src/CheckModuleLoading.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="28" column="83" lean-forward="false" selection-start-line="28" selection-start-column="83" selection-end-line="28" selection-end-column="83" />
+        <state relative-caret-position="187">
+          <caret line="33" column="8" lean-forward="false" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="55" column="34" lean-forward="false" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2159">
+          <caret line="133" column="27" lean-forward="false" selection-start-line="133" selection-start-column="27" selection-end-line="133" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="219" column="0" lean-forward="false" selection-start-line="218" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="207" column="57" lean-forward="false" selection-start-line="207" selection-start-column="57" selection-end-line="207" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/ModifiedExecutionTests.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/src/Utility.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="67" lean-forward="false" selection-start-line="22" selection-start-column="67" selection-end-line="22" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/output-expected/unit/test4.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/output-expected/unit/test1_loadedfunctions.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/output-expected/unit/test1_persistent.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1836">
-          <caret line="24" column="31" lean-forward="true" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+        <state relative-caret-position="2244">
+          <caret line="162" column="0" lean-forward="true" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
           <folding />
         </state>
       </provider>

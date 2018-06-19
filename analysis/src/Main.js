@@ -46,11 +46,15 @@ var parser = new argparse.ArgumentParser({
 
         var outputRoot = testsRoot.replace('input','output-actual');
 
+        // TODO Create a function for writing an expected output file with the boilerplace code needed.
+        var outputRootExpected = testsRoot.replace('input','output-expected');
 
         if(args.inputFile) {
             var inputFile = args.inputFile;
             console.log("CASE :: UNIT INPUT FILE");
             console.log("test root " + testsRoot);
+            utility.createExpectedOutputFile(outputRootExpected+inputFile.substring(0,inputFile.lastIndexOf('.')));
+
             resultJalangi = commons.runJalangi(analysis, inputFile, testsRoot);
         }else if(args.inputDir){
             var appInputDir = args.inputDir;

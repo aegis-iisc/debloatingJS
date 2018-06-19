@@ -4,6 +4,7 @@
 var shelljs = require('shelljs');
 var fs = require('fs')
 var utf8 = require('utf8');
+var assert = require('assert');
 
 //const $jalangi_home =
 //shell.env
@@ -110,28 +111,122 @@ function verifyGeneratedLoaded(testName, isNode){
     else
         var testRoot = './tests/input/nodejs/';
 
-    var outputRoot = testRoot.replace('input', 'output-actual');
-    var loadedJSONFile = outputRoot+testName+'_loadedfunctions.json';
-    var writtentLoadedFunctions = fs.readFileSync(loadedJSONFile);
+    var output_actualRoot = testRoot.replace('input', 'output-actual');
+    var output_expectedRoot = testRoot.replace('input', 'output-expected');
+    var loadedJSONFile_actual = output_actualRoot+testName+'_loadedfunctions.json';
+    var loadedJSONFile_expected = output_expectedRoot+testName+'_loadedfunctions.json';
 
-    return writtentLoadedFunctions.length;
+   /* var writtentLoadedFunctions_actual = fs.readFileSync(loadedJSONFile_actual);
+    var writtentLoadedFunctions_expected = fs.readFileSync(loadedJSONFile_expected);
+*/
+    var diffCode = this.runTextDiff(loadedJSONFile_actual, loadedJSONFile_expected);
+    console.log("Diff-Code "+diffCode);
+    return diffCode === 0 ? true : false;
+      //return writtentLoadedFunctions.length;
 
 }
 
 exports.verifyGeneratedLoaded = verifyGeneratedLoaded;
 
 
+function compareLoadedWithExpected(testName, isNode){
+    if(!isNode)
+        var testRoot = './tests/input/unit/';
+    else
+        var testRoot = './tests/input/nodejs/';
+
+    var output_actualRoot = testRoot.replace('input', 'output-actual');
+    var output_expectedRoot = testRoot.replace('input', 'output-expected');
+    var loadedJSONFile_actual = output_actualRoot+testName+'_loadedfunctions.json';
+    var JSONFile_expected = output_expectedRoot+testName+'_persistent.json';
+
+    console.log("actual path "+loadedJSONFile_actual);
+    console.log("expected path "+JSONFile_expected);
+    var actualLoadedObj = JSON.parse(fs.readFileSync(loadedJSONFile_actual, 'utf8'));
+    var expectedLoadedObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).loadedfunctions;
+    console.log(actualLoadedObj);
+    console.log(expectedLoadedObj);
+
+    var output = assert.deepEqual(actualLoadedObj, expectedLoadedObj, "Actual and Expected mismatch");
+    console.log(output);
+
+    // load json objects and compare
+    return 1;
+
+}
+
+exports.compareLoadedWithExpected = compareLoadedWithExpected;
+
+
+function compareExecutedWithExpected(testName, isNode){
+    if(!isNode)
+        var testRoot = './tests/input/unit/';
+    else
+        var testRoot = './tests/input/nodejs/';
+
+    var output_actualRoot = testRoot.replace('input', 'output-actual');
+    var output_expectedRoot = testRoot.replace('input', 'output-expected');
+    var invokedJSONFile_actual = output_actualRoot+testName+'_invokedfunctions.json';
+    var JSONFile_expected = output_expectedRoot+testName+'_persistent.json';
+
+    var actualInvokedObj = JSON.parse(fs.readFileSync(invokedJSONFile_actual, 'utf8'));
+    var expectedInvokedObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).invokedfunctions;
+
+    var output = assert.deepEqual(actualInvokedObj, expectedInvokedObj, "Actual and Expected mismatch");
+    console.log(output);
+
+    // load json objects and compare
+    return 1;
+
+}
+
+exports.compareExecutedWithExpected = compareExecutedWithExpected;
+
+
+function compareStubWithExpected(testName, isNode){
+    if(!isNode)
+        var testRoot = './tests/input/unit/';
+    else
+        var testRoot = './tests/input/nodejs/';
+
+    var output_actualRoot = testRoot.replace('input', 'output-actual');
+    var output_expectedRoot = testRoot.replace('input', 'output-expected');
+    var stubListJSONFile = output_actualRoot+testName+'_stubList.json';
+    var JSONFile_expected = output_expectedRoot+testName+'_persistent.json';
+
+    var actualStubListObj = JSON.parse(fs.readFileSync(invokedJSONFile_actual, 'utf8'));
+    var expectedStubListObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).stubList;
+
+    var output = assert.deepEqual(actualStubListObj, expectedStubListObj, "Actual and Expected mismatch");
+    console.log(output);
+
+    // load json objects and compare
+    return 1;
+
+}
+
+exports.compareStubWithExpected = compareStubWithExpected;
+
+
 function verifyGeneratedExecuted(testName, isNode){
     if(!isNode)
-        var testRoot = './tests/input/unit/'
+        var testRoot = './tests/input/unit/';
     else
-        var testRoot = './tests/input/nodejs/'
+        var testRoot = './tests/input/nodejs/';
 
-    var outputRoot = testRoot.replace('input', 'output-actual');
-    var executedJSONFile = outputRoot+testName+'_invokedfunctions.json';
-    var writtentInvokedFunctions = fs.readFileSync(executedJSONFile);
+    var output_actualRoot = testRoot.replace('input', 'output-actual');
+    var output_expectedRoot = testRoot.replace('input', 'output-expected');
+    var invokedJSONFile_actual = output_actualRoot+testName+'_invokedfunctions.json';
+    var invokedJSONFile_expected = output_expectedRoot+testName+'_invokedfunctions.json';
 
-    return writtentInvokedFunctions.length;
+    /* var writtentLoadedFunctions_actual = fs.readFileSync(loadedJSONFile_actual);
+     var writtentLoadedFunctions_expected = fs.readFileSync(loadedJSONFile_expected);
+ */
+    var diffCode = this.runTextDiff(invokedJSONFile_actual, invokedJSONFile_expected);
+    console.log("Diff-Code "+diffCode);
+    return diffCode === 0 ? true : false;
+
+//      return writtentInvokedFunctions.length;
 
 }
 
@@ -177,7 +272,7 @@ function runTextDiff(js1, js2){
     diffExecString = diffExecString +  js2
 
     var exitCode = shelljs.exec(diffExecString).code;
-    return exitCode;
+    return exitCode; // 0 = no difference, 1 = difference occurred >1 = error
 
 }
 
