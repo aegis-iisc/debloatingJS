@@ -28,7 +28,7 @@ function lazyLoad(funName, fileName) {
         tokens: false
     });
     cachedCode[srcFile] = {};
-    cutility.extractBodies(fileName);
+    extractBodies(fileName);
 }
 function extractBodies(srcFile) {
     var code = fs.readFileSync(srcFile, 'utf8');

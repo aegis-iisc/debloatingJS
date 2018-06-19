@@ -28,7 +28,7 @@ var parser = new argparse.ArgumentParser({
     var inputFileName = argument[argument.length-1];
     var inputFilePrefix = inputFileName.substring(0, inputFileName.lastIndexOf('.'));
     var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
-    console.log("Prefix" +outputFilePrefix);
+    //console.log("Prefix" +outputFilePrefix);
 
     // laoded functions list outfut file path
     var loadedFunctionsOut = outputFilePrefix+ "_loadedfunctions.txt";

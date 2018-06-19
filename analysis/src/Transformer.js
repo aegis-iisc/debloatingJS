@@ -238,7 +238,7 @@ function lazyLoad(funName, fileName) {
     // TODO : Add the range and location code to the generated code
     var ast = esprima.parse(code.toString(), {range: true, loc: true, tokens: false});
     cachedCode[srcFile] = {};
-    cutility.extractBodies(fileName);
+    extractBodies(fileName);
 
 }
 
