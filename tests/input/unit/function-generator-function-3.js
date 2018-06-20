@@ -1,11 +1,18 @@
-var obj = {  
-  *indexGenerator() {
-    var index = 0;
-    while(true) {
-      yield index++;
-    }
+// a generator function declared and invoked 
+function* indexGenerator(){  
+  var index = 0;
+  while(true) {
+    yield index++;
   }
 }
-var g = obj.indexGenerator();  
-console.log(g.next().value); // => 0  
-console.log(g.next().value); // => 1 
+
+function* otherGenerator(){
+	var constant = 0;
+	while(true) {
+	 yield constant++;
+	}
+
+}
+var o = otherGenerator();  
+console.log(o.next().value); // => 0  
+console.log(o.next().value); // => 1 

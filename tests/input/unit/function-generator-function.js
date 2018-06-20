@@ -1,3 +1,4 @@
+// a generator function declared and invoked 
 function* indexGenerator(){  
   var index = 0;
   while(true) {
