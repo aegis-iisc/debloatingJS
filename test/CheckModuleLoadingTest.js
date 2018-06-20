@@ -150,7 +150,6 @@ describe('unit-tests', function () {
     describe('callback-executed', function () { runTests('callback-executed'); });
     describe('callback-executed-anonymous', function () { runTests('callback-executed-anonymous'); });
 
-
 });
 
 
