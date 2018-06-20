@@ -9,8 +9,10 @@ var assert = require('assert');
 //const $jalangi_home =
 //shell.env
 
-const $nodePath = process.env.NODE_PATH;
-const $JALANGI_HOME = process.env.JALANGI_HOME;
+// const $nodePath = process.env.NODE_PATH;
+// const $JALANGI_HOME = process.env.JALANGI_HOME;
+const $nodePath = '/usr/local/bin/node'; //process.env.NODE_PATH;
+const $JALANGI_HOME = '/Users/saba/Documents/northeastern/research/jalangi/jalangi2'; //process.env.JALANGI_HOME;
 
 var exports = module.exports = {};
 function runTest(fileName){
@@ -59,6 +61,16 @@ function runWithNode (fileName, args, output){
     }
 }
 
+function runInstrumentedApp () {
+
+}
+
+function runOriginalApp () {
+
+}
+
+exports.runInstrumentedApp = runInstrumentedApp;
+exports.runOriginalApp = runOriginalApp;
 exports.runWithNode = runWithNode;
 
 exports.runJalangi = function (analysis, inputFile, testsRoot){
@@ -176,10 +188,11 @@ exports.compareExecutedWithExpected = compareExecutedWithExpected;
 
 
 function compareStubWithExpected(testName, isNode){
+    var testRoot;
     if(!isNode)
-        var testRoot = './tests/input/unit/';
+        testRoot = './tests/input/unit/';
     else
-        var testRoot = './tests/input/nodejs/';
+        testRoot = './tests/input/nodejs/';
 
     var output_actualRoot = testRoot.replace('input', 'output-actual');
     var output_expectedRoot = testRoot.replace('input', 'output-expected');
@@ -189,12 +202,7 @@ function compareStubWithExpected(testName, isNode){
     var actualStubListObj = JSON.parse(fs.readFileSync(stubListJSONFile, 'utf8'));
     var expectedStubListObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).stubList;
 
-    var output = assert.deepEqual(actualStubListObj, expectedStubListObj, "Actual and Expected mismatch");
-    console.log(output);
-
-    // load json objects and compare
-    return 1;
-
+    assert.deepEqual(actualStubListObj, expectedStubListObj, "Actual and Expected mismatch");
 }
 
 exports.compareStubWithExpected = compareStubWithExpected;
