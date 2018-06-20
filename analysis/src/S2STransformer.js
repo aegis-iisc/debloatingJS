@@ -26,7 +26,7 @@ var loadedFunctions = {};
 var argparse = require('argparse');
 var arguments =  process.argv.slice(2);
 var transformer = require('./Transformer.js');
-
+var copydir = require('copy-dir');
 var fileName_Func_Location = {};
 
 var parser = new argparse.ArgumentParser({
@@ -44,6 +44,8 @@ if(!args.sl || !args.in || !args.o){
     console.log("ERROR: Insufficient inputs, try -h option");
 }
 
+
+const NO_CHANGES_NEEDED = 'NO-STUB';
 //  console.log("Args "+args.toString());
 
 (function () {
@@ -53,15 +55,30 @@ if(!args.sl || !args.in || !args.o){
     var globalModifiedFilesList = {};
     readStubListJSON(stubbingFuncList);
     populateGlobalModifiedFilesList(fileName_Func_Location);
+    var changes  = transformUncovered(fileName_Func_Location);
+    if(changes === NO_CHANGES_NEEDED){
+        console.log("No changes in the file");
+        var outPutFile = stubbingFuncList.substring(0, stubbingFuncList.indexOf('_stubList.json'));
+        console.log("output file "+outPutFile);
+        var iFPath = outPutFile.replace('output-actual','input');
+        console.log("input file "+iFPath);
 
-    transformUncovered(fileName_Func_Location);
+        //copy the original file to the modified;
+        fs.createReadStream(iFPath+'.js').pipe(fs.createWriteStream(outPutFile+'_modified.js'));
 
+    }
 
 // build an ast for the JS and replace the functions in the fileName_Funct_Location map
 
 // TODO : FileInput -> JSONInput // done
     function transformUncovered(fileName_Func_Loctaion) {
         var updatedASTList = {};
+        // if no stub generated the transformed file is similar to original and return;
+        if (Object.keys(fileName_Func_Loctaion).length === 0 && fileName_Func_Loctaion.constructor === Object) {
+            console.error("Empty StubList");
+            return NO_CHANGES_NEEDED;
+
+        }
         for (elem in fileName_Func_Location) {
             try {
                 var fileName = fileName_Func_Location[elem].fileName;
@@ -97,8 +114,9 @@ if(!args.sl || !args.in || !args.o){
 
                 }
 
-                 //transformer.addOriginalDeclaration(astForInput, functionName);
-                 transformer.replace(astForInput, functionName);
+                //transformer.addOriginalDeclaration(astForInput, functionName);
+                //console.log("functionName "+functionName);
+                transformer.replace(astForInput, functionName);
                 // create and add a body for lazy Loading
                 var modifiedProgram = escodegen.generate(astForInput);
                 updatedASTList[fileName] = astForInput;
@@ -120,10 +138,10 @@ if(!args.sl || !args.in || !args.o){
                 console.log("fileName-to-be-written " +pathToOutput + f+'_modified.js');
                 fs.writeFileSync(pathToOutput + f + '_modified.js', escodegen.generate(updatedASTList[fileN]));
             }
-                       } catch (Fileerror) {
+        } catch (Fileerror) {
             console.log("File Error " + Fileerror.stack);
         }
-   }
+    }
 
 // location = [a:b:c:d]
 // a := start line number, b : column info for start, c : end line number, d : column info for end
@@ -145,8 +163,7 @@ if(!args.sl || !args.in || !args.o){
                                 this.break();
 
                             }
-                        }
-                        // lhs = function(){ }
+                        } // lhs = function(){ }
                         else if (node.type == 'ExpressionStatement') {
                             if (node.expression.type == 'AssignmentExpression') {
                                 var left = node.expression.left;
@@ -165,10 +182,53 @@ if(!args.sl || !args.in || !args.o){
 
                                         }
                                     }
+                                }else{
+                                    estraverse.VisitorOption.skip;
+
                                 }
-                            } else {
+                            } else if(node.expression.type == 'FunctionExpression'){
+                                if(node.loc.start.line == startLineNumber){
+                                    var functionID = node.expression.id;
+                                    if(functionID !== null){
+                                        var funExpName = functionID.name;
+                                        result = funExpName;
+                                        this.break();
+
+                                    }
+                                }else{
+                                    console.log("NODE")
+                                    console.log(node);
+                                    estraverse.VisitorOption.skip;
+
+                                }
+
+
+                            } else if(node.expression.type == 'ObjectExpression'){
+
+                                console.error("ObjectExpression ExpresssionStatement");
+                                console.debug("Check if "+node.expression.type+ " expression statement is handled");
+                                estraverse.VisitorOption.skip;
+
+                            }else if(node.expression.type == 'ArrowFunctionExpression'){
+
+                                console.error("Arrow FunctionExpression Expression not handled");
+                                console.debug("Check if "+node.expression.type+ " expression statement is handled");
+                                estraverse.VisitorOption.skip;
+
+                            }else if(node.expression.type == 'CallExpression'){
+
+                                // console.log(node.expression);
+                                estraverse.VisitorOption.skip;
+
+                            }
+
+                            else {
+                                console.log(node.expression.type);
+                                console.error("Check if "+node.expression.type+ " expression statement is handled");
                                 estraverse.VisitorOption.skip;
                             }
+                        }else{
+                          estraverse.VisitorOption.skip;
                         }
                     },
 
@@ -189,7 +249,7 @@ if(!args.sl || !args.in || !args.o){
         }
 
         console.log("Returned function name " + result);
-        if (result != null)
+        if (result !== null)
             return result;
         else
             console.log("No function found for the input file and location");
@@ -239,7 +299,7 @@ if(!args.sl || !args.in || !args.o){
                 console.error(error.toString());
             }
 
-            }
+        }
 
     }
 
