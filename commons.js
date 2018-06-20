@@ -1,18 +1,15 @@
-
-
 // get the $Jalangi_Home from the environment
 var shelljs = require('shelljs');
-var fs = require('fs')
+var fs = require('fs');
 var utf8 = require('utf8');
 var assert = require('assert');
+var exec = require('child_process').exec;
 
 //const $jalangi_home =
 //shell.env
 
-// const $nodePath = process.env.NODE_PATH;
-// const $JALANGI_HOME = process.env.JALANGI_HOME;
-const $nodePath = '/usr/local/bin/node'; //process.env.NODE_PATH;
-const $JALANGI_HOME = '/Users/saba/Documents/northeastern/research/jalangi/jalangi2'; //process.env.JALANGI_HOME;
+const $nodePath = process.env.NODE_PATH;
+const $JALANGI_HOME = process.env.JALANGI_HOME;
 
 var exports = module.exports = {};
 function runTest(fileName){
@@ -61,16 +58,49 @@ function runWithNode (fileName, args, output){
     }
 }
 
-function runInstrumentedApp () {
-
+function retrieveCommand (fileName, params) {
+    var command = '';
+    for (var paramIndex in params) {
+        command = command + params[paramIndex] + ' ';
+    }
+    command = $nodePath + ' ' + fileName + ' ' + command;
+    return command;
 }
 
-function runOriginalApp () {
-
+/**
+ * Execute the application under test before and after instrumentation and compare results
+ * @param originalFileName
+ * @param modifiedFileName
+ * @param params
+ * @param done
+ */
+function interceptAppExecution (originalFileName, modifiedFileName, params, done) {
+    var originalExecution = retrieveCommand(originalFileName, params);
+    var modifiedExecution = retrieveCommand(modifiedFileName, params);
+    try {
+        // execute original application and store output
+        exec(originalExecution, function (error, stdout, stderr) {
+            assert.ifError(error);
+            var originalResults = {
+                stdout: stdout,
+                stderr: stderr,
+                error: error
+            };
+            // execute modified application and compare output
+            exec(modifiedExecution, function (mError, mStdout, mStderr) {
+                assert.ifError(mError);
+                assert.equal(originalResults.stdout, mStdout);
+                assert.equal(originalResults.stderr, mStderr);
+                done();
+            })
+        });
+    }
+    catch (error) {
+        console.err(error);
+    }
 }
 
-exports.runInstrumentedApp = runInstrumentedApp;
-exports.runOriginalApp = runOriginalApp;
+exports.interceptAppExecution = interceptAppExecution;
 exports.runWithNode = runWithNode;
 
 exports.runJalangi = function (analysis, inputFile, testsRoot){

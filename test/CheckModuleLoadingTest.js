@@ -19,35 +19,10 @@ function runTests (testName, isNode) {
         commons.compareStubWithExpected(testName, false);
     });
 
-    it('run instrumented app', function () {
-        var modifiedTestName = commons.getModifiedPathOrDir(testName, isNode);
-        var exitCode = commons.runWithNode(modifiedTestName, []);
-        assert.equal(exitCode, 0);
-    });
-
-    it('compare standard output and error', function (done) {
-
-        //
-        done();
-    });
-
-
-
-
-    // TODO compare actual output
-    it('check-out-by-executing-transformed-application', function (){
-        var modifiedTestName = commons.getModifiedPathOrDir(testName, isNode);
-        var stdout = commons.runWithNode(modifiedTestName, [], 'stdout');
-        console.log("OUT "+stdout);
-    });
-
-    // TODO compare actual errors
-    it('check-error-by-executing-transformed-application', function (){
-        var modifiedTestName = commons.getModifiedPathOrDir(testName, isNode);
-        var stderr = commons.runWithNode(modifiedTestName, [], 'stderr');
-        console.log("ERROR "+stderr);
-        //assert(exit === 0);
-
+    it('verify instrumented app execution', function (done) {
+        var originalFile = commons.getOriginalPathOrDir(testName, false);
+        var modifiedFile = commons.getModifiedPathOrDir(testName, false);
+        commons.interceptAppExecution(originalFile, modifiedFile, [], done);
     });
 }
 
@@ -60,7 +35,6 @@ describe('unit-tests', function () {
     describe('single-function-executed', function () {
         runTests('test3');
     });
-
     describe('two-functions-one-executed', function () {
         runTests('test4');
     });
