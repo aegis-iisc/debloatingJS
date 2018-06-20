@@ -27,75 +27,116 @@ function runTests (testName, isNode) {
 }
 
 
+
 describe('unit-tests', function () {
     describe('single-function-not-executed', function () {
         runTests('test1');
     });
-
     describe('single-function-executed', function () {
         runTests('test3');
     });
     describe('two-functions-one-executed', function () {
         runTests('test4');
     });
-
     describe('function-expression', function() {
+
         runTests('function-expression-2');
     });
-
     describe('function-expression-invoked', function() {
+
         runTests('function-expression-2-invoked');
     });
 
+
     describe('function-expression-as-argument', function() {
+
         runTests('function-expression-as-argument');
     });
-
     describe('function-expression-if-block', function() {
+
         runTests('function-expression-if-block');
     });
+    describe('function-expression-if-block-2', function() {
 
+        runTests('function-expression-if-block-2'); // => failing as the S2STransformer.findFun fails
+    });
+    describe('function-expression-if-block-3', function() {
+
+        runTests('function-expression-if-block-3'); // => failing as the S2STransformer.findFun fails
+    });
+
+    // => following two cases are failing due to incorrect composing of the original and generated files, this case arises when we have a file imported
+    describe('require-statement', function() {
+
+        runTests('require-statement');
+    });
+    describe('require-statement-2', function() {
+
+        runTests('require-statement-2'); // => fails as the modified entry file to the application is not generated.
+    });
+
+
+    // => Jalangi execution fails
+    // =>exit and outcode checks since the original file is copied to the modified upon Jalangi failure
     describe('function-expression-object-property', function() {
+
         runTests('function-expression-object-property');
     });
+    // => jalangi doesnot handle the arrow function
+    describe('function-arrow-function', function() {
 
-    describe('shorthand-method-definition', function() {
-        runTests('function-expression-object-property');
+        runTests('function-arrow-function');
+    });
+    // => The transformed generator function is incorrect
+    describe('generator-function-0', function() {
+
+        runTests('function-generator-function-0');
+    });
+    describe('generator-function-1', function() {
+
+        runTests('function-generator-function');
     });
 
-    // different ways of function declaration
-    //Function declaration
+    describe('generator-function-3', function() {
 
-    //Function expression
+        runTests('function-generator-function-3');
+    });
 
-    // Function expression as an argument to other function
-    // + function-expression-as-argument.js
-    // Function expression inside ()
-    // + function-expression-2.js
-    // Function expression inside an external block of code , e.g. a function expression in a if...else... branch
-    //+ function-expression-if-block.js
-    //Function expression as an object property value
-    // + function-expression-object-property.js
+    describe('generator-function-4', function() {
 
-    //Shorthand method definition
-    // function definition in a class (only in ES6)
-    // + function-expression-class.js
+        runTests('function-generator-function-4');
+    });
 
-    //Arrow function
-    // arrow function definition
-    // + function-arrow-function.js
-    // arrow function in a class
-    // + function-arrow-function-class.js
+    describe('generator-function-2', function() {
 
-    //Generator function
-    // generator function definition
-    // + function-generator-function.js
-    // + function-generator-function-2.js
+        runTests('function-new-function');
+    });
+    describe('recursive-function-call', function() {
 
-    //Function constructor
+        runTests('function-new-function');
+    });
 
-    // new Function
-    //+ function-new-function.js
+    describe('function-expression-class', function() {
+
+        runTests('function-expression-class');
+    });
+
+    describe('function-expression-class-2', function() {
+
+        runTests('function-expression-class-2');
+    });
+    // class with an arrow function
+    describe('function-arrow-function-class', function() {
+
+        runTests('function-arrow-function-class');
+    });
+
+
 
     // Recursive function calls
+
+    // require statement.
 });
+
+
+

@@ -64,6 +64,7 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
         console.log("input file "+iFPath);
 
         //copy the original file to the modified;
+        // TODO try catch
         fs.createReadStream(iFPath+'.js').pipe(fs.createWriteStream(outPutFile+'_modified.js'));
 
     }

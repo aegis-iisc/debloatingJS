@@ -11,6 +11,3 @@ class Numbers {
 }
 var numbersObject = new Numbers(0);  
 numbersObject.addNumber(1);  
-var addMethod = numbersObject.addNumber();  
-addMethod(5);  
-console.log(numbersObject.number);
