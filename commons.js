@@ -140,18 +140,13 @@ function compareLoadedWithExpected(testName, isNode){
     var loadedJSONFile_actual = output_actualRoot+testName+'_loadedfunctions.json';
     var JSONFile_expected = output_expectedRoot+testName+'_persistent.json';
 
-    console.log("actual path "+loadedJSONFile_actual);
-    console.log("expected path "+JSONFile_expected);
     var actualLoadedObj = JSON.parse(fs.readFileSync(loadedJSONFile_actual, 'utf8'));
     var expectedLoadedObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).loadedfunctions;
-    console.log(actualLoadedObj);
-    console.log(expectedLoadedObj);
 
-    var output = assert.deepEqual(actualLoadedObj, expectedLoadedObj, "Actual and Expected mismatch");
-    console.log(output);
+    console.log("actual "+actualLoadedObj);
+    console.log("expected "+expectedLoadedObj);
+    return assert.deepStrictEqual(actualLoadedObj, expectedLoadedObj, "Actual and Expected mismatch");
 
-    // load json objects and compare
-    return 1;
 
 }
 
@@ -172,11 +167,7 @@ function compareExecutedWithExpected(testName, isNode){
     var actualInvokedObj = JSON.parse(fs.readFileSync(invokedJSONFile_actual, 'utf8'));
     var expectedInvokedObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).invokedfunctions;
 
-    var output = assert.deepEqual(actualInvokedObj, expectedInvokedObj, "Actual and Expected mismatch");
-    console.log(output);
-
-    // load json objects and compare
-    return 1;
+    return assert.deepStrictEqual(actualInvokedObj, expectedInvokedObj, "Actual and Expected mismatch");
 
 }
 
@@ -194,7 +185,7 @@ function compareStubWithExpected(testName, isNode){
     var stubListJSONFile = output_actualRoot+testName+'_stubList.json';
     var JSONFile_expected = output_expectedRoot+testName+'_persistent.json';
 
-    var actualStubListObj = JSON.parse(fs.readFileSync(invokedJSONFile_actual, 'utf8'));
+    var actualStubListObj = JSON.parse(fs.readFileSync(stubListJSONFile, 'utf8'));
     var expectedStubListObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).stubList;
 
     var output = assert.deepEqual(actualStubListObj, expectedStubListObj, "Actual and Expected mismatch");

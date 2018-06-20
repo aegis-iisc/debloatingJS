@@ -81,8 +81,8 @@ var parser = new argparse.ArgumentParser({
                 var giid = J$.getGlobalIID(iid);
                 // write the function and the file name to the log
                 functionsLoaded[giid] = J$.iidToLocation(giid,iid);
-                loadedFunctionNames[giid] = val.toString().slice(0, 20);
-                collectivefunctionsLoaded[giid] = {loadingLocation : J$.iidToLocation(giid, iid), loadedFunName : val.toString().slice(0,20) ,isLiteral : true};
+                loadedFunctionNames[giid] = val.toString().slice(0, val.toString().indexOf('{')).trim();
+                collectivefunctionsLoaded[giid] = {loadingLocation : J$.iidToLocation(giid, iid), loadedFunName : val.toString().slice(0, val.toString().indexOf('{')).trim() ,isLiteral : true};
 
             }
 
@@ -111,8 +111,8 @@ var parser = new argparse.ArgumentParser({
             var giid = J$.getGlobalIID(iid);
             functionsCalled[giid] = J$.iidToLocation(giid, iid);
             functionDefLocation[giid] = func_def_loc;
-            calledFunctionNames[giid] = f.name ? f.name : f.toString().slice(0, 20);
-            collectivefunctionsCalled[giid] = {callingLocation : J$.iidToLocation(giid, iid), calledDefLocation : func_def_loc, calledFunName : f.name ? f.name : f.toString().slice(0, 20)};
+            calledFunctionNames[giid] = f.name ? f.name : f.toString().slice(0, f.toString().indexOf('{')).trim();
+            collectivefunctionsCalled[giid] = {callingLocation : J$.iidToLocation(giid, iid), calledDefLocation : func_def_loc, calledFunName : f.name ? f.name : f.toString().slice(0, f.toString().indexOf('{')).trim()};
 
             if(base){
                 calledFunctionsbase[giid] = base.toString();
