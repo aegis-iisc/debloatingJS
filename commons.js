@@ -43,6 +43,7 @@ function runWithNode (fileName, args, output){
     nodeExecString = nodeExecString + ' ' +params;
     if(!output || output === 'exit' ) {
         var exitcode = shelljs.exec(nodeExecString).code;
+        console.log(exitcode);
         return exitcode;
     }else if (output === 'stdout'){
         var stdout = shelljs.exec(nodeExecString).stdout;
@@ -271,7 +272,7 @@ function runTextDiff(js1, js2){
 function getModifiedPathOrDir(inputName, isNode){
     if(!isNode){
 
-        var testRoot = './tests/input/unit/'
+        var testRoot = './tests/input/unit/';
         var outputRoot = testRoot.replace('input', 'output-actual');
         var outputMofied = outputRoot+inputName+'_modified.js';
         console.log("output FIle Path "+outputMofied);
@@ -288,6 +289,28 @@ function getModifiedPathOrDir(inputName, isNode){
 }
 
 exports.getModifiedPathOrDir = getModifiedPathOrDir;
+// returns the path for the modified file or application directory
+function getOriginalPathOrDir(inputName, isNode){
+    if(!isNode){
+
+        var testRoot = './tests/input/unit/';
+        var originalFile = testRoot+inputName+'.js';
+
+        return originalFile;
+
+
+    }else{ // TODO :: nodejs application case
+
+        return '';
+    }
+
+
+}
+
+exports.getOriginalPathOrDir = getOriginalPathOrDir;
+
+
+
 
 /*
 exports.runS2STransfromer = function (){
