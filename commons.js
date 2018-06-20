@@ -1,10 +1,9 @@
-
-
 // get the $Jalangi_Home from the environment
 var shelljs = require('shelljs');
-var fs = require('fs')
+var fs = require('fs');
 var utf8 = require('utf8');
 var assert = require('assert');
+var exec = require('child_process').exec;
 
 //const $jalangi_home =
 //shell.env
@@ -59,6 +58,49 @@ function runWithNode (fileName, args, output){
     }
 }
 
+function retrieveCommand (fileName, params) {
+    var command = '';
+    for (var paramIndex in params) {
+        command = command + params[paramIndex] + ' ';
+    }
+    command = $nodePath + ' ' + fileName + ' ' + command;
+    return command;
+}
+
+/**
+ * Execute the application under test before and after instrumentation and compare results
+ * @param originalFileName
+ * @param modifiedFileName
+ * @param params
+ * @param done
+ */
+function interceptAppExecution (originalFileName, modifiedFileName, params, done) {
+    var originalExecution = retrieveCommand(originalFileName, params);
+    var modifiedExecution = retrieveCommand(modifiedFileName, params);
+    try {
+        // execute original application and store output
+        exec(originalExecution, function (error, stdout, stderr) {
+            assert.ifError(error);
+            var originalResults = {
+                stdout: stdout,
+                stderr: stderr,
+                error: error
+            };
+            // execute modified application and compare output
+            exec(modifiedExecution, function (mError, mStdout, mStderr) {
+                assert.ifError(mError);
+                assert.equal(originalResults.stdout, mStdout);
+                assert.equal(originalResults.stderr, mStderr);
+                done();
+            })
+        });
+    }
+    catch (error) {
+        console.err(error);
+    }
+}
+
+exports.interceptAppExecution = interceptAppExecution;
 exports.runWithNode = runWithNode;
 
 exports.runJalangi = function (analysis, inputFile, testsRoot){
@@ -176,10 +218,11 @@ exports.compareExecutedWithExpected = compareExecutedWithExpected;
 
 
 function compareStubWithExpected(testName, isNode){
+    var testRoot;
     if(!isNode)
-        var testRoot = './tests/input/unit/';
+        testRoot = './tests/input/unit/';
     else
-        var testRoot = './tests/input/nodejs/';
+        testRoot = './tests/input/nodejs/';
 
     var output_actualRoot = testRoot.replace('input', 'output-actual');
     var output_expectedRoot = testRoot.replace('input', 'output-expected');
@@ -189,12 +232,7 @@ function compareStubWithExpected(testName, isNode){
     var actualStubListObj = JSON.parse(fs.readFileSync(stubListJSONFile, 'utf8'));
     var expectedStubListObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).stubList;
 
-    var output = assert.deepEqual(actualStubListObj, expectedStubListObj, "Actual and Expected mismatch");
-    console.log(output);
-
-    // load json objects and compare
-    return 1;
-
+    assert.deepEqual(actualStubListObj, expectedStubListObj, "Actual and Expected mismatch");
 }
 
 exports.compareStubWithExpected = compareStubWithExpected;
