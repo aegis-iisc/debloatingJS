@@ -19,6 +19,13 @@ function runTests (testName, isNode) {
         commons.compareStubWithExpected(testName, false);
     });
 
+    it('run both phases', function (){
+        var exitCode = commons.runBothPhases(testName, false);
+        assert.equal(exitCode, 0);
+
+
+    });
+
     it('verify instrumented app execution', function (done) {
         var originalFile = commons.getOriginalPathOrDir(testName, false);
         var modifiedFile = commons.getModifiedPathOrDir(testName, false);
@@ -29,7 +36,7 @@ function runTests (testName, isNode) {
 
 
 describe('unit-tests', function () {
-    describe('single-function-not-executed', function () {
+  /*  describe('single-function-not-executed', function () {
         runTests('test1');
     });
     describe('single-function-executed', function () {
@@ -48,10 +55,6 @@ describe('unit-tests', function () {
     });
 
 
-    describe('function-expression-as-argument', function() {
-
-        runTests('function-expression-as-argument');
-    });
     describe('function-expression-if-block', function() {
 
         runTests('function-expression-if-block');
@@ -65,15 +68,11 @@ describe('unit-tests', function () {
         runTests('function-expression-if-block-3'); // => failing as the S2STransformer.findFun fails
     });
 
-    // => following two cases are failing due to incorrect composing of the original and generated files, this case arises when we have a file imported
-    describe('require-statement', function() {
+    describe('function-expression-as-argument', function() {
 
-        runTests('require-statement');
+        runTests('function-expression-as-argument');
     });
-    describe('require-statement-2', function() {
 
-        runTests('require-statement-2'); // => fails as the modified entry file to the application is not generated.
-    });
 
 
     // => Jalangi execution fails
@@ -131,11 +130,37 @@ describe('unit-tests', function () {
         runTests('function-arrow-function-class');
     });
 
+    // => following two cases are failing due to incorrect composing of the original and generated files, this case arises when we have a file imported
+    describe('require-statement', function() {
 
+        runTests('require-statement');
+    });
+    describe('require-statement-2', function() {
 
+        runTests('require-statement-2'); // => fails as the modified entry file to the application is not generated.
+    });
+
+*/
     // Recursive function calls
 
     // require statement.
+    describe('conditional-execution-1', function () { runTests('conditional-execution-1'); });
+    describe('conditional-execution-2', function () { runTests('conditional-execution-2'); });
+    describe('conditional-execution-3', function () { runTests('conditional-execution-3'); });
+    describe('function-as-method', function () { runTests('function-as-method'); });
+    describe('function-constructor', function () { runTests('function-constructor'); });
+    describe('function-call-1', function () { runTests('function-call-1'); });
+    describe('function-call-2', function () { runTests('function-call-2'); });
+    describe('function-apply', function () { runTests('function-apply'); });
+    describe('function-apply-with-args', function () { runTests('function-apply-with-args'); });
+    describe('closure-1', function () { runTests('closure-1'); });
+    describe('closure-2', function () { runTests('closure-2'); });
+    describe('loop-1', function () { runTests('loop-1'); });
+    describe('loop-2', function () { runTests('loop-2'); });
+    describe('callback-unexecuted', function () { runTests('callback-unexecuted'); });
+    describe('callback-unexecuted-anonymous', function () { runTests('callback-unexecuted-anonymous'); });
+    describe('callback-executed', function () { runTests('callback-executed'); });
+    describe('callback-executed-anonymous', function () { runTests('callback-executed-anonymous'); });
 });
 
 
