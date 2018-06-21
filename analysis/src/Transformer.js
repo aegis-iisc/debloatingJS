@@ -502,17 +502,15 @@ function updateRequireDeclaration (ast, globalModifiedFilesList){
     estraverse.replace(ast,
         {  enter: function (node, parent) { // check for function name and replace
                 if(node.type == 'VariableDeclarator'){
-                    console.log("NODE");
-                    console.log(node);
                     var id = node.id;
                     var init = node.init;
                     if(init.type == 'CallExpression'){
                         var callee = init.callee;
                         var callee_name = callee.name;
                         if(callee_name == 'require'){
-                            console.log("Variable Declaration ");
+                           /* console.log("Variable Declaration ");
                             console.log(node);
-
+*/
                             var requireAsrguments =  init.arguments;
                             if(Array.isArray(requireAsrguments)){
                                 var args = [];

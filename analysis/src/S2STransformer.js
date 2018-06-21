@@ -197,8 +197,6 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
 
                                     }
                                 }else{
-                                    console.log("NODE")
-                                    console.log(node);
                                     estraverse.VisitorOption.skip;
 
                                 }

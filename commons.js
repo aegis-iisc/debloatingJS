@@ -125,6 +125,15 @@ exports.runJalangi = function (analysis, inputFile, testsRoot){
     return exitCode;
 
 };
+//TODO Change it to two different phases with assertions in between
+exports.runBothPhases = function (testName, isNode){
+    if(!isNode) {
+        var exitcode = runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputFile ' + testName + '.js', '--transformer S2STransformer.js']);
+        return exitcode;
+    }else{
+        assert(false);
+    }
+};
 
 
 exports.jalangiAnalysis = function (analysis, inputFile, testsRoot){
@@ -230,9 +239,11 @@ function compareStubWithExpected(testName, isNode){
     var JSONFile_expected = output_expectedRoot+testName+'_persistent.json';
 
     var actualStubListObj = JSON.parse(fs.readFileSync(stubListJSONFile, 'utf8'));
-    var expectedStubListObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).stubList;
+    console.log(actualStubListObj);
 
-    assert.deepEqual(actualStubListObj, expectedStubListObj, "Actual and Expected mismatch");
+    var expectedStubListObj = JSON.parse(fs.readFileSync(JSONFile_expected, 'utf8')).stubList;
+    console.log(expectedStubListObj);
+    assert.deepStrictEqual(actualStubListObj, expectedStubListObj, "Actual and Expected mismatch");
 }
 
 exports.compareStubWithExpected = compareStubWithExpected;
