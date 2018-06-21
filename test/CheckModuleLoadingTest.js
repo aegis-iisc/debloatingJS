@@ -36,7 +36,8 @@ function runTests (testName, isNode) {
 
 
 describe('unit-tests', function () {
-  /*  describe('single-function-not-executed', function () {
+
+    describe('single-function-not-executed', function () {
         runTests('test1');
     });
     describe('single-function-executed', function () {
@@ -140,7 +141,6 @@ describe('unit-tests', function () {
         runTests('require-statement-2'); // => fails as the modified entry file to the application is not generated.
     });
 
-*/
     // Recursive function calls
 
     // require statement.
