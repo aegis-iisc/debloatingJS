@@ -103,6 +103,15 @@ function interceptAppExecution (originalFileName, modifiedFileName, params, done
 exports.interceptAppExecution = interceptAppExecution;
 exports.runWithNode = runWithNode;
 
+
+
+/**
+ * A function to run Jalangi analysis from the program
+ * @param jalangiAnalysis
+ * @param inputfile to Jalangi
+ * @param root dir for the inputfile
+ *
+ */
 exports.runJalangi = function (analysis, inputFile, testsRoot){
 
     var testroot = null;

@@ -1,4 +1,5 @@
 // a generator function declared and invoked 
+//special case, the indexgenerator is never invoked in original test and is replaced as a function, but current implementaion generates a simple function rather than a generator
 function* indexGenerator(){  
   var index = 0;
   while(true) {

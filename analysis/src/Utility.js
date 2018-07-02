@@ -32,3 +32,13 @@ function createExpectedOutputFile (fileName){
 
 exports.createExpectedOutputFile = createExpectedOutputFile;
 
+exports.compareLoc = function(loc1, loc2){
+    console.log(loc1);
+    console.log(loc2);
+    if(loc1.start.line === loc2.startline && loc1.start.column === loc2.startcol)
+        return true;
+    console.log("FALSE");
+    return false;
+
+
+};
