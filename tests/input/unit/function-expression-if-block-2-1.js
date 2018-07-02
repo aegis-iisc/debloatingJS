@@ -19,4 +19,4 @@ function foo(){
 
 }
 
-foo();
+

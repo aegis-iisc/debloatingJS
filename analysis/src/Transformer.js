@@ -9,8 +9,9 @@
 var esprima = require('esprima');
 var escodegen = require('escodegen');
 var estraverse = require('estraverse');
-//var utility = require('./Utility.js');
-var cutility = require('./cutility.js')
+var esquery = require('esquery');
+var utility = require('./Utility.js');
+//var cutility = require('./cutility.js')
 
 var fs = require('fs');
 
@@ -23,55 +24,216 @@ A test transformer JS -> AST -> AST' -> JS'
 
 
 // replace function for a given  AST and a function name
-exports.replace = function (ast, funName){
+exports.replace = function (ast, funName, functionLocId){
     console.log("Transforming the AST for the function " + funName);
 
-    exports.addOriginalDeclaration(ast, funName);
+  if(funName !== null) {
+      exports.addOriginalDeclaration(ast, funName);
+      var result = estraverse.replace(ast, {
+          enter: function (node) {
 
-    var result = estraverse.replace(ast, {
-        enter: function (node) {
+              if (node.type == 'FunctionDeclaration') {
 
-            if (node.type == 'FunctionDeclaration') {
+                  if (node.id.name === funName) {
+                      var params = node.params;
+                      return exports.createStubFunctionDeclaration(node.id.name, params);
+                  } else {
+                      estraverse.VisitorOption.skip;
+                  }
 
-                if (node.id.name === funName) {
-                    var params = node.params;
-                    return exports.createStubFunctionDeclaration(node.id.name, params);
-                } else {
-                    estraverse.VisitorOption.skip;
-                }
+              }
+              if (node.type == 'ExpressionStatement') {
+                  if (node.expression.type == 'AssignmentExpression') {
+                      var left = node.expression.left;
+                      var right = node.expression.right;
+                      /*
+                      If right is a FunctionExpression, get the  name of the function from the left
+                       */
+                      if (right.type == 'FunctionExpression') {
+                          if (left.type == 'MemberExpression') {
+                              var leftVarBaseName = left.object.name;
+                              var leftVarExtName = left.property.name;
+                              var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                              result = leftVarPath;
+                              if (leftVarPath === funName) {
+                                  console.log("Replacing " + node + ' with ' + funName);
+                                  return exports.createStubFunctionExpression(funName, right.params, left);
+                              } else {
+                                  estraverse.VisitorOption.skip;
+                              }
 
-            }
-            if (node.type == 'ExpressionStatement') {
-                if (node.expression.type == 'AssignmentExpression') {
-                    var left = node.expression.left;
-                    var right = node.expression.right;
-                    /*
-                    If right is a FunctionExpression, get the  name of the function from the left
-                     */
-                    if (right.type == 'FunctionExpression') {
-                        if (left.type == 'MemberExpression') {
-                            var leftVarBaseName = left.object.name;
-                            var leftVarExtName = left.property.name;
-                            var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
-                            result = leftVarPath;
-                            if(leftVarPath === funName){
-                                console.log("Replacing "+node+ ' with '+funName);
-                                return exports.createStubFunctionExpression(funName, right.params, left);
-                            }else{
-                                estraverse.VisitorOption.skip;
-                            }
+                          }
+                      }
 
-                        }
-                    }
+                  }
+              } else if (node.type == 'FunctionExpression') { // replace the function expression if it is anaonymous function
+                  // compare the unique id for the function
+                  if (node.id == null) {
+                      if (utility.compareLoc(node.loc, functionLocId)) {
+                          var uniqueFunId = generateUniqueId(functionLocId);
+                          console.log("Replacing anonymous function " + node + ' with ' + uniqueFunId);
+                          return exports.createStubFunctionExpression(uniqueFunId, node.params, null);
+                      } else {
+                          estraverse.VisitorOption.skip;
+                      }
 
-                }
-            }
-        },
-        leave: function (node) {
-            estraverse.VisitorOption.skip;
+                  } else {
 
+
+                  }
+
+              }
+          },
+          leave: function (node) {
+              estraverse.VisitorOption.skip;
+
+          }
+      });
+      }
+   else{
+      var fNameForId =   createUniqueFunction(functionLocId);
+      exports.addOriginalDeclaration(ast, fNameForId);
+      var result = estraverse.replace(ast, {
+          enter: function (node) {
+
+              if (node.type == 'FunctionDeclaration') {
+
+                  if (node.id.name === funName) {
+                      var params = node.params;
+                      return exports.createStubFunctionDeclaration(node.id.name, params);
+                  } else {
+                      estraverse.VisitorOption.skip;
+                  }
+
+              }
+              if (node.type == 'ExpressionStatement') {
+                  if (node.expression.type == 'AssignmentExpression') {
+                      var left = node.expression.left;
+                      var right = node.expression.right;
+                      /*
+                      If right is a FunctionExpression, get the  name of the function from the left
+                       */
+                      if (right.type == 'FunctionExpression') {
+                          if (left.type == 'MemberExpression') {
+                              var leftVarBaseName = left.object.name;
+                              var leftVarExtName = left.property.name;
+                              var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                              result = leftVarPath;
+                              if (leftVarPath === funName) {
+                                  console.log("Replacing " + node + ' with ' + funName);
+                                  return exports.createStubFunctionExpression(funName, right.params, left);
+                              } else {
+                                  estraverse.VisitorOption.skip;
+                              }
+
+                          }
+                      }
+
+                  }
+              } else if (node.type == 'FunctionExpression') { // replace the function expression if it is anaonymous function
+                  // compare the unique id for the function
+                  if (node.id == null) {
+                      if (utility.compareLoc(node.loc, functionLocId)) {
+                          var uniqueFunId = createUniqueFunction(functionLocId);
+                          console.log("Replacing anonymous function " + node + ' with ' + uniqueFunId);
+                          return exports.createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
+                      } else {
+                          estraverse.VisitorOption.skip;
+                      }
+
+                  } else {
+                        estraverse.VisitorOption.skip;
+
+                  }
+
+              }
+          },
+          leave: function (node) {
+              estraverse.VisitorOption.skip;
+
+          }
+      });
+
+  }
+
+
+};
+
+function createUniqueFunction(id){
+    var name = '_'+id.startline+'_'+id.startcol;
+    return name;
+
+
+}
+exports.createStubAnonymousFunctionExpression = function(funName, params){
+    console.log("Creating stub for anonymous function expression");
+    var callLazyLoadStmt = 'lazyLoad(' + funName +', srcFile )';
+    var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
+
+    /*
+        var callEvalStmt = 'original_' + funName + ' = this.eval(cachedCode[' + funName + ']); ' + funName + ' = ' + 'original_' + funName + ';';
+        var _callEvalStmt = esprima.parse(callEvalStmt).body;
+    */
+
+
+    var loadAndInvokeStmt = 'var loadedBody = loadAndInvoke(\"'+funName+'\", srcFile)';
+    var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
+
+    var callEvalStmt = 'eval(\"original_'+funName+' = \" \+loadedBody); '+funName+' = '+'original_'+funName+';';
+    var _callEvalStmt = esprima.parse(callEvalStmt).body;
+
+
+    var ifStatement = 'if (original_' + funName + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+
+
+
+    // TODO :: RECTIFY THE NAME OF THE FUNCTION
+//    var ifStatement = 'if (original_' + funName + ' == null){' + callLazyLoadStmt + ';' + callEvalStmt + '}';
+
+    var _ifStatement = esprima.parse(ifStatement);
+    var invokeStatement = 'return original_'+funName+ '.apply(this, _param);';
+    _ifStatement['consequent'] = esprima.parse('lazyLoad(' + funName + ')   ;' + callEvalStmt).body[0];
+
+    var paramList = [];
+    if (params.length > 0 ){
+        for (elem in params){
+            console.log(params[elem]);
+            paramList.push(params[elem].name);
         }
-    });
+    }
+
+    if(paramList.length > 0)
+        var returnStatement = 'original_'+funName+'.apply(this, '+paramList.toString() +');';
+    else
+        var returnStatement = 'original_'+funName+'.apply(this);';
+    var _returnStatement = esprima.parse(returnStatement);
+
+
+    var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
+        body: { type: 'BlockStatement',
+            body: [
+                _ifStatement,_returnStatement]},
+        generator: false,
+        async: false,
+        expression: false
+
+    };
+    // create an assignment expressions
+    return _stubFunExpresison;
+
+    /*var _expressionStatement = {
+        type : 'ExpressionStatement',
+        expression: {
+            type: 'AssignmentExpression',
+            operator: '=',
+            left: left,
+            right: _stubFunExpresison,
+        }
+    };
+
+
+    return _expressionStatement;
+*/
 
 };
 
@@ -271,7 +433,7 @@ var lazyLoadFunction = function lazyLoad(funName){
                     if(startLineNumber == node.loc.start.line) {
                         if (right.type == 'FunctionExpression') {
                             if (left.type == 'MemberExpression') {
-                                console.log("The expression Statement");
+                             //   console.log("The expression Statement");
 
                                 // create a fully classified path for the function name
                                 var leftVarBaseName = left.object.name;
@@ -350,32 +512,22 @@ exports.addOriginalDeclaration = function(astForInput, functionName){
   }
 
   var _originalDeclaration = esprima.parse(originalDeclaration.toString(), {range: true, loc : true, tokens: false});
-
   //return _originalDeclaration;
   estraverse.traverse(astForInput,
       {
          enter : function (node, parent){
              if (node.type == 'FunctionDeclaration') {
-                 console.log("Function Node :: Declaration");
-                 //console.log(node);
-                 var functionName = node.id.name;
+            //   var functionName = node.id.name;
                  if(functionName === functionName){
                     // add the originalDeclaration statement
                      astForInput.body.unshift(_originalDeclaration);
                  }
 
              } else if (node.type == 'ExpressionStatement') {
-                 console.log("Function Node :: Expression");
-                 //console.log(node);
 
                  if (node.expression.type == 'AssignmentExpression') {
                      var left = node.expression.left;
                      var right = node.expression.right;
-                     console.log("left  \t ");
-                   //  console.log(left);
-
-                     console.log("right \t");
-                     //console.log(right);
 
                      if (right.type == 'FunctionExpression') {
                          if (left.type == 'MemberExpression') {
@@ -461,7 +613,7 @@ exports.createExtractBodies = function(){
     return _astextractBodies;
     //ast.body.push(_astextractBodies);
 };
-
+//TODO update for analymous function
 function loadAndInvoke(funName, srcFile){
     for (var elem in cachedCode){
         if(cachedCode.hasOwnProperty(elem)){
@@ -504,63 +656,66 @@ function updateRequireDeclaration (ast, globalModifiedFilesList){
                 if(node.type == 'VariableDeclarator'){
                     var id = node.id;
                     var init = node.init;
-                    if(init.type == 'CallExpression'){
-                        var callee = init.callee;
-                        var callee_name = callee.name;
-                        if(callee_name == 'require'){
-                           /* console.log("Variable Declaration ");
-                            console.log(node);
-*/
-                            var requireAsrguments =  init.arguments;
-                            if(Array.isArray(requireAsrguments)){
-                                var args = [];
-                                for(l in requireAsrguments){
-                                    var currentLiteral = requireAsrguments[l].value;
-                                    var prefix = currentLiteral.substring(0, currentLiteral.lastIndexOf('/')+1);
-                                    var trimmedLiteral = currentLiteral.substring(currentLiteral.lastIndexOf('/')+1);
+                    if(init !== null){
+                        if(init.type == 'CallExpression'){
+                            var callee = init.callee;
+                            var callee_name = callee.name;
+                            if(callee_name == 'require'){
+                                /* console.log("Variable Declaration ");
+                                 console.log(node);
+     */
+                                var requireAsrguments =  init.arguments;
+                                if(Array.isArray(requireAsrguments)){
+                                    var args = [];
+                                    for(l in requireAsrguments){
+                                        var currentLiteral = requireAsrguments[l].value;
+                                        var prefix = currentLiteral.substring(0, currentLiteral.lastIndexOf('/')+1);
+                                        var trimmedLiteral = currentLiteral.substring(currentLiteral.lastIndexOf('/')+1);
 
-                                    // get the last name of
-                                    if(globalModifiedFilesList.hasOwnProperty(trimmedLiteral)) {
-                                        console.log("l " + trimmedLiteral);
-                                        var newLiteralValue = globalModifiedFilesList[trimmedLiteral];
-                                        console.log("new literal " + newLiteralValue);
-                                        var newLiteral = {type: 'Literal', value: prefix+newLiteralValue};
-                                        args.push(newLiteral);
+                                        // get the last name of
+                                        if(globalModifiedFilesList.hasOwnProperty(trimmedLiteral)) {
+                                            console.log("l " + trimmedLiteral);
+                                            var newLiteralValue = globalModifiedFilesList[trimmedLiteral];
+                                            console.log("new literal " + newLiteralValue);
+                                            var newLiteral = {type: 'Literal', value: prefix+newLiteralValue};
+                                            args.push(newLiteral);
+                                        }
                                     }
-                                }
-                                if(args.length > 0) {
-                                    var new_VariableDeclarator = {
-                                        type: 'VariableDeclarator',
-                                        id: node.id,
-                                        init: {
-                                            type: 'CallExpression',
-                                            callee: {
-                                                type: 'Identifier',
-                                                name: 'require',
-                                                range: node.init.range,
-                                                loc: node.init.loc
+                                    if(args.length > 0) {
+                                        var new_VariableDeclarator = {
+                                            type: 'VariableDeclarator',
+                                            id: node.id,
+                                            init: {
+                                                type: 'CallExpression',
+                                                callee: {
+                                                    type: 'Identifier',
+                                                    name: 'require',
+                                                    range: node.init.range,
+                                                    loc: node.init.loc
+                                                },
+                                                arguments: args
                                             },
-                                            arguments: args
-                                        },
-                                        range: node.range,
-                                        loc: node.loc
-                                    };
-                                    return new_VariableDeclarator;
+                                            range: node.range,
+                                            loc: node.loc
+                                        };
+                                        return new_VariableDeclarator;
+                                    }else{
+                                        return node;
+                                    }
+
                                 }else{
-                                    return node;
+                                    //skip
+                                    estraverse.VisitorOption.skip;
                                 }
 
                             }else{
                                 //skip
                                 estraverse.VisitorOption.skip;
                             }
-
                         }else{
-                            //skip
+                            // skip
                             estraverse.VisitorOption.skip;
-                        }
-                    }else{
-                        // skip
+                        }}else {
                         estraverse.VisitorOption.skip;
                     }
                     // create a new node and return that

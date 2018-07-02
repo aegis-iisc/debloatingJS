@@ -18,6 +18,7 @@
 
  */
 var esprima = require('esprima');
+var esquery = require('esquery');
 var escodegen = require('escodegen');
 var estraverse = require('estraverse');
 var utility = require('./Utility.js');
@@ -46,6 +47,7 @@ if(!args.sl || !args.in || !args.o){
 
 
 const NO_CHANGES_NEEDED = 'NO-STUB';
+const UNIQUE_ID_TYPE = 'UniqueFunctionId';
 //  console.log("Args "+args.toString());
 
 (function () {
@@ -87,12 +89,13 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
                 var startLineNumber = location.toString().split(':')[0];
                 var functionName = findFun(fileName, location, startLineNumber);
 
+                if (functionName === undefined)
+                    throw "function Name could not be found";
                 // if the AST is already modified, start from the modified AST
                 var astForInput = {};
-                if(updatedASTList.hasOwnProperty(fileName)) {
+                if (updatedASTList.hasOwnProperty(fileName)) {
                     astForInput = updatedASTList[fileName];
-                }
-                else { // performed once
+                } else { // performed once
                     var inputProgramFromFile = fs.readFileSync(fileName + '.js', 'utf8');
                     astForInput = esprima.parse(inputProgramFromFile.toString(), {
                         range: true,
@@ -100,15 +103,12 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
                         tokens: true
                     });
                     transformer.addCachedCodeDeclaration(astForInput);
-                    // Bunch of generic import instruction
                     transformer.addHeaderInstructions(astForInput);
                     transformer.addSrcfileDeclaration(astForInput, fileName);
-
                     var astForLazyLoad = transformer.createLazyLoad(functionName);
                     astForInput.body.push(astForLazyLoad);
                     var astForExtractBody = transformer.createExtractBodies();
                     astForInput.body.push(astForExtractBody);
-
                     transformer.updateRequireDeclaration(astForInput, globalModifiedFilesList);
                     var astForLoadAndInvokeBody = transformer.createLoadAndInvokeBody();
                     astForInput.body.push(astForLoadAndInvokeBody);
@@ -117,11 +117,21 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
 
                 //transformer.addOriginalDeclaration(astForInput, functionName);
                 //console.log("functionName "+functionName);
-                transformer.replace(astForInput, functionName);
-                // create and add a body for lazy Loading
-                var modifiedProgram = escodegen.generate(astForInput);
-                updatedASTList[fileName] = astForInput;
+                if (functionName.type == UNIQUE_ID_TYPE) {
+                    console.log("REPLACE :: Anonymous Function");
+                    transformer.replace(astForInput, null, functionName);
+                    // create and add a body for lazy Loading
+                    var modifiedProgram = escodegen.generate(astForInput);
+                    updatedASTList[fileName] = astForInput;
 
+
+                } else {
+
+                    transformer.replace(astForInput, functionName);
+                    // create and add a body for lazy Loading
+                    var modifiedProgram = escodegen.generate(astForInput);
+                    updatedASTList[fileName] = astForInput;
+                }
             }
             catch (error) {
                 console.log(error.stack);
@@ -151,29 +161,50 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
         var _loc = location;
         var result = null;
 
+        /*console.log("fileName "+_fn);
+        console.log("location "+_loc);
+*/
         if (_fn.length > 0) {
             var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
-            var astForInput = esprima.parse(inputProgramFromFile.toString(), {range: true, loc: true, tokens: true});
+            var astForInput = esprima.parse(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false});
+
+            console.log("AST FOR INPUT");
+            console.log(astForInput);
+
+
+
+           /* var outast = esquery.query(astForInput, [loc=_loc]);
+            console.log("QUERY");
+            console.log(outast);
+*/
             estraverse.traverse(astForInput,
                 { // define the visitor as an object with two properties/functions defining task at enter and leave
                     enter: function (node, parent) { // check for function name and replace
-                        if (node.type == 'FunctionDeclaration') {
-                            if (startLineNumber == node.loc.start.line) {
+                        /*console.log("Entering");
+                        console.log(node);
+                        */if (node.type == 'FunctionDeclaration') {
+                          /*  console.log("FunctionDeclrataion");
+                            console.log(node);
+                          */  if (startLineNumber == node.loc.start.line) {
                                 // found the function name .
                                 result = node.id.name;
                                 this.break();
 
                             }
+                            /*if(node.body){ // TODO Handle case  when a function is declared in the body of another function
+                                console.log(node.body);
+                            }*/
+
                         } // lhs = function(){ }
                         else if (node.type == 'ExpressionStatement') {
                             if (node.expression.type == 'AssignmentExpression') {
                                 var left = node.expression.left;
                                 var right = node.expression.right;
-                                /*
-                                If right is a FunctionExpression, get the  name of the function from the left
-                                 */
+
                                 if (startLineNumber == node.loc.start.line) {
                                     if (right.type == 'FunctionExpression') {
+                                        // lhs = MemberExpression rhs = FunctionExpression
+
                                         if (left.type == 'MemberExpression') {
                                             var leftVarBaseName = left.object.name;
                                             var leftVarExtName = left.property.name;
@@ -181,6 +212,22 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
                                             result = leftVarPath;
                                             this.break();
 
+                                        }
+                                        // lhs = Identifier , rhs = function expression
+                                        else if(left.type == 'Identifier'){
+                                            if(left.name){
+                                                var functionName = left.name;
+                                                result = functionName;
+                                                this.break();
+                                            }else{
+
+                                                throw("No name of the Identifier ");
+                                            }
+
+                                        }
+                                        // TODO : Handle other cases
+                                        else{
+                                            estraverse.VisitorOption.skip;
                                         }
                                     }
                                 }else{
@@ -204,38 +251,59 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
 
                             } else if(node.expression.type == 'ObjectExpression'){
 
-                                console.error("ObjectExpression ExpresssionStatement");
+                             /*   console.error("ObjectExpression ExpresssionStatement");
                                 console.debug("Check if "+node.expression.type+ " expression statement is handled");
-                                estraverse.VisitorOption.skip;
+                             */   estraverse.VisitorOption.skip;
 
                             }else if(node.expression.type == 'ArrowFunctionExpression'){
 
-                                console.error("Arrow FunctionExpression Expression not handled");
+                               /* console.error("Arrow FunctionExpression Expression not handled");
                                 console.debug("Check if "+node.expression.type+ " expression statement is handled");
-                                estraverse.VisitorOption.skip;
+                               */ estraverse.VisitorOption.skip;
 
                             }else if(node.expression.type == 'CallExpression'){
-
-                                // console.log(node.expression);
-                                estraverse.VisitorOption.skip;
+                            /*    console.log("CallExpression Node");
+                                console.log(node.expression);
+                            */    estraverse.VisitorOption.skip;
 
                             }
 
                             else {
-                                console.log(node.expression.type);
+                            /*    console.log(node.expression.type);
                                 console.error("Check if "+node.expression.type+ " expression statement is handled");
-                                estraverse.VisitorOption.skip;
+                            */    estraverse.VisitorOption.skip;
                             }
-                        }else{
+                        }else if(node.type == 'CallExpression'){
+                         /*   console.log("node type callExpression");
+                            console.log(node);
+*/
+                        }else if(node.type == 'FunctionExpression'){
+                            // case a function expression which my or may not have a name
+                           /* console.log("Function expression node");
+                            console.log(node);
+                           */ if(node.id !== null){// has an id
+                                result = node.id.name;
+                                this.break();
+                            }else {
+                                result = cerateUniqueId(node.loc);
+                                this.break();
+                            }
+
+                        }
+
+                        else{
+                          console.log("Unhandled Node type "+node.type);
                           estraverse.VisitorOption.skip;
                         }
                     },
 
                     leave: function (node, parent) {
-                        if (node.type == 'VariableDeclarator') {
-                            estraverse.VisitorOption.skip;
-                            //console.log("variable "+node.id.name);
-                        }
+                        console.log("leaving");
+                        console.log(node);
+                        // if (node.type == 'VariableDeclarator') {
+                        //     estraverse.VisitorOption.skip;
+                        //     //console.log("variable "+node.id.name);
+                        // }
                     }
 
                 });
@@ -256,6 +324,15 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
 
     }
 
+    /*
+        function to create unique Id from a loc
+     */
+    function cerateUniqueId(locFrom){
+
+        var id= {"type": UNIQUE_ID_TYPE, "startline" : locFrom.start.line, "startcol":locFrom.start.column};
+        return id;
+
+    }
 // with JSON input this becomes unused
     function splitStubFile() {
 
