@@ -1,1 +1,1 @@
-[{"functionName":"function (item)","location":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/function-expression-as-argument.js:6:37:9:2)","isLiteral":true}]
+[{"functionName":"function foo(cb)","location":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/callback-executed-anonymous.js:1:1:4:2)","isLiteral":true},{"functionName":"function bar()","location":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/callback-executed-anonymous.js:5:1:7:2)","isLiteral":true}]

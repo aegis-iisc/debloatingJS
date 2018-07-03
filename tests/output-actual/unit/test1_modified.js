@@ -61,6 +61,17 @@ function extractBodies(srcFile) {
                 } else {
                     estraverse.VisitorOption.skip;
                 }
+            } else if (node.type == 'FunctionExpression') {
+                var funName = null;
+                if (node.id !== null) {
+                    funName = node.id.name;
+                } else {
+                    funName = '_' + node.loc.start.line + '_' + node.loc.start.column;
+                }
+                console.log('funName ' + funName);
+                if (funName !== null) {
+                    cachedCode[srcFile][funName] = escodegen.generate(node);
+                }
             } else {
                 estraverse.VisitorOption.skip;
             }

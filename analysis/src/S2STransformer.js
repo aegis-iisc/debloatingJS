@@ -47,7 +47,6 @@ if(!args.sl || !args.in || !args.o){
 
 
 const NO_CHANGES_NEEDED = 'NO-STUB';
-const UNIQUE_ID_TYPE = 'UniqueFunctionId';
 //  console.log("Args "+args.toString());
 
 (function () {
@@ -117,7 +116,7 @@ const UNIQUE_ID_TYPE = 'UniqueFunctionId';
 
                 //transformer.addOriginalDeclaration(astForInput, functionName);
                 //console.log("functionName "+functionName);
-                if (functionName.type == UNIQUE_ID_TYPE) {
+                if (functionName.type == utility.UNIQUE_ID_TYPE) {
                     console.log("REPLACE :: Anonymous Function");
                     transformer.replace(astForInput, null, functionName);
                     // create and add a body for lazy Loading
@@ -161,39 +160,21 @@ const UNIQUE_ID_TYPE = 'UniqueFunctionId';
         var _loc = location;
         var result = null;
 
-        /*console.log("fileName "+_fn);
-        console.log("location "+_loc);
-*/
         if (_fn.length > 0) {
             var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
             var astForInput = esprima.parse(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false});
 
-            console.log("AST FOR INPUT");
-            console.log(astForInput);
 
-
-
-           /* var outast = esquery.query(astForInput, [loc=_loc]);
-            console.log("QUERY");
-            console.log(outast);
-*/
             estraverse.traverse(astForInput,
                 { // define the visitor as an object with two properties/functions defining task at enter and leave
                     enter: function (node, parent) { // check for function name and replace
-                        /*console.log("Entering");
-                        console.log(node);
-                        */if (node.type == 'FunctionDeclaration') {
-                          /*  console.log("FunctionDeclrataion");
-                            console.log(node);
-                          */  if (startLineNumber == node.loc.start.line) {
+                        if (node.type == 'FunctionDeclaration') {
+                            if (startLineNumber == node.loc.start.line) {
                                 // found the function name .
                                 result = node.id.name;
                                 this.break();
 
                             }
-                            /*if(node.body){ // TODO Handle case  when a function is declared in the body of another function
-                                console.log(node.body);
-                            }*/
 
                         } // lhs = function(){ }
                         else if (node.type == 'ExpressionStatement') {
@@ -251,48 +232,38 @@ const UNIQUE_ID_TYPE = 'UniqueFunctionId';
 
                             } else if(node.expression.type == 'ObjectExpression'){
 
-                             /*   console.error("ObjectExpression ExpresssionStatement");
-                                console.debug("Check if "+node.expression.type+ " expression statement is handled");
-                             */   estraverse.VisitorOption.skip;
+                                  estraverse.VisitorOption.skip;
 
                             }else if(node.expression.type == 'ArrowFunctionExpression'){
 
-                               /* console.error("Arrow FunctionExpression Expression not handled");
-                                console.debug("Check if "+node.expression.type+ " expression statement is handled");
-                               */ estraverse.VisitorOption.skip;
+                                estraverse.VisitorOption.skip;
 
                             }else if(node.expression.type == 'CallExpression'){
-                            /*    console.log("CallExpression Node");
-                                console.log(node.expression);
-                            */    estraverse.VisitorOption.skip;
+                                estraverse.VisitorOption.skip;
 
                             }
 
                             else {
-                            /*    console.log(node.expression.type);
-                                console.error("Check if "+node.expression.type+ " expression statement is handled");
-                            */    estraverse.VisitorOption.skip;
+                                estraverse.VisitorOption.skip;
                             }
                         }else if(node.type == 'CallExpression'){
                          /*   console.log("node type callExpression");
                             console.log(node);
 */
-                        }else if(node.type == 'FunctionExpression'){
-                            // case a function expression which my or may not have a name
-                           /* console.log("Function expression node");
-                            console.log(node);
-                           */ if(node.id !== null){// has an id
-                                result = node.id.name;
-                                this.break();
-                            }else {
-                                result = cerateUniqueId(node.loc);
-                                this.break();
+                        }else if(node.type == 'FunctionExpression') {
+                            //compare the location
+                            if (node.loc.start.line === _loc[0] && node.loc.start.column === _loc[2]){
+                                if (node.id !== null) {// has an id
+                                    result = node.id.name;
+                                    this.break();
+                                } else {
+                                    result = utility.cerateUniqueId(node.loc);
+                                    this.break();
+                                }
                             }
-
                         }
 
                         else{
-                          console.log("Unhandled Node type "+node.type);
                           estraverse.VisitorOption.skip;
                         }
                     },
@@ -324,15 +295,6 @@ const UNIQUE_ID_TYPE = 'UniqueFunctionId';
 
     }
 
-    /*
-        function to create unique Id from a loc
-     */
-    function cerateUniqueId(locFrom){
-
-        var id= {"type": UNIQUE_ID_TYPE, "startline" : locFrom.start.line, "startcol":locFrom.start.column};
-        return id;
-
-    }
 // with JSON input this becomes unused
     function splitStubFile() {
 
