@@ -2,6 +2,9 @@
 var exports = module.exports = {};
 var fs = require('fs');
 var shelljs = require('shelljs');
+
+exports.UNIQUE_ID_TYPE = 'UniqueFunctionId';
+
 exports.printObject = function(obj){
 
     for (var id in obj){
@@ -40,5 +43,15 @@ exports.compareLoc = function(loc1, loc2){
     console.log("FALSE");
     return false;
 
+
+};
+
+/*
+    function to create unique Id from a loc
+ */
+exports.cerateUniqueId = function(locFrom){
+
+    var id= {"type": exports.UNIQUE_ID_TYPE, "startline" : locFrom.start.line, "startcol":locFrom.start.column};
+    return id;
 
 };

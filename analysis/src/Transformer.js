@@ -27,7 +27,7 @@ A test transformer JS -> AST -> AST' -> JS'
 exports.replace = function (ast, funName, functionLocId){
     console.log("Transforming the AST for the function " + funName);
 
-  if(funName !== null) {
+  if(funName !== null) { // replace a named function
       exports.addOriginalDeclaration(ast, funName);
       var result = estraverse.replace(ast, {
           enter: function (node) {
@@ -66,9 +66,15 @@ exports.replace = function (ast, funName, functionLocId){
                       }
 
                   }
-              } else if (node.type == 'FunctionExpression') { // replace the function expression if it is anaonymous function
+              }else{
+                  estraverse.VisitorOption.skip;
+              }
+
+              /*else if (node.type == 'FunctionExpression') { // replace the function expression if it is anaonymous function
                   // compare the unique id for the function
                   if (node.id == null) {
+                      console.log('>>>>>');
+                      console.log(funName);
                       if (utility.compareLoc(node.loc, functionLocId)) {
                           var uniqueFunId = generateUniqueId(functionLocId);
                           console.log("Replacing anonymous function " + node + ' with ' + uniqueFunId);
@@ -82,7 +88,7 @@ exports.replace = function (ast, funName, functionLocId){
 
                   }
 
-              }
+              }*/
           },
           leave: function (node) {
               estraverse.VisitorOption.skip;
@@ -90,7 +96,7 @@ exports.replace = function (ast, funName, functionLocId){
           }
       });
       }
-   else{
+   else{ // Anonymous 'FunctionExpression case.
       var fNameForId =   createUniqueFunction(functionLocId);
       exports.addOriginalDeclaration(ast, fNameForId);
       var result = estraverse.replace(ast, {
@@ -120,7 +126,6 @@ exports.replace = function (ast, funName, functionLocId){
                               var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
                               result = leftVarPath;
                               if (leftVarPath === funName) {
-                                  console.log("Replacing " + node + ' with ' + funName);
                                   return exports.createStubFunctionExpression(funName, right.params, left);
                               } else {
                                   estraverse.VisitorOption.skip;
@@ -135,7 +140,6 @@ exports.replace = function (ast, funName, functionLocId){
                   if (node.id == null) {
                       if (utility.compareLoc(node.loc, functionLocId)) {
                           var uniqueFunId = createUniqueFunction(functionLocId);
-                          console.log("Replacing anonymous function " + node + ' with ' + uniqueFunId);
                           return exports.createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
                       } else {
                           estraverse.VisitorOption.skip;
@@ -156,7 +160,7 @@ exports.replace = function (ast, funName, functionLocId){
 
   }
 
-
+    console.log("replace ends");
 };
 
 function createUniqueFunction(id){
@@ -167,7 +171,7 @@ function createUniqueFunction(id){
 }
 exports.createStubAnonymousFunctionExpression = function(funName, params){
     console.log("Creating stub for anonymous function expression");
-    var callLazyLoadStmt = 'lazyLoad(' + funName +', srcFile )';
+    var callLazyLoadStmt = 'lazyLoad(\"' + funName +'\", srcFile )';
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
 
     /*
@@ -197,7 +201,7 @@ exports.createStubAnonymousFunctionExpression = function(funName, params){
     var paramList = [];
     if (params.length > 0 ){
         for (elem in params){
-            console.log(params[elem]);
+           // console.log(params[elem]);
             paramList.push(params[elem].name);
         }
     }
@@ -260,7 +264,7 @@ exports.createStubFunctionDeclaration = function (funName, params){ // returns t
     var paramList = [];
     if (params.length > 0 ){
         for (elem in params){
-            console.log(params[elem]);
+          //  console.log(params[elem]);
             paramList.push(params[elem].name);
         }
     }
@@ -290,27 +294,6 @@ exports.createStubFunctionDeclaration = function (funName, params){ // returns t
     return _BlockStatement;
 
 
-
-/*
-
-    var _realFunction = escodegen.generate({
-        type:  'BlockStatement',
-        body: [{type: 'VariableDeclaration', declarations:[{type: 'VariableDeclarator', id: {type: 'Identifier', name: "original_"+funName}, init: null}], kind: 'var'},
-            {type: 'FunctionDeclaration', params: [{type: 'Identifier', name: '_param'}], id: {type: 'Identifier', name:'real_'+funName}, body: { type: 'BlockStatement', body: [
-                        {type: 'VariableDeclaration', declarations: [{type: 'VariableDeclarator', id: {type: 'Identifier', name: '_var1'}, init: null}], kind: 'var'}]},
-                generator: false,
-                async: false,
-                expression: false
-
-            }]}
-
-    );
-
-    console.log("REACHED");
-    return _realFunction;
-*/
-
-
 };
 
 // generate stub for fully classified AssignmentExpression
@@ -321,16 +304,8 @@ exports.createStubFunctionExpression = function (funName, params, left) { // ret
 
     var callLazyLoadStmt = 'lazyLoad(' + funName +', srcFile )';
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
-
-/*
-    var callEvalStmt = 'original_' + funName + ' = this.eval(cachedCode[' + funName + ']); ' + funName + ' = ' + 'original_' + funName + ';';
-    var _callEvalStmt = esprima.parse(callEvalStmt).body;
-*/
-
-
     var loadAndInvokeStmt = 'var loadedBody = loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
-
     var callEvalStmt = 'eval(\"original_'+funName+' = \" \+loadedBody); '+funName+' = '+'original_'+funName+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
@@ -349,7 +324,7 @@ exports.createStubFunctionExpression = function (funName, params, left) { // ret
     var paramList = [];
     if (params.length > 0 ){
         for (elem in params){
-            console.log(params[elem]);
+          //  console.log(params[elem]);
             paramList.push(params[elem].name);
         }
     }
@@ -474,11 +449,10 @@ function addCachedCodeDeclaration(ast){
 
 exports.addCachedCodeDeclaration = addCachedCodeDeclaration;
 
-// creates the body for the lazyLoading of the function funName
 exports.createLazyLoad = function (funName) {
 
     var astForlazyLoad = esprima.parse(lazyLoad.toString(), {range: true, loc: true, tokens: true});
-    console.log(escodegen.generate(astForlazyLoad));
+   // console.log(escodegen.generate(astForlazyLoad));
     return astForlazyLoad;
 
 
@@ -559,7 +533,7 @@ exports.addOriginalDeclaration = function(astForInput, functionName){
 };
 
 exports.addSrcfileDeclaration = function (astForInput, filename) {
-    console.log("SRC "+filename);
+    //console.log("SRC "+filename);
     var srcFileDeclaration ='';
     var srcFileDeclaration = srcFileDeclaration+' var srcFile = \''+filename+ '.js\';';
     var _srcFileDeclaration = esprima.parse(srcFileDeclaration.toString(), {range: true, loc: true, tokens: false});
@@ -572,6 +546,7 @@ exports.addSrcfileDeclaration = function (astForInput, filename) {
 };
 
 // a function which is invoked from the lazyLoad body
+// extract the bodies of the functions from the srcFile in a map cachedCode = {[{srcFile:{'functionName': 'functionBosy'}]}
 function extractBodies (srcFile) {
     var code = fs.readFileSync(srcFile, 'utf8');
     //console.log("code "+code);
@@ -598,10 +573,22 @@ function extractBodies (srcFile) {
                             cachedCode[srcFile][functionName] = functionBody;
                         }
                     }
-                } else {
+                }else {
                     estraverse.VisitorOption.skip;
                 }
-            } else {
+            }else if(node.type == 'FunctionExpression'){ // anonymous function, store unique-id with the body.
+                var funName = null;
+                if(node.id !== null){
+                    funName = node.id.name;
+                }else{
+                    funName = '_'+node.loc.start.line+'_'+node.loc.start.column;
+
+                }
+                if(funName !== null){
+                    cachedCode[srcFile][funName] = escodegen.generate(node);
+                }
+            }
+            else {
                 estraverse.VisitorOption.skip;
             }
         }
@@ -613,7 +600,7 @@ exports.createExtractBodies = function(){
     return _astextractBodies;
     //ast.body.push(_astextractBodies);
 };
-//TODO update for analymous function
+//TODO update for anonymous function
 function loadAndInvoke(funName, srcFile){
     for (var elem in cachedCode){
         if(cachedCode.hasOwnProperty(elem)){
@@ -621,8 +608,6 @@ function loadAndInvoke(funName, srcFile){
                 var functions = cachedCode[elem];
                 for (var fun in functions){
                     if (functions.hasOwnProperty(fun)){
-                        //var fun_i = eval(functions[fun]);
-                        //console.log(fun_i);
                         if(fun === funName) {
                             console.log(functions[fun]);
                             return functions[fun];
@@ -649,8 +634,8 @@ exports.createLoadAndInvokeBody = function(){
 
 function updateRequireDeclaration (ast, globalModifiedFilesList){
 
-    console.log(globalModifiedFilesList);
-    console.log("Updating require declarations");
+    //console.log(globalModifiedFilesList);
+    //console.log("Updating require declarations");
     estraverse.replace(ast,
         {  enter: function (node, parent) { // check for function name and replace
                 if(node.type == 'VariableDeclarator'){
@@ -674,9 +659,9 @@ function updateRequireDeclaration (ast, globalModifiedFilesList){
 
                                         // get the last name of
                                         if(globalModifiedFilesList.hasOwnProperty(trimmedLiteral)) {
-                                            console.log("l " + trimmedLiteral);
+      //                                      console.log("l " + trimmedLiteral);
                                             var newLiteralValue = globalModifiedFilesList[trimmedLiteral];
-                                            console.log("new literal " + newLiteralValue);
+        //                                    console.log("new literal " + newLiteralValue);
                                             var newLiteral = {type: 'Literal', value: prefix+newLiteralValue};
                                             args.push(newLiteral);
                                         }
@@ -743,3 +728,4 @@ function updateRequireDeclaration (ast, globalModifiedFilesList){
 }
 
 exports.updateRequireDeclaration = updateRequireDeclaration;
+
