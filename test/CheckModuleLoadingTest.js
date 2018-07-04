@@ -55,7 +55,7 @@ describe('unit-tests', function () {
 
     describe('function-as-method', function () { runTests('function-as-method'); });
     describe('function-constructor', function () { runTests('function-constructor'); });
-    describe('function-call-1', function () { runTests('function-call-1'); });
+    describe('function-call-1', function () { runTests('function-call-1'); });// different call expression, no unexercised function. TODO :: Handle this case in jalangi analysis
     describe('function-call-2', function () { runTests('function-call-2'); });
     describe('function-apply', function () { runTests('function-apply'); });
     describe('function-apply-with-args', function () { runTests('function-apply-with-args'); });
