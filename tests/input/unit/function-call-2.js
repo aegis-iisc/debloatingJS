@@ -1,5 +1,5 @@
 var person = {
-    fullName: function(city, country) {
+    fullName:function(city, country) {
         return this.firstName + " " + this.lastName + "," + city + "," + country;
     }
 };

@@ -1,5 +1,5 @@
 var person = {
-    fullName: function() {
+    fullName:function() {
         return this.firstName + " " + this.lastName;
     }
 };
