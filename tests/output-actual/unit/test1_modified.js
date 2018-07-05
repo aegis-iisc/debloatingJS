@@ -68,7 +68,6 @@ function extractBodies(srcFile) {
                 } else {
                     funName = '_' + node.loc.start.line + '_' + node.loc.start.column;
                 }
-                console.log('funName ' + funName);
                 if (funName !== null) {
                     cachedCode[srcFile][funName] = escodegen.generate(node);
                 }
@@ -86,7 +85,6 @@ function loadAndInvoke(funName, srcFile) {
                 for (var fun in functions) {
                     if (functions.hasOwnProperty(fun)) {
                         if (fun === funName) {
-                            console.log(functions[fun]);
                             return functions[fun];
                         }
                     }

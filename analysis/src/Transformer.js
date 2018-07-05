@@ -205,11 +205,11 @@ exports.createStubAnonymousFunctionExpression = function(funName, params){
             paramList.push(params[elem].name);
         }
     }
-
+    //TODO :: If the function expression returns something, add a return statement.
     if(paramList.length > 0)
-        var returnStatement = 'original_'+funName+'.apply(this, '+paramList.toString() +');';
+        var returnStatement = 'return original_'+funName+'.apply(this, '+paramList.toString() +');';
     else
-        var returnStatement = 'original_'+funName+'.apply(this);';
+        var returnStatement = 'return original_'+funName+'.apply(this);';
     var _returnStatement = esprima.parse(returnStatement);
 
 
@@ -609,7 +609,7 @@ function loadAndInvoke(funName, srcFile){
                 for (var fun in functions){
                     if (functions.hasOwnProperty(fun)){
                         if(fun === funName) {
-                            console.log(functions[fun]);
+                           // console.log(functions[fun]);
                             return functions[fun];
 
                         }
