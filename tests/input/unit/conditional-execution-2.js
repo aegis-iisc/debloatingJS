@@ -1,4 +1,4 @@
-function foo () {
+qfunction foo () {
     console.log('foo');
 }
 function bar () {
