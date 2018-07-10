@@ -10,7 +10,7 @@ tests/output-actual/
 
 #webstorm
 # User-specific stuff
-.idea/**/workspace.xml
+#.idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
@@ -40,8 +40,8 @@ node_modules/
 node-projects/
 
 output/
-tests/output-actual/
+#tests/output-actual/
 #test/
-.idea/
+#.idea/
 garbage/
 *.swp
