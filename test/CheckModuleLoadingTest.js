@@ -148,10 +148,9 @@ describe('unit-tests', function () {
 
         runTests('recursive-execution-2'); // => Transformer fails
     });
-    /*
-    /*** tests:: Jalangi Instrumentation fails.***/
+    /*** tests:: Jalangi Instrumentation fails.**/
     // =>exit and outcode checks since the original file is copied to the modified upon Jalangi failure
-    /*describe('function-expression-object-property', function() {
+    describe('function-expression-object-property', function() {
 
         runTests('function-expression-object-property');
     });
@@ -182,7 +181,7 @@ describe('unit-tests', function () {
     describe('recursive-execution-3', function() {
 
         runTests('recursive-execution-3'); // => jalangi parameter list has an upper limit
-    });*/
+    });
 
 });
 
