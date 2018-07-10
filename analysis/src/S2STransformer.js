@@ -1,40 +1,20 @@
-// DO not remove the following comment
-
 /*
 *@author Ashish Mishra
 */
 
-
-/*
-    Source to Source Transformation algorithm
-    for file in nodeProject
-        for f in file
-            if f in StubbingList && f.size >= threshold{
-                replace f with f_in_file_STUB
-
-            }else
-                skip f
-
-
- */
 var esprima = require('esprima');
-var esquery = require('esquery');
 var escodegen = require('escodegen');
 var estraverse = require('estraverse');
 var utility = require('./Utility.js');
 var fs = require('fs');
-var loadedFunctions = {};
 var argparse = require('argparse');
-var arguments =  process.argv.slice(2);
 var transformer = require('./Transformer.js');
-var copydir = require('copy-dir');
 var fileName_Func_Location = {};
 
 var parser = new argparse.ArgumentParser({
     version : 0.1,
     addHelp : true,
     description : "The source to source transformer for the feature reduction of JS"
-
 });
 
 parser.addArgument(['-sl'], {help: 'potential stub list' } );
@@ -45,14 +25,12 @@ if(!args.sl || !args.in || !args.o){
     console.log("ERROR: Insufficient inputs, try -h option");
 }
 
-
 const NO_CHANGES_NEEDED = 'NO-STUB';
 const LOCATION_DELTA_THRESSHOLD = 2;
 //  console.log("Args "+args.toString());
 
 (function () {
     var stubbingFuncList = args.sl;
-    var pathToRoot = args.in;
     var pathToOutput = args.o;
     var globalModifiedFilesList = {};
     readStubListJSON(stubbingFuncList);
@@ -68,7 +46,6 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         //copy the original file to the modified;
         // TODO try catch
         fs.createReadStream(iFPath+'.js').pipe(fs.createWriteStream(outPutFile+'_modified.js'));
-
     }
 
 // build an ast for the JS and replace the functions in the fileName_Funct_Location map
@@ -170,7 +147,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
             estraverse.traverse(astForInput,
                 { // define the visitor as an object with two properties/functions defining task at enter and leave
                     enter: function (node, parent) { // check for function name and replace
-                        if (node.type == 'FunctionDeclaration') {
+                        if (node.type === 'FunctionDeclaration') {
 
                             if (startLineNumber == node.loc.start.line) {
                                 // found the function name .
@@ -232,21 +209,15 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                             } else if(node.expression.type === 'ObjectExpression'){
                                 estraverse.VisitorOption.skip;
                             }else if(node.expression.type === 'ArrowFunctionExpression'){
-
                                 estraverse.VisitorOption.skip;
-
                             }else if(node.expression.type === 'CallExpression'){
                                 estraverse.VisitorOption.skip;
-
                             }
-
                             else {
                                 estraverse.VisitorOption.skip;
                             }
                         }else if(node.type === 'CallExpression'){
-                            /*   console.log("node type callExpression");
-                               console.log(node);
-   */
+
                         }else if(node.type === 'FunctionExpression') {
                             //compare the location
                             // console.log("ERROR "+node.loc.start.column+" - "+_loc[1]+ " = "+  Math.abs(node.loc.start.column -_loc[1]));
@@ -273,7 +244,6 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                 });
             // traverse the file
 
-
         } else {
             console.log("Error : Not a javascript file " + _fn.substring(_fn.indexOf('.') + 1, _fn.length));
 
@@ -284,37 +254,17 @@ const LOCATION_DELTA_THRESSHOLD = 2;
             return result;
         else
             console.log("No function found for the input file and location");
-
-
-    }
-
-// with JSON input this becomes unused
-    function splitStubFile() {
-
-        var buffer = fs.readFileSync(stubbingFuncList);
-        var dataAsArray = buffer.toString().split("\n");
-        for (elem in dataAsArray) {
-            var temp = dataAsArray[elem].substring(1, dataAsArray[elem].length - 1);
-            var filePath_LineNo = temp.split(".js:");
-            fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: filePath_LineNo[1]};
-            //console.log(fileName_Func_Location);
-        }
-
     }
 
 // read the JSON file and create a fileName and function Location to be replaced by stubs
     function readStubListJSON(jsonFileName) {
-
         var obj = JSON.parse(fs.readFileSync(jsonFileName, 'utf8'));
         //console.log("StubList " + JSON.stringify(obj));
-        for (elem in obj) {
+        for (var elem in obj) {
             var stubLoction_elem = obj[elem].stubLocation;
             var filePath_LineNo = stubLoction_elem.split(".js:");
             var locArray = filePath_LineNo[1].split(':');
 
-        /*    console.log("Type of location "+typeof  locArray);
-            console.log(locArray);
-*/
            // fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: filePath_LineNo[1]};
             fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: locArray};
         }
@@ -322,8 +272,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
     }
 
     function populateGlobalModifiedFilesList(fileName_Func_Location){
-
-        for (elem in fileName_Func_Location){
+        for (var elem in fileName_Func_Location){
             try {
                 var fileName = fileName_Func_Location[elem].fileName;
                 var fileNameRelative =fileName.substring(fileName.lastIndexOf('/')+1, fileName.length);
@@ -331,9 +280,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
             }catch (error){
                 console.error(error.toString());
             }
-
         }
-
     }
 
 }());

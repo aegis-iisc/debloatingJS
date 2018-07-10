@@ -5,7 +5,6 @@ var shelljs = require('shelljs');
 var path = require('path');
 
 function printObject (obj){
-
     for (var id in obj){
         if (obj.hasOwnProperty(id)){
             if(typeof obj[id] === 'object')
