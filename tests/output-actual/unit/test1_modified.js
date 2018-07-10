@@ -2,7 +2,7 @@ var original_foo = null;
 var original_foo = null;
 var original_foo = null;
 var original_foo = null;
-var srcFile = '/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test1.js';
+var srcFile = '/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test1.js';
 var fs = require('fs');
 var esprima = require('esprima');
 var estraverse = require('estraverse');
@@ -68,7 +68,6 @@ function extractBodies(srcFile) {
                 } else {
                     funName = '_' + node.loc.start.line + '_' + node.loc.start.column;
                 }
-                console.log('funName ' + funName);
                 if (funName !== null) {
                     cachedCode[srcFile][funName] = escodegen.generate(node);
                 }
