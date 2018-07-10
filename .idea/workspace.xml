@@ -3,14 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="661c26bd-6045-42ce-8603-698fa54b03e5" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/_invokedfunctions.json" afterPath="$PROJECT_DIR$/_invokedfunctions.json" />
-      <change beforePath="$PROJECT_DIR$/_loadedfunctions.json" afterPath="$PROJECT_DIR$/_loadedfunctions.json" />
-      <change beforePath="$PROJECT_DIR$/_stubList.json" afterPath="$PROJECT_DIR$/_stubList.json" />
-      <change beforePath="$PROJECT_DIR$/analysis/src/CheckModuleLoading.js" afterPath="$PROJECT_DIR$/analysis/src/CheckModuleLoading.js" />
-      <change beforePath="$PROJECT_DIR$/analysis/src/S2STransformer.js" afterPath="$PROJECT_DIR$/analysis/src/S2STransformer.js" />
-      <change beforePath="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" afterPath="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" />
-      <change beforePath="$PROJECT_DIR$/test/tests-nodejs.js" afterPath="$PROJECT_DIR$/test/tests-nodejs.js" />
-      <change beforePath="$PROJECT_DIR$/tests/input/unit/conditional-execution-2.js" afterPath="$PROJECT_DIR$/tests/input/unit/conditional-execution-2.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,13 +15,13 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5037297">
+    <splitter split-orientation="horizontal" split-proportion="0.23721665">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="CheckModuleLoading.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="CheckModuleLoading.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/analysis/src/CheckModuleLoading.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2635">
+                <state relative-caret-position="17">
                   <caret line="156" column="8" lean-forward="false" selection-start-line="156" selection-start-column="8" selection-end-line="156" selection-end-column="8" />
                   <folding />
                 </state>
@@ -42,8 +34,10 @@
                 <state relative-caret-position="68">
                   <caret line="4" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
                   <folding>
-                    <marker date="1531233805686" expanded="true" signature="1088:1420" ph="/*...*/" />
-                    <marker date="1531233805686" expanded="true" signature="1519:5619" ph="/*...*/" />
+                    <marker date="1531238115629" expanded="true" signature="1088:1420" ph="/*...*/" />
+                    <marker date="1531238115629" expanded="true" signature="1519:5619" ph="/*...*/" />
+                    <marker date="1531238115629" expanded="true" signature="5619:5668" ph="/*...*/" />
+                    <marker date="1531238115629" expanded="true" signature="5778:6601" ph="/*...*/" />
                   </folding>
                 </state>
               </provider>
@@ -109,11 +103,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="test.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/test/test.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="357">
-                  <caret line="21" column="3" lean-forward="false" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+                <state relative-caret-position="221">
+                  <caret line="13" column="36" lean-forward="false" selection-start-line="12" selection-start-column="35" selection-end-line="13" selection-end-column="36" />
                   <folding />
                 </state>
               </provider>
@@ -136,31 +130,53 @@
           <file leaf-file-name="CheckModuleLoadingTest.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="782">
-                  <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+                <state relative-caret-position="2550">
+                  <caret line="150" column="50" lean-forward="false" selection-start-line="150" selection-start-column="50" selection-end-line="150" selection-end-column="50" />
                   <folding>
-                    <marker date="1531233805686" expanded="true" signature="1088:1420" ph="/*...*/" />
-                    <marker date="1531233805686" expanded="true" signature="1519:5619" ph="/*...*/" />
+                    <marker date="1531238115629" expanded="true" signature="1088:1420" ph="/*...*/" />
+                    <marker date="1531238115629" expanded="true" signature="1519:5619" ph="/*...*/" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Transformer.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
+          <file leaf-file-name="Utility.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/analysis/src/Utility.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="8602">
-                  <caret line="512" column="37" lean-forward="false" selection-start-line="512" selection-start-column="36" selection-end-line="512" selection-end-column="37" />
+                <state relative-caret-position="561">
+                  <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="S2STransformer.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Transformer.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1870">
+                  <caret line="143" column="58" lean-forward="false" selection-start-line="143" selection-start-column="58" selection-end-line="143" selection-end-column="58" />
+                  <folding>
+                    <element signature="n#!!doc" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="S2STransformer.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="239">
-                  <caret line="88" column="49" lean-forward="false" selection-start-line="88" selection-start-column="49" selection-end-line="88" selection-end-column="49" />
+                <state relative-caret-position="-1274">
+                  <caret line="173" column="70" lean-forward="false" selection-start-line="173" selection-start-column="70" selection-end-line="173" selection-end-column="70" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Main.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="663">
+                  <caret line="39" column="6" lean-forward="false" selection-start-line="39" selection-start-column="6" selection-end-line="39" selection-end-column="6" />
                   <folding />
                 </state>
               </provider>
@@ -229,9 +245,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>visitor</find>
-      <find>Proper</find>
-      <find>maybeBlock</find>
       <find>FunctionDe</find>
       <find>parseIf</find>
       <find>replace_bigger</find>
@@ -249,7 +262,6 @@
       <find>Replacin</find>
       <find>length</find>
       <find>populateGlobalModified</find>
-      <find>console</find>
       <find>pathToOutput</find>
       <find>Script</find>
       <find>Returned</find>
@@ -259,6 +271,10 @@
       <find>stubListOutJSON</find>
       <find>anonymous</find>
       <find>**</find>
+      <find>find</find>
+      <find>Function</find>
+      <find>out</find>
+      <find>console</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -289,8 +305,6 @@
         <option value="$PROJECT_DIR$/tests/input/unit/test2.js" />
         <option value="$PROJECT_DIR$/scribble/testErrorAndOut.js" />
         <option value="$PROJECT_DIR$/tests/output-actual/unit/test1_modified.js" />
-        <option value="$PROJECT_DIR$/analysis/src/Transformer.js" />
-        <option value="$PROJECT_DIR$/analysis/src/Main.js" />
         <option value="$PROJECT_DIR$/analysis/src/Utility.js" />
         <option value="$PROJECT_DIR$/test/ModifiedExecutionTests.js" />
         <option value="$PROJECT_DIR$/commons.js" />
@@ -300,8 +314,10 @@
         <option value="$PROJECT_DIR$/analysis/src/CheckModuleLoading.js" />
         <option value="$PROJECT_DIR$/test/test.js" />
         <option value="$PROJECT_DIR$/test/tests-nodejs.js" />
-        <option value="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" />
+        <option value="$PROJECT_DIR$/analysis/src/Main.js" />
         <option value="$PROJECT_DIR$/analysis/src/S2STransformer.js" />
+        <option value="$PROJECT_DIR$/analysis/src/Transformer.js" />
+        <option value="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" />
       </list>
     </option>
   </component>
@@ -342,6 +358,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -453,7 +470,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -483,43 +499,11 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Mocha.unit-tests.conditional-execution-3">
+  <component name="RunManager" selected="Mocha.test/CheckModuleLoadingTest.js">
     <configuration default="true" type="ChromiumRemoteDebugType" factoryName="Chromium Remote" port="9229" isV8Legacy="true" />
     <configuration name="S2S" type="NodeJSConfigurationType" factoryName="Node.js" application-parameters="-sl ../../stubList.txt -in ../testsb" path-to-js-file="analysis/S2STransformer.js" working-dir="$PROJECT_DIR$" />
     <configuration name="functionLoader" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="functionbodyloader.js" working-dir="$PROJECT_DIR$/scribble" />
     <configuration name="test.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-js-file="test.js" working-dir="$PROJECT_DIR$/test" />
-    <configuration name="CheckModuleLoading" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>false</pass-parent-env>
-      <envs>
-        <env name="PATH" value="path/path" />
-        <env name="NODE_PATH" value="/usr/bin/node" />
-        <env name="JALANGI_HOME" value="$PROJECT_DIR$/../.." />
-      </envs>
-      <ui>bdd</ui>
-      <extra-mocha-options />
-      <test-kind>SUITE</test-kind>
-      <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
-      <test-names>
-        <name value="CheckModuleLoading" />
-      </test-names>
-    </configuration>
-    <configuration name="Main" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
-      <envs />
-      <ui>bdd</ui>
-      <extra-mocha-options />
-      <test-kind>SUITE</test-kind>
-      <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
-      <test-names>
-        <name value="Main" />
-      </test-names>
-    </configuration>
     <configuration name="NodeJsTest-entry" type="mocha-javascript-test-runner" factoryName="Mocha">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -575,6 +559,40 @@
       <test-kind>TEST_FILE</test-kind>
       <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
     </configuration>
+    <configuration name="unit-tests.callback-executed" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>SUITE</test-kind>
+      <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
+      <test-names>
+        <name value="unit-tests" />
+        <name value="callback-executed" />
+      </test-names>
+    </configuration>
+    <configuration name="unit-tests.callback-unexecuted-anonymous" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>false</pass-parent-env>
+      <envs>
+        <env name="PATH" value="/usr/bin:/bin" />
+        <env name="NODE_PATH" value="/usr/bin/node" />
+        <env name="JALANGI_HOME" value="$PROJECT_DIR$/../.." />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>SUITE</test-kind>
+      <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
+      <test-names>
+        <name value="unit-tests" />
+        <name value="callback-unexecuted-anonymous" />
+      </test-names>
+    </configuration>
     <configuration name="unit-tests.conditional-execution-3" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -601,19 +619,19 @@
       <item index="3" class="java.lang.String" itemvalue="Node.js.functionLoader" />
       <item index="4" class="java.lang.String" itemvalue="Node.js.S2S" />
       <item index="5" class="java.lang.String" itemvalue="Node.js.TestTransformer" />
-      <item index="6" class="java.lang.String" itemvalue="Mocha.CheckModuleLoading" />
-      <item index="7" class="java.lang.String" itemvalue="Mocha.Main" />
-      <item index="8" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
-      <item index="9" class="java.lang.String" itemvalue="Node.js.test.js" />
-      <item index="10" class="java.lang.String" itemvalue="Mocha.unit-tests.conditional-execution-3" />
+      <item index="6" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
+      <item index="7" class="java.lang.String" itemvalue="Node.js.test.js" />
+      <item index="8" class="java.lang.String" itemvalue="Mocha.unit-tests.conditional-execution-3" />
+      <item index="9" class="java.lang.String" itemvalue="Mocha.unit-tests.callback-unexecuted-anonymous" />
+      <item index="10" class="java.lang.String" itemvalue="Mocha.unit-tests.callback-executed" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Mocha.unit-tests.conditional-execution-3" />
-        <item index="1" class="java.lang.String" itemvalue="Node.js.test.js" />
-        <item index="2" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
-        <item index="3" class="java.lang.String" itemvalue="Mocha.Main" />
-        <item index="4" class="java.lang.String" itemvalue="Mocha.CheckModuleLoading" />
+        <item index="0" class="java.lang.String" itemvalue="Mocha.unit-tests.callback-executed" />
+        <item index="1" class="java.lang.String" itemvalue="Mocha.unit-tests.callback-unexecuted-anonymous" />
+        <item index="2" class="java.lang.String" itemvalue="Mocha.unit-tests.conditional-execution-3" />
+        <item index="3" class="java.lang.String" itemvalue="Node.js.test.js" />
+        <item index="4" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
       </list>
     </recent_temporary>
   </component>
@@ -652,50 +670,49 @@
       <workItem from="1531146226483" duration="15329000" />
       <workItem from="1531233582316" duration="139000" />
       <workItem from="1531233747874" duration="2362000" />
-      <workItem from="1531236136570" duration="4000" />
+      <workItem from="1531236136570" duration="6481000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="NodeJsTest-entry - 2018.07.09 at 17h 03m 16s.xml">
-      <configuration name="NodeJsTest-entry" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="NodeJsTest-entry - 2018.07.09 at 17h 05m 52s.xml">
-      <configuration name="NodeJsTest-entry" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="NodeJsTest-entry - 2018.07.09 at 17h 09m 00s.xml">
-      <configuration name="NodeJsTest-entry" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.09 at 16h 49m 05s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.10 at 11h 47m 58s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.09 at 17h 03m 45s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.10 at 11h 49m 29s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.09 at 17h 05m 32s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.10 at 11h 53m 30s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.10 at 10h 42m 56s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.10 at 11h 54m 39s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.10 at 10h 44m 29s.xml">
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.10 at 11h 56m 34s.xml">
       <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="unit-tests_conditional-execution-3 - 2018.07.10 at 11h 13m 07s.xml">
-      <configuration name="unit-tests.conditional-execution-3" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="unit-tests_callback-executed - 2018.07.10 at 11h 47m 25s.xml">
+      <configuration name="unit-tests.callback-executed" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="unit-tests_conditional-execution-3 - 2018.07.10 at 11h 14m 43s.xml">
-      <configuration name="unit-tests.conditional-execution-3" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="unit-tests_callback-executed - 2018.07.10 at 11h 47m 30s.xml">
+      <configuration name="unit-tests.callback-executed" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="unit-tests_callback-executed - 2018.07.10 at 11h 47m 48s.xml">
+      <configuration name="unit-tests.callback-executed" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="unit-tests_callback-executed - 2018.07.10 at 11h 48m 05s.xml">
+      <configuration name="unit-tests.callback-executed" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="unit-tests_callback-executed - 2018.07.10 at 11h 48m 10s.xml">
+      <configuration name="unit-tests.callback-executed" configurationId="mocha-javascript-test-runner" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="542400000" />
+    <option name="totallyTimeSpent" value="548877000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="24" width="1922" height="1033" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13600422" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13600422" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -720,10 +737,10 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5913621" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5913621" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32951945" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13600422" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13600422" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -935,24 +952,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/Utility.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/copy-dir/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3519">
           <caret line="207" column="9" lean-forward="false" selection-start-line="207" selection-start-column="9" selection-end-line="207" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="870">
-          <caret line="65" column="15" lean-forward="false" selection-start-line="65" selection-start-column="15" selection-end-line="65" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -1006,14 +1009,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/CheckModuleLoading.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2635">
-          <caret line="156" column="8" lean-forward="false" selection-start-line="156" selection-start-column="8" selection-end-line="156" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -1074,37 +1069,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/test/test.js">
+    <entry file="file://$PROJECT_DIR$/analysis/src/Utility.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="3" lean-forward="false" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+        <state relative-caret-position="561">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
+    <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8602">
-          <caret line="512" column="37" lean-forward="false" selection-start-line="512" selection-start-column="36" selection-end-line="512" selection-end-column="37" />
+        <state relative-caret-position="-1274">
+          <caret line="173" column="70" lean-forward="false" selection-start-line="173" selection-start-column="70" selection-end-line="173" selection-end-column="70" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+        <state relative-caret-position="68">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
-            <marker date="1531233805686" expanded="true" signature="1088:1420" ph="/*...*/" />
-            <marker date="1531233805686" expanded="true" signature="1519:5619" ph="/*...*/" />
+            <marker date="1531238115629" expanded="true" signature="1088:1420" ph="/*...*/" />
+            <marker date="1531238115629" expanded="true" signature="1519:5619" ph="/*...*/" />
+            <marker date="1531238115629" expanded="true" signature="5619:5668" ph="/*...*/" />
+            <marker date="1531238115629" expanded="true" signature="5778:6601" ph="/*...*/" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
+    <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="88" column="49" lean-forward="false" selection-start-line="88" selection-start-column="49" selection-end-line="88" selection-end-column="49" />
+        <state relative-caret-position="663">
+          <caret line="39" column="6" lean-forward="false" selection-start-line="39" selection-start-column="6" selection-end-line="39" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1870">
+          <caret line="143" column="58" lean-forward="false" selection-start-line="143" selection-start-column="58" selection-end-line="143" selection-end-column="58" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/test/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="36" lean-forward="false" selection-start-line="12" selection-start-column="35" selection-end-line="13" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/src/CheckModuleLoading.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="156" column="8" lean-forward="false" selection-start-line="156" selection-start-column="8" selection-end-line="156" selection-end-column="8" />
           <folding />
         </state>
       </provider>
