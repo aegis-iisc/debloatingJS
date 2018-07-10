@@ -7,6 +7,7 @@
 var fs = require('fs');
 var utf8 = require('utf8');
 var argparse = require('argparse');
+var util = require('./Utility');
 var argument =  process.argv.slice(2);
 
 var parser = new argparse.ArgumentParser({
@@ -84,6 +85,8 @@ var parser = new argparse.ArgumentParser({
                 loadedFunctionNames[giid] = val.toString().slice(0, val.toString().indexOf('{')).trim();
                 collectivefunctionsLoaded[giid] = {loadingLocation : J$.iidToLocation(giid, iid), loadedFunName : val.toString().slice(0, val.toString().indexOf('{')).trim() ,isLiteral : true};
 
+                // TODO use this instead of absolute path
+                var relativePath = util.getReletivePath(J$.iidToLocation(giid, iid));
             }
 
 

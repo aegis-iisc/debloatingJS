@@ -2,6 +2,7 @@
 var exports = module.exports = {};
 var fs = require('fs');
 var shelljs = require('shelljs');
+var path = require('path');
 
 function printObject (obj){
 
@@ -46,8 +47,8 @@ function cerateUniqueId (locFrom){
 }
 
 function getReletivePath (absolutePath) {
-    var relativePath = '';
-    // TODO get reletive path
+    absolutePath = absolutePath.substring(1, absolutePath.length - 1);
+    var relativePath = path.relative(process.cwd(), absolutePath);
     return relativePath;
 }
 
@@ -56,5 +57,6 @@ module.exports = {
     compareLoc: compareLoc,
     createExpectedOutputFile: createExpectedOutputFile,
     printObject: printObject,
-    UNIQUE_ID_TYPE: 'UniqueFunctionId'
+    UNIQUE_ID_TYPE: 'UniqueFunctionId',
+    getReletivePath: getReletivePath
 };
