@@ -112,7 +112,6 @@ function runBothPhases (testName, isNode) {
 function jalangiAnalysis (analysis, inputFile, testsRoot){
     var testroot = null;
     if(!testsRoot) {
-        console.log("testRoot Not defined");
         testroot = './tests/input/unit/';
     } else{
         testroot = testsRoot;
@@ -137,6 +136,7 @@ function jalangiAnalysis (analysis, inputFile, testsRoot){
 function compareOutputs (testName, testType) {
     var actualOutputFile = path.resolve(actualOutputPath, testType, testName + '_out.json');
     var expectedOutputFile = path.resolve(expectedOutputPath, testType, testName + '_out.json');
+
 
     var actualOutput = JSON.parse(fs.readFileSync(actualOutputFile));
     var expectedOutput = JSON.parse(fs.readFileSync(expectedOutputFile));

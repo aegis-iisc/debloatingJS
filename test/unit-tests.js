@@ -54,7 +54,7 @@ describe('unit-tests', function () {
             runTests('recursive-execution-2'); // => Transformer fails
         });
     });
-
+/
     describe('function expressions', function () {
         describe('single-function-not-executed', function () {
             runTests('test1');

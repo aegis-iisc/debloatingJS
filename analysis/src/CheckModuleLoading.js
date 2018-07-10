@@ -9,6 +9,8 @@ var utf8 = require('utf8');
 var argparse = require('argparse');
 var util = require('./Utility');
 var argument =  process.argv.slice(2);
+var mkdirp = require('mkdirp');
+var path = require('path');
 
 var parser = new argparse.ArgumentParser({
     version : 0.1,
@@ -27,7 +29,9 @@ var parser = new argparse.ArgumentParser({
     console.log(argument);
     // extracting outputpaths
     var inputFileName = argument[argument.length-1];
-    var inputFilePrefix = inputFileName.substring(0, inputFileName.lastIndexOf('.'));
+
+
+    var inputFilePrefix = path.basename(inputFileName); //inputFileName.substring(0, inputFileName.lastIndexOf('.'));
     var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
     //console.log("Prefix" +outputFilePrefix);
 
@@ -37,10 +41,10 @@ var parser = new argparse.ArgumentParser({
     //invoked functions list output file path
     var invokedFunctionsOut = outputFilePrefix +"_invokedfunctions.txt";
     const invokedFunctionsOutJSON = outputFilePrefix+ "_invokedfunctions.json";
-    const jsonOutputPath = outputFilePrefix + "_out.json";
+    const jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
 
-    var stubListOut = outputFilePrefix+"_stubList.txt";
-    const stubListOutJSON = outputFilePrefix+"_stubList.json";
+    // var stubListOut = outputFilePrefix+"_stubList.txt";
+    const stubListOutJSON = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_stubList.json");
 
     function MyAnalysis(){
 
@@ -164,8 +168,6 @@ var parser = new argparse.ArgumentParser({
 */
 
         this.endExecution = function(){
-            // printResult(collectivefunctionsLoaded, 'Loaded');
-            // printResult(collectivefunctionsCalled, 'Called');
             var resultantStubList = generatePotentialStubs(collectivefunctionsLoaded, collectivefunctionsCalled);
             writeCollectiveJSON(collectivefunctionsLoaded, resultantStubList);
 
@@ -298,7 +300,8 @@ var parser = new argparse.ArgumentParser({
             'loadedFunctions': loadedFunctions,
             'unexecutedFunctions': unexecutedFunctions
         };
-        fs.writeFileSync(jsonOutputPath, JSON.stringify(traceItems, null, 2));
+        // mkdirp.sync(path.basename(jsonOutputPath));
+        fs.writeFileSync(path.resolve(jsonOutputPath), JSON.stringify(traceItems, null, 2));
     }
     /* @Sync Function writing log to a file*/
 

@@ -161,9 +161,8 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         var _loc = location;
         var result = null;
 
-        console.log('*** location: ' + location);
-
         if (_fn.length > 0) {
+
             var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
             var astForInput = esprima.parse(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false});
 
@@ -310,8 +309,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         //console.log("StubList " + JSON.stringify(obj));
         for (elem in obj) {
             var stubLoction_elem = obj[elem].stubLocation;
-            var temp = stubLoction_elem.substring(1, stubLoction_elem.length - 1);
-            var filePath_LineNo = temp.split(".js:");
+            var filePath_LineNo = stubLoction_elem.split(".js:");
             var locArray = filePath_LineNo[1].split(':');
 
         /*    console.log("Type of location "+typeof  locArray);
