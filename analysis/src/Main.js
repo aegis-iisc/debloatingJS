@@ -1,25 +1,17 @@
-
-
-
 var utility = require('./Utility.js');
-var fs = require('fs');
-var shelljs = require('shelljs');
 var argparse = require('argparse');
 var commons = require('../../commons.js');
 
 var path = require('path');
 var copydir = require('copy-dir');
 
-
 var parser = new argparse.ArgumentParser({
     version : 0.1,
     addHelp : true,
     description : "The source to source transformer for the feature reduction of JS"
-
 });
 
 (function runMain() {
-
 
     parser.addArgument(['--analysis'], {help: 'Jalangi Analysis path'});
     parser.addArgument(['--inputFile'], {help: 'input file/script to Jalangi'});
@@ -36,9 +28,6 @@ var parser = new argparse.ArgumentParser({
     var testsRoot = null;
 
     // get the input file or directory
-
-    //console.log("analysis " + analysis);
-    //console.log("inputFile " + inputFile);
 
     var resultJalangi = null;
     if (!args.node || args.node === 'false') { // unit
@@ -80,8 +69,6 @@ var parser = new argparse.ArgumentParser({
         //console.log("test root " + testsRoot);
 
     }
-
-
 
     // if dynamic analysis phase exited successfully, compose it with the transformation.
     if(resultJalangi == null || resultJalangi === -1){
