@@ -1,52 +1,39 @@
-var srcFile = null / work / NEU / jalangi2 / project / dynamic / tests / exported_circle_second;
+var original_exports_extraCheks = null;
+var original_exports_extraCheks = null;
+var original_exports_extraCheks = null;
+var srcFile = null / work / NEU / jalangi2 / project / dynamic / tests / line;
 var fs = require('fs');
 var esprima = require('esprima');
 var estraverse = require('estraverse');
 var cutility = require('./cutility.js');
 var escodegen = require('escodegen');
 var cachedCode = {};
-const line = require('./line.js');
 var exports = module.exports = {};
-const math = Math;
-var unused_diameter = 2;
-exports.area = function (radius) {
-    return math.PI * radius * radius;
-};
-{
-    var original_unused_function;
-    function _unused_function(_param) {
-        var _var1;
-                if (original_unused_function == null) {
-            lazyLoad(unused_function);
-            undefined;
+var exports = module.exports = {};
+exports.line = { line_size: 0 };
+exports.drawLine = function (size) {
+    if (size > 0) {
+        for (i = 0; i < size; i += 1) {
+            process.stdout.write('-');
         }
-    }
-        original_unused_function.apply(this, _param);
-        var original_exports_diameter = null;
-}
-exports.perimeter = function (radius) {
-    return 2 * math.PI * radius;
-};
-exports.drawCircle = function (radius) {
-    if (this.isNontrivial(radius)) {
-        l = line.drawLine(exports.perimeter(radius));
-        line.trim();
+        return size;
+    } else {
+        return size;
     }
 };
-exports.diameter = function (radius) {
-    var _var1;
-        if (original_exports.diameter == null) {
-        lazyLoad(exports.diameter);
-        original_exports.diameter = this.eval(cachedCode[exports.diameter]);
-        exports.diameter = original_exports.diameter;
+exports.trim = function () {
+    if (this.line.size > 0) {
+        this.lize.size = this.line.size - 1;
     }
-        original_exports.diameter.apply(this, radius);
 };
-exports.isNontrivial = function (radius) {
-    if (radius >= 0)
-        return true;
-    else
-        return false;
+exports.extraCheks = function () {
+        if (original_exports.extraCheks == null) {
+        lazyLoad(exports.extraCheks, srcFile);
+        var loadedBody = loadAndInvoke('exports.extraCheks', srcFile);
+        eval('original_exports.extraCheks = ' + loadedBody);
+        exports.extraCheks = original_exports.extraCheks;
+    }
+        original_exports.extraCheks.apply(this);
 };
 function lazyLoad(funName, fileName) {
     var code = fs.readFileSync(fileName, 'utf8');
@@ -58,8 +45,6 @@ function lazyLoad(funName, fileName) {
     cachedCode[srcFile] = {};
     cutility.extractBodies(fileName);
 }
-var original_unused_function = null;
-var original_exports_diameter = null;
 function extractBodies(srcFile) {
     var code = fs.readFileSync(srcFile, 'utf8');
     var ast = esprima.parse(code.toString(), {
@@ -71,17 +56,13 @@ function extractBodies(srcFile) {
     estraverse.traverse(ast, {
         enter: function (node, parent) {
             if (node.type == 'FunctionDeclaration') {
-                console.log('Function Node :: Declaration');
                 var functionName = node.id.name;
                 var functionBody = escodegen.generate(node);
                 cachedCode[srcFile][functionName] = functionBody;
             } else if (node.type == 'ExpressionStatement') {
-                console.log('Function Node :: Expression');
                 if (node.expression.type == 'AssignmentExpression') {
                     var left = node.expression.left;
                     var right = node.expression.right;
-                    console.log('left  \t ');
-                    console.log('right \t');
                     if (right.type == 'FunctionExpression') {
                         if (left.type == 'MemberExpression') {
                             var leftVarBaseName = left.object.name;
@@ -101,6 +82,20 @@ function extractBodies(srcFile) {
         }
     });
 }
-var original_unused_function = null;
-var original_exports_diameter = null;
-var original_unused_function = null;
+function loadAndInvoke(funName, srcFile) {
+    for (var elem in cachedCode) {
+        if (cachedCode.hasOwnProperty(elem)) {
+            if (elem === srcFile) {
+                var functions = cachedCode[elem];
+                for (var fun in functions) {
+                    if (functions.hasOwnProperty(fun)) {
+                        if (fun === funName) {
+                            console.log(functions[fun]);
+                            return functions[fun];
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

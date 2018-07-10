@@ -1,34 +1,40 @@
-var original_unused_function = null;
-var original_unused_function = null;
-var original_unused_function = null;
-var original_unused_function = null;
-var srcFile = null / work / NEU / jalangi2 / project / dynamic / tests / input / unit / test2 / circle - test2;
+var original_exports_extraCheks = null;
+var original_exports_extraCheks = null;
+var original_exports_extraCheks = null;
+var srcFile = null / work / NEU / jalangi2 / project / dynamic / tests / line;
 var fs = require('fs');
 var esprima = require('esprima');
 var estraverse = require('estraverse');
 var cutility = require('./cutility.js');
 var escodegen = require('escodegen');
 var cachedCode = {};
-const line = require('./line-test2_modified.js');
 var exports = module.exports = {};
-const math = Math;
-exports.area = function (radius) {
-    line.drawLine(radius);
-    return math.PI * radius * radius;
-};
-{
-    var original_unused_function;
-    function _unused_function() {
-                if (original_unused_function == null) {
-            lazyLoad('unused_function', srcFile);
-            var loadedBody = loadAndInvoke('unused_function', srcFile);
-            eval('original_unused_function = ' + loadedBody);
-            unused_function = original_unused_function;
+var exports = module.exports = {};
+exports.line = { line_size: 0 };
+exports.drawLine = function (size) {
+    if (size > 0) {
+        for (i = 0; i < size; i += 1) {
+            process.stdout.write('-');
         }
-                original_unused_function.apply(this);
+        return size;
+    } else {
+        return size;
     }
-}
-exports.unused_function = unused_function;
+};
+exports.trim = function () {
+    if (this.line.size > 0) {
+        this.lize.size = this.line.size - 1;
+    }
+};
+exports.extraCheks = function () {
+        if (original_exports.extraCheks == null) {
+        lazyLoad(exports.extraCheks, srcFile);
+        var loadedBody = loadAndInvoke('exports.extraCheks', srcFile);
+        eval('original_exports.extraCheks = ' + loadedBody);
+        exports.extraCheks = original_exports.extraCheks;
+    }
+        original_exports.extraCheks.apply(this);
+};
 function lazyLoad(funName, fileName) {
     var code = fs.readFileSync(fileName, 'utf8');
     var ast = esprima.parse(code.toString(), {
