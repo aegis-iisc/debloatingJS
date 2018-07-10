@@ -1,0 +1,19 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/recursive-execution-2.js:4:1:14:2",
+      "loadedFunName": "function foo(msg)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "tests/input/unit/recursive-execution-2.js:15:1:18:2",
+      "loadedFunName": "function bar()",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": [
+    {
+      "stubLocation": "tests/input/unit/recursive-execution-2.js:4:1:14:2"
+    }
+  ]
+}

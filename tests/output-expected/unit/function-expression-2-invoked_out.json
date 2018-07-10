@@ -1,0 +1,10 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/function-expression-2-invoked.js:1:2:3:2",
+      "loadedFunName": "function foo(message)",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": []
+}

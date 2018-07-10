@@ -1,0 +1,10 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/test3.js:1:1:3:2",
+      "loadedFunName": "function foo()",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": []
+}

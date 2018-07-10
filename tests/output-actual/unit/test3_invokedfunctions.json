@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-[{"functionName":"bound consoleCall","callLocation":"(/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test3.js:2:5:2:32)","defLocation":"bound consoleCall"},{"functionName":"foo","callLocation":"(/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test3.js:4:1:4:6)","defLocation":"(/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test3.js:1:1:3:2)"}]
-=======
-[{"functionName":"foo","callLocation":null,"defLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test3.js:1:1:3:2)"},{"functionName":"bound ","callLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test3.js:2:5:2:32)","defLocation":"bound "},{"functionName":"foo","callLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test3.js:4:1:4:6)","defLocation":"(/home/ashish/work/NEU/jalangi2/project/dynamic/tests/input/unit/test3.js:1:1:3:2)"}]
->>>>>>> 08d44f5e849035841f7e4c76f8112b5364cd6564

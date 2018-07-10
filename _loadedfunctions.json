@@ -1,1 +1,1 @@
-[{"functionName":"function foo()","location":"(/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/test1.js:1:1:3:2)","isLiteral":true}]
+[{"functionName":"function (x, y)","location":"evalIndirect(/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/function-newfunction.js:3:11:3:44):1:2:1:31","isLiteral":true}]
