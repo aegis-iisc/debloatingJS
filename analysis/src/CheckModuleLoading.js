@@ -127,12 +127,8 @@ var parser = new argparse.ArgumentParser({
          */
         this.functionEnter = function(iid, f, dis, args){
             var giid = J$.getGlobalIID(iid);
-
-            console.log("Function entered ");
-            console.log(dis);
             var func_def_loc = J$.iidToLocation(giid, iid);
             if(!f.hasOwnProperty('id')){
-                console.log(">>");
                 collectivefunctionsCalled[giid] = {callingLocation : null, calledDefLocation : func_def_loc, calledFunName : f.name ? f.name : null};
 
             }
