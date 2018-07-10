@@ -173,6 +173,9 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                         if (node.type == 'FunctionDeclaration') {
                             console.log(startLineNumber);
                             console.log(node.loc.start.line);
+                            console.log("**** "+startLineNumber);
+                            console.log("***  "+location);
+
                             if (startLineNumber == node.loc.start.line) {
                                 // found the function name .
                                 result = node.id.name;
@@ -185,7 +188,6 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                             if (node.expression.type == 'AssignmentExpression') {
                                 var left = node.expression.left;
                                 var right = node.expression.right;
-
                                 if (startLineNumber == node.loc.start.line) {
                                     if (right.type == 'FunctionExpression') {
                                         // lhs = MemberExpression rhs = FunctionExpression
