@@ -1,0 +1,10 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/function-apply-with-args.js:2:15:4:6",
+      "loadedFunName": "function (city, country)",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": []
+}

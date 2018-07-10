@@ -37,6 +37,7 @@ var parser = new argparse.ArgumentParser({
     //invoked functions list output file path
     var invokedFunctionsOut = outputFilePrefix +"_invokedfunctions.txt";
     const invokedFunctionsOutJSON = outputFilePrefix+ "_invokedfunctions.json";
+    const jsonOutputPath = outputFilePrefix + "_out.json";
 
     var stubListOut = outputFilePrefix+"_stubList.txt";
     const stubListOutJSON = outputFilePrefix+"_stubList.json";
@@ -46,8 +47,8 @@ var parser = new argparse.ArgumentParser({
         // collective ojects for loaded and invoked functions
         // collectiveFunctionLoaded = {giid : {laodingLocation : ...  loadedFunName : ...}
         // collectiveFunctionCalled = {giid : {CallingLocation :  val  , calledDefinitionLocation : val,  loadedFunName : val}}
-        var collectivefunctionsLoaded = {};
-        var collectivefunctionsCalled = {};
+        var collectivefunctionsLoaded = [];//{};
+        var collectivefunctionsCalled = [];//{};
 
 
         var functionsLoaded = {};
@@ -84,7 +85,12 @@ var parser = new argparse.ArgumentParser({
                 functionsLoaded[giid] = J$.iidToLocation(giid,iid);
                 loadedFunctionNames[giid] = val.toString().slice(0, val.toString().indexOf('{')).trim();
                 var relativePath = util.getReletivePath(J$.iidToLocation(giid, iid));
-                collectivefunctionsLoaded[giid] = {loadingLocation : relativePath, loadedFunName : val.toString().slice(0, val.toString().indexOf('{')).trim() ,isLiteral : true};
+                // collectivefunctionsLoaded[giid] = {loadingLocation : relativePath, loadedFunName : val.toString().slice(0, val.toString().indexOf('{')).trim() ,isLiteral : true};
+                collectivefunctionsLoaded.push({
+                    loadingLocation: relativePath,
+                    loadedFunName: val.toString().slice(0, val.toString().indexOf('{')).trim(),
+                    isLiteral: true
+                });
             }
 
 
@@ -115,11 +121,12 @@ var parser = new argparse.ArgumentParser({
             calledFunctionNames[giid] = f.name ? f.name : f.toString().slice(0, f.toString().indexOf('{')).trim();
             var callingFunctionRelative = util.getReletivePath(J$.iidToLocation(giid, iid));
             var calledDefRelative = util.getReletivePath(func_def_loc);
-            collectivefunctionsCalled[giid] = {
+            // collectivefunctionsCalled[giid] = {
+            collectivefunctionsCalled.push({
                 callingLocation: callingFunctionRelative,
                 calledDefLocation: calledDefRelative,
                 calledFunName: f.name ? f.name : f.toString().slice(0, f.toString().indexOf('{')).trim()
-            };
+            });
 
             if(base){
                 calledFunctionsbase[giid] = base.toString();
@@ -135,12 +142,12 @@ var parser = new argparse.ArgumentParser({
             var giid = J$.getGlobalIID(iid);
             var func_def_loc = util.getReletivePath(J$.iidToLocation(giid, iid));
             if(!f.hasOwnProperty('id')){
-                collectivefunctionsCalled[giid] = {
+                collectivefunctionsCalled.push({
                     callingLocation: null,
                     calledDefLocation:
                     func_def_loc,
                     calledFunName: f.name ? f.name : null
-                };
+                });
             }
         };
 
@@ -157,10 +164,12 @@ var parser = new argparse.ArgumentParser({
 */
 
         this.endExecution = function(){
-            printResult(collectivefunctionsLoaded, 'Loaded');
-            printResult(collectivefunctionsCalled, 'Called');
-
+            // printResult(collectivefunctionsLoaded, 'Loaded');
+            // printResult(collectivefunctionsCalled, 'Called');
             var resultantStubList = generatePotentialStubs(collectivefunctionsLoaded, collectivefunctionsCalled);
+            writeCollectiveJSON(collectivefunctionsLoaded, resultantStubList);
+
+            // TODO refactor this later
             fs.writeFileSync(stubListOutJSON, JSON.stringify(resultantStubList));
         };
     }
@@ -219,6 +228,7 @@ var parser = new argparse.ArgumentParser({
 
         return diff;
     }
+    /*
     // write the loaded or called function to a json object
     function printResult(collectivebject, str){
         //console.log(str);
@@ -226,6 +236,7 @@ var parser = new argparse.ArgumentParser({
         //writeCollectiveLog(collectivebject, str);
         writeCollectiveJSON(collectivebject, str);
     }
+    */
 
 
     function writeCollectiveLog(collectiveObj, str){
@@ -253,7 +264,7 @@ var parser = new argparse.ArgumentParser({
     // the JSON version of the disk-writing
     // loadedFunctions = [{functionName : '', defLocation : ''}]
     // invokedFunctions = [{functionName : '', callLocation : '', defLocation: ''}]
-    function writeCollectiveJSON(collectiveObj, str){
+    function writeCollectiveJSON_old(collectiveObj, str){
 
         var loadedFunctions = [];
         var invokedFunctions = [];
@@ -280,6 +291,14 @@ var parser = new argparse.ArgumentParser({
 
         }
 
+    }
+
+    function writeCollectiveJSON (loadedFunctions, unexecutedFunctions) {
+        var traceItems = {
+            'loadedFunctions': loadedFunctions,
+            'unexecutedFunctions': unexecutedFunctions
+        };
+        fs.writeFileSync(jsonOutputPath, JSON.stringify(traceItems, null, 2));
     }
     /* @Sync Function writing log to a file*/
 

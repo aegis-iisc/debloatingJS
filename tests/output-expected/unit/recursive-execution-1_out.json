@@ -1,0 +1,10 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/recursive-execution-1.js:4:1:14:2",
+      "loadedFunName": "function foo(msg)",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": []
+}
