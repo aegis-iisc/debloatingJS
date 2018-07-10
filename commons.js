@@ -4,6 +4,11 @@ var fs = require('fs');
 var utf8 = require('utf8');
 var assert = require('assert');
 var exec = require('child_process').exec;
+var path = require('path');
+
+const actualOutputPath = path.resolve('./tests/output-actual/');
+const expectedOutputPath = path.resolve('./tests/output-expected/');
+
 
 //const $jalangi_home =
 //shell.env
@@ -210,6 +215,16 @@ function compareLoadedWithExpected(testName, isNode){
 
 
 }
+
+exports.compareOutputs = function (testName, testType) {
+    var actualOutputFile = path.resolve(actualOutputPath, testType, testName + '_out.json');
+    var expectedOutputFile = path.resolve(expectedOutputPath, testType, testName + '_out.json');
+
+    var actualOutput = JSON.parse(fs.readFileSync(actualOutputFile));
+    var expectedOutput = JSON.parse(fs.readFileSync(expectedOutputFile));
+
+    return assert.deepStrictEqual(actualOutput, expectedOutput, "Actual and Expected Mismatch");
+};
 
 exports.compareLoadedWithExpected = compareLoadedWithExpected;
 
