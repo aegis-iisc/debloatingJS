@@ -83,10 +83,8 @@ var parser = new argparse.ArgumentParser({
                 // write the function and the file name to the log
                 functionsLoaded[giid] = J$.iidToLocation(giid,iid);
                 loadedFunctionNames[giid] = val.toString().slice(0, val.toString().indexOf('{')).trim();
-                collectivefunctionsLoaded[giid] = {loadingLocation : J$.iidToLocation(giid, iid), loadedFunName : val.toString().slice(0, val.toString().indexOf('{')).trim() ,isLiteral : true};
-
-                // TODO use this instead of absolute path
                 var relativePath = util.getReletivePath(J$.iidToLocation(giid, iid));
+                collectivefunctionsLoaded[giid] = {loadingLocation : relativePath, loadedFunName : val.toString().slice(0, val.toString().indexOf('{')).trim() ,isLiteral : true};
             }
 
 
@@ -115,11 +113,16 @@ var parser = new argparse.ArgumentParser({
             functionsCalled[giid] = J$.iidToLocation(giid, iid);
             functionDefLocation[giid] = func_def_loc;
             calledFunctionNames[giid] = f.name ? f.name : f.toString().slice(0, f.toString().indexOf('{')).trim();
-            collectivefunctionsCalled[giid] = {callingLocation : J$.iidToLocation(giid, iid), calledDefLocation : func_def_loc, calledFunName : f.name ? f.name : f.toString().slice(0, f.toString().indexOf('{')).trim()};
+            var callingFunctionRelative = util.getReletivePath(J$.iidToLocation(giid, iid));
+            var calledDefRelative = util.getReletivePath(func_def_loc);
+            collectivefunctionsCalled[giid] = {
+                callingLocation: callingFunctionRelative,
+                calledDefLocation: calledDefRelative,
+                calledFunName: f.name ? f.name : f.toString().slice(0, f.toString().indexOf('{')).trim()
+            };
 
             if(base){
                 calledFunctionsbase[giid] = base.toString();
-
             }
         };
 
@@ -130,14 +133,15 @@ var parser = new argparse.ArgumentParser({
          */
         this.functionEnter = function(iid, f, dis, args){
             var giid = J$.getGlobalIID(iid);
-            var func_def_loc = J$.iidToLocation(giid, iid);
+            var func_def_loc = util.getReletivePath(J$.iidToLocation(giid, iid));
             if(!f.hasOwnProperty('id')){
-                collectivefunctionsCalled[giid] = {callingLocation : null, calledDefLocation : func_def_loc, calledFunName : f.name ? f.name : null};
-
+                collectivefunctionsCalled[giid] = {
+                    callingLocation: null,
+                    calledDefLocation:
+                    func_def_loc,
+                    calledFunName: f.name ? f.name : null
+                };
             }
-
-            console.log(J$.iidToLocation(giid, iid));
-
         };
 
 /*
@@ -145,28 +149,20 @@ var parser = new argparse.ArgumentParser({
            /!* if(! isMethodCall)
                 return;
            *!/ var giid = J$.getGlobalIID(iid);
-
             console.log("field access");
             console.log(J$.iidToLocation(giid, iid));
             console.log(base);
             console.log(offset);
-
-
-
         }
 */
-        this.endExecution = function(){
 
+        this.endExecution = function(){
             printResult(collectivefunctionsLoaded, 'Loaded');
             printResult(collectivefunctionsCalled, 'Called');
 
             var resultantStubList = generatePotentialStubs(collectivefunctionsLoaded, collectivefunctionsCalled);
-            //fs.writeFileSync(stubListOut, resultantStubList);
             fs.writeFileSync(stubListOutJSON, JSON.stringify(resultantStubList));
-
         };
-
-
     }
     /*
     Takes two objects with Loaded and Called functions information and returns an object containing
@@ -229,7 +225,6 @@ var parser = new argparse.ArgumentParser({
         //printobjects(collectivebject);
         //writeCollectiveLog(collectivebject, str);
         writeCollectiveJSON(collectivebject, str);
-
     }
 
 

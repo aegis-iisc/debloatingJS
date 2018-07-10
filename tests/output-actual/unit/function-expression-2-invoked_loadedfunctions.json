@@ -1,1 +1,1 @@
-[{"functionName":"function foo(message)","location":"(/Users/saba/Documents/northeastern/research/debloating/debloatingJS/tests/input/unit/function-expression-2-invoked.js:1:2:3:2)","isLiteral":true}]
+[{"functionName":"function foo(message)","location":"tests/input/unit/function-expression-2-invoked.js:1:2:3:2","isLiteral":true}]
