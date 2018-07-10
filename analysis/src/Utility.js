@@ -15,21 +15,6 @@ function printObject (obj){
     }
 }
 
-function createExpectedOutputFile (fileName){
-    var loadedFunctions = [];
-    var invokedFunctions = [];
-    var stubList = [];
-
-    var jsonPath = fileName+'.json';
-    var jsonObject = {'loadedfunctions': loadedFunctions, 'invokedfunctions': invokedFunctions, 'stubList': stubList};
-    fs.writeFileSync(jsonPath, JSON.stringify(jsonObject));
-    if(!fs.existsSync(fileName+'_persistent.json')){
-        var code =shelljs.exec('cp '+jsonPath+' '+fileName+'_persistent.json').code;
-        return 0;
-    } else
-        return 0;
-}
-
 function compareLoc (loc1, loc2){
     console.log(loc1);
     console.log(loc2);
@@ -55,7 +40,6 @@ function getReletivePath (absolutePath) {
 module.exports = {
     cerateUniqueId: cerateUniqueId,
     compareLoc: compareLoc,
-    createExpectedOutputFile: createExpectedOutputFile,
     printObject: printObject,
     UNIQUE_ID_TYPE: 'UniqueFunctionId',
     getReletivePath: getReletivePath
