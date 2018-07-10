@@ -87,6 +87,8 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                 var fileName = fileName_Func_Location[elem].fileName;
                 var location = fileName_Func_Location[elem].funcLoc;
                 var startLineNumber = location[0];
+                //var startLineNumber = location.toString().split(':')[0];
+                console.log("********* finding function at line number "+startLineNumber);
                 var functionName = findFun(fileName, location, startLineNumber);
 
                 if (functionName === undefined)
@@ -116,9 +118,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                 }
 
                 //transformer.addOriginalDeclaration(astForInput, functionName);
-                //console.log("functionName "+functionName);
                 if (functionName.type == utility.UNIQUE_ID_TYPE) {
-                    console.log("REPLACE :: Anonymous Function");
                     transformer.replace(astForInput, null, functionName);
                     // create and add a body for lazy Loading
                     var modifiedProgram = escodegen.generate(astForInput);
@@ -144,7 +144,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
             for(fileN in updatedASTList){
                 var trimmedFileN = fileN.substring(fileN.lastIndexOf('/')+1);
                 var f= trimmedFileN.replace(/([a-z]|[A-Z]|[0-9])\//g, '-');
-                console.log("path "+pathToOutput);
+                //console.log("path "+pathToOutput);
 
                 console.log("fileName-to-be-written " +pathToOutput + f+'_modified.js');
                 fs.writeFileSync(pathToOutput + f + '_modified.js', escodegen.generate(updatedASTList[fileN]));
@@ -167,12 +167,13 @@ const LOCATION_DELTA_THRESSHOLD = 2;
             var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
             var astForInput = esprima.parse(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false});
 
-            console.log(astForInput);
+            //console.log(astForInput);
             estraverse.traverse(astForInput,
                 { // define the visitor as an object with two properties/functions defining task at enter and leave
                     enter: function (node, parent) { // check for function name and replace
-                        if (node.type === 'FunctionDeclaration') {
-                            if (startLineNumber === node.loc.start.line.toString()) {
+                        if (node.type == 'FunctionDeclaration') {
+
+                            if (startLineNumber == node.loc.start.line) {
                                 // found the function name .
                                 result = node.id.name;
                                 this.break();
@@ -292,9 +293,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
     function splitStubFile() {
 
         var buffer = fs.readFileSync(stubbingFuncList);
-        console.log("file " + buffer);
         var dataAsArray = buffer.toString().split("\n");
-        console.log(dataAsArray.toString());
         for (elem in dataAsArray) {
             var temp = dataAsArray[elem].substring(1, dataAsArray[elem].length - 1);
             var filePath_LineNo = temp.split(".js:");
@@ -315,9 +314,9 @@ const LOCATION_DELTA_THRESSHOLD = 2;
             var filePath_LineNo = temp.split(".js:");
             var locArray = filePath_LineNo[1].split(':');
 
-            console.log("Type of location "+typeof  locArray);
+        /*    console.log("Type of location "+typeof  locArray);
             console.log(locArray);
-
+*/
            // fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: filePath_LineNo[1]};
             fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: locArray};
         }

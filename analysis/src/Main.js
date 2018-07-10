@@ -37,7 +37,7 @@ var parser = new argparse.ArgumentParser({
 
     // get the input file or directory
 
-    console.log("analysis " + analysis);
+    //console.log("analysis " + analysis);
     //console.log("inputFile " + inputFile);
 
     var resultJalangi = null;
@@ -52,7 +52,7 @@ var parser = new argparse.ArgumentParser({
         if(args.inputFile) {
             var inputFile = args.inputFile;
             console.log("CASE :: UNIT INPUT FILE");
-            console.log("test root " + testsRoot);
+            //console.log("test root " + testsRoot);
             utility.createExpectedOutputFile(outputRootExpected+inputFile.substring(0,inputFile.lastIndexOf('.')));
 
             resultJalangi = commons.runJalangi(analysis, inputFile, testsRoot);
@@ -77,7 +77,7 @@ var parser = new argparse.ArgumentParser({
         }
     }else{
         testsRoot = './tests/input/nodejs/';
-        console.log("test root " + testsRoot);
+        //console.log("test root " + testsRoot);
 
     }
 
