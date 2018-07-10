@@ -20,8 +20,8 @@ function runTests (testName) {
     });
 
     it('verify instrumented app execution', function (done) {
-        var originalFile = commons.getOriginalPathOrDir(testName, false);
-        var modifiedFile = commons.getModifiedPathOrDir(testName, false);
+        var originalFile = commons.getOriginalPathOrDir(testName, 'unit');
+        var modifiedFile = commons.getModifiedPathOrDir(testName, 'unit');
         commons.interceptAppExecution(originalFile, modifiedFile, [], done);
     });
 }

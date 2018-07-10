@@ -6,11 +6,9 @@
 *-bkp.js
 
 #project specific
-tests/output-actual/
 
 #webstorm
 # User-specific stuff
-#.idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
@@ -39,9 +37,5 @@ node_modules/
 
 node-projects/
 
-output/
-#tests/output-actual/
-#test/
-#.idea/
 garbage/
 *.swp
