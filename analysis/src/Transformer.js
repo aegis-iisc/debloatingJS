@@ -140,6 +140,8 @@ exports.replace = function (ast, funName, functionLocId){
                   if (node.id == null) {
                       if (utility.compareLoc(node.loc, functionLocId)) {
                           var uniqueFunId = createUniqueFunction(functionLocId);
+                          console.log("**********1")
+                          console.log(node.body.expression);
                           return exports.createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
                       } else {
                           estraverse.VisitorOption.skip;
@@ -721,10 +723,10 @@ function updateRequireDeclaration (ast, globalModifiedFilesList){
 
 
 
-     console.log("New Modified AST");
+//     console.log("New Modified AST");
     // console.log(ast);
     var modfied_src = escodegen.generate(ast);
-    console.log(modfied_src);
+    //console.log(modfied_src);
 }
 
 exports.updateRequireDeclaration = updateRequireDeclaration;
