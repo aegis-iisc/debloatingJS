@@ -1,52 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/analysis/src/Transformer.js" line="14" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="661c26bd-6045-42ce-8603-698fa54b03e5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/tests-nodejs.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/input/nodejs/sample-project/debloatingJS/__run_tests.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/mocha/images/error.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/node_modules/mocha/images/ok.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/CHANGELOG.md" afterPath="$PROJECT_DIR$/node_modules/mocha/CHANGELOG.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/bin/_mocha" afterPath="$PROJECT_DIR$/node_modules/mocha/bin/_mocha" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/bin/options.js" afterPath="$PROJECT_DIR$/node_modules/mocha/bin/options.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/browser-entry.js" afterPath="$PROJECT_DIR$/node_modules/mocha/browser-entry.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/browser/progress.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/browser/progress.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/browser/tty.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/browser/tty.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/context.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/context.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/hook.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/hook.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/bdd.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/bdd.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/common.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/common.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/exports.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/exports.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/qunit.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/qunit.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/tdd.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/interfaces/tdd.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/mocha.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/mocha.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/ms.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/ms.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/pending.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/pending.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/base.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/base.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/doc.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/doc.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/dot.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/dot.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/html.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/html.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/json-stream.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/json-stream.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/json.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/json.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/landing.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/landing.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/list.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/list.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/markdown.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/markdown.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/min.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/nyan.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/nyan.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/progress.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/progress.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/spec.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/spec.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/tap.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/tap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/xunit.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/reporters/xunit.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/runnable.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/runnable.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/runner.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/runner.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/suite.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/suite.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/test.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/test.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/lib/utils.js" afterPath="$PROJECT_DIR$/node_modules/mocha/lib/utils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/mocha.js" afterPath="$PROJECT_DIR$/node_modules/mocha/mocha.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/mocha/package.json" afterPath="$PROJECT_DIR$/node_modules/mocha/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/shelljs/package.json" afterPath="$PROJECT_DIR$/node_modules/shelljs/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/_invokedfunctions.json" afterPath="$PROJECT_DIR$/_invokedfunctions.json" />
+      <change beforePath="$PROJECT_DIR$/_loadedfunctions.json" afterPath="$PROJECT_DIR$/_loadedfunctions.json" />
+      <change beforePath="$PROJECT_DIR$/_stubList.json" afterPath="$PROJECT_DIR$/_stubList.json" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -59,76 +21,110 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.62911266">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="commons.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/commons.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="__run_tests.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/debloatingJS/__run_tests.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="210">
-                  <caret line="14" column="18" lean-forward="false" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="tests-nodejs.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/test/tests-nodejs.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="150">
-                  <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="commons.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/commons.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="sample-file.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/src/sample-file.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="135">
-                  <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="sample-app.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/sample-app.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="60">
-                  <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="647">
+              <caret line="55" column="35" lean-forward="false" selection-start-line="55" selection-start-column="35" selection-end-line="55" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Transformer.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4895">
+              <caret line="207" column="83" lean-forward="false" selection-start-line="207" selection-start-column="83" selection-end-line="207" selection-end-column="83" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="function-expression-as-argument_modified.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/output-actual/unit/function-expression-as-argument_modified.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utility.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis/src/Utility.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="21" lean-forward="false" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="S2STransformer.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="184" column="38" lean-forward="false" selection-start-line="184" selection-start-column="37" selection-end-line="184" selection-end-column="38" />
+              <folding>
+                <element signature="e#13510#14056#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="function-expression-as-argument.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/input/unit/function-expression-as-argument.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="acorn.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../node_modules/acorn/dist/acorn.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="42857">
+              <caret line="2521" column="23" lean-forward="false" selection-start-line="2521" selection-start-column="23" selection-end-line="2521" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CheckModuleLoading.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis/src/CheckModuleLoading.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="114" column="202" lean-forward="false" selection-start-line="114" selection-start-column="200" selection-end-line="114" selection-end-column="202" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CheckModuleLoadingTest.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="commons.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/commons.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-250">
+              <caret line="192" column="9" lean-forward="false" selection-start-line="192" selection-start-column="9" selection-end-line="192" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -139,36 +135,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>generatePa</find>
-      <find>visitor</find>
-      <find>Proper</find>
-      <find>maybeBlock</find>
-      <find>FunctionDe</find>
-      <find>parseIf</find>
-      <find>replace_bigger</find>
-      <find>writeCollectiveLog</find>
-      <find>writeLogToFile</find>
-      <find>declaration</find>
-      <find>readFileSync</find>
-      <find>PARENT</find>
-      <find>cached</find>
-      <find>srcFile</find>
-      <find>NEW</find>
-      <find>Creating</find>
-      <find>_originalFunNameDecl</find>
-      <find>HERE</find>
-      <find>Replacin</find>
-      <find>length</find>
-      <find>populateGlobalModified</find>
-      <find>console</find>
-      <find>pathToOutput</find>
-      <find>Script</find>
-      <find>Returned</find>
       <find>Else</find>
       <find>script</find>
       <find>Out</find>
       <find>stubListOutJSON</find>
-      <find>resultJalangi</find>
+      <find>run</find>
+      <find>node</find>
+      <find>esq</find>
+      <find>NODE</find>
+      <find>start</find>
+      <find>IS</find>
+      <find>Call</find>
+      <find>fil</find>
+      <find>FunctionExpression</find>
+      <find>UNIQUE_ID_TYPE</find>
+      <find>anonymous</find>
+      <find>cerateUniqueId</find>
+      <find>funName</find>
+      <find>REPLACE</find>
+      <find>Transfdo</find>
+      <find>UNIQ</find>
+      <find>utility</find>
+      <find>Function</find>
+      <find>Function Ex</find>
+      <find>location</find>
+      <find>console</find>
+      <find>isL</find>
+      <find>locat</find>
+      <find>findFun</find>
+      <find>expected</find>
+      <find>expec</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -199,19 +195,14 @@
         <option value="$PROJECT_DIR$/tests/input/unit/test2.js" />
         <option value="$PROJECT_DIR$/scribble/testErrorAndOut.js" />
         <option value="$PROJECT_DIR$/tests/output-actual/unit/test1_modified.js" />
-        <option value="$PROJECT_DIR$/analysis/src/Transformer.js" />
-        <option value="$PROJECT_DIR$/analysis/src/Main.js" />
-        <option value="$PROJECT_DIR$/analysis/src/Utility.js" />
         <option value="$PROJECT_DIR$/test/ModifiedExecutionTests.js" />
         <option value="$PROJECT_DIR$/analysis/src/CheckModuleLoading.js" />
-        <option value="$PROJECT_DIR$/analysis/src/S2STransformer.js" />
-        <option value="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" />
         <option value="$PROJECT_DIR$/commons.js" />
-        <option value="$PROJECT_DIR$/tests/input/nodejs/sample-project/src/sample-file.js" />
-        <option value="$PROJECT_DIR$/tests/input/nodejs/sample-project/sample-app.js" />
-        <option value="$PROJECT_DIR$/tests/input/nodejs/sample-project/test/test.js" />
-        <option value="$PROJECT_DIR$/tests/input/nodejs/sample-project/debloatingJS/__run_tests.js" />
-        <option value="$PROJECT_DIR$/test/tests-nodejs.js" />
+        <option value="$PROJECT_DIR$/analysis/src/S2STransformer.js" />
+        <option value="$PROJECT_DIR$/analysis/src/Main.js" />
+        <option value="$PROJECT_DIR$/analysis/src/Utility.js" />
+        <option value="$PROJECT_DIR$/analysis/src/Transformer.js" />
+        <option value="$PROJECT_DIR$/test/CheckModuleLoadingTest.js" />
       </list>
     </option>
   </component>
@@ -229,13 +220,12 @@
   </component>
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
-    <handled-path value="$PROJECT_DIR$/tests/input/nodejs/sample-project/node_modules" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="3" />
-    <option name="y" value="23" />
-    <option name="width" value="1203" />
-    <option name="height" value="722" />
+    <option name="x" value="-1" />
+    <option name="y" value="1113" />
+    <option name="width" value="1922" />
+    <option name="height" value="1033" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -253,52 +243,83 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="debloatingJS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="debloatingJS" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="debloatingJS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="debloatingJS" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
               <item name="analysis" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="debloatingJS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="debloatingJS" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
+              <item name="analysis" type="462c0819:PsiDirectoryNode" />
+              <item name="output" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
               <item name="analysis" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="debloatingJS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="debloatingJS" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="debloatingJS" type="b2602c69:ProjectViewProjectNode" />
-              <item name="debloatingJS" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="output-actual" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="output-actual" type="462c0819:PsiDirectoryNode" />
+              <item name="unit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="output-expected" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dynamic" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dynamic" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="output-expected" type="462c0819:PsiDirectoryNode" />
+              <item name="unit" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="settings.nodejs" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/scribble/functionbodyloader.js" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="javascript.nodejs.core.library.configured.version" value="4.2.6" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/ashish/work/NEU/jalangi2/project/dynamic/node_modules/esprima/dist/esprima.js" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/node_modules/mocha" />
-    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -317,8 +338,30 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Mocha.nodejs-tests">
-    <configuration name="Array" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Mocha.test/CheckModuleLoadingTest.js">
+    <configuration default="true" type="ChromiumRemoteDebugType" factoryName="Chromium Remote" port="9229" isV8Legacy="true" />
+    <configuration name="CheckModuleLoading.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-js-file="CheckModuleLoading.js" working-dir="$PROJECT_DIR$/analysis/src" />
+    <configuration name="S2S" type="NodeJSConfigurationType" factoryName="Node.js" application-parameters="-sl ../../stubList.txt -in ../testsb" path-to-js-file="analysis/S2STransformer.js" working-dir="$PROJECT_DIR$" />
+    <configuration name="functionLoader" type="NodeJSConfigurationType" factoryName="Node.js" path-to-js-file="functionbodyloader.js" working-dir="$PROJECT_DIR$/scribble" />
+    <configuration name="CheckModuleLoading" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>false</pass-parent-env>
+      <envs>
+        <env name="PATH" value="path/path" />
+        <env name="NODE_PATH" value="/usr/bin/node" />
+        <env name="JALANGI_HOME" value="$PROJECT_DIR$/../.." />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>SUITE</test-kind>
+      <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
+      <test-names>
+        <name value="CheckModuleLoading" />
+      </test-names>
+    </configuration>
+    <configuration name="Main" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -327,14 +370,11 @@
       <ui>bdd</ui>
       <extra-mocha-options />
       <test-kind>SUITE</test-kind>
-      <test-file>$PROJECT_DIR$/tests/input/nodejs/sample-project/test/test.js</test-file>
+      <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
       <test-names>
-        <name value="Array" />
+        <name value="Main" />
       </test-names>
     </configuration>
-    <configuration name="S2S" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="analysis/S2STransformer.js" application-parameters="-sl ../../stubList.txt -in ../testsb" working-dir="$PROJECT_DIR$" />
-    <configuration name="__run_tests.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="project" path-to-js-file="__run_tests.js" working-dir="$PROJECT_DIR$/tests/input/nodejs/sample-project/debloatingJS" />
-    <configuration default="true" type="ChromiumRemoteDebugType" factoryName="Chromium Remote" port="9229" />
     <configuration name="check-exit-code-Main-run-unit" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -349,8 +389,7 @@
         <name value="check-exit-code-Main-run-unit" />
       </test-names>
     </configuration>
-    <configuration name="functionLoader" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="functionbodyloader.js" working-dir="$PROJECT_DIR$/scribble" />
-    <configuration name="nodejs-tests" type="mocha-javascript-test-runner" factoryName="Mocha">
+    <configuration name="require parameters update" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <working-directory>$PROJECT_DIR$</working-directory>
@@ -358,8 +397,11 @@
       <envs />
       <ui>bdd</ui>
       <extra-mocha-options />
-      <test-kind>TEST_FILE</test-kind>
-      <test-file>$PROJECT_DIR$/test/tests-nodejs.js</test-file>
+      <test-kind>SUITE</test-kind>
+      <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
+      <test-names>
+        <name value="require parameters update" />
+      </test-names>
     </configuration>
     <configuration name="test/CheckModuleLoadingTest.js" type="mocha-javascript-test-runner" factoryName="Mocha" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
@@ -369,44 +411,31 @@
       <envs>
         <env name="PATH" value="/usr/bin:/bin" />
         <env name="NODE_PATH" value="/usr/bin/node" />
-        <env name="JALANGI_HOME" value="/Users/saba/Documents/northeastern/research" />
+        <env name="JALANGI_HOME" value="$PROJECT_DIR$/../.." />
       </envs>
       <ui>bdd</ui>
       <extra-mocha-options />
       <test-kind>TEST_FILE</test-kind>
       <test-file>$PROJECT_DIR$/test/CheckModuleLoadingTest.js</test-file>
     </configuration>
-    <configuration name="tests-nodejs.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-node="project" path-to-js-file="tests-nodejs.js" working-dir="$PROJECT_DIR$/test" />
-    <configuration name="tests/input/nodejs/sample-project/test/test.js" type="mocha-javascript-test-runner" factoryName="Mocha" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
-      <envs />
-      <ui>bdd</ui>
-      <extra-mocha-options />
-      <test-kind>TEST_FILE</test-kind>
-      <test-file>$PROJECT_DIR$/tests/input/nodejs/sample-project/test/test.js</test-file>
-    </configuration>
-    <list size="10">
-      <item index="0" class="java.lang.String" itemvalue="Mocha.nodejs-tests" />
-      <item index="1" class="java.lang.String" itemvalue="Mocha.test/CheckModuleLoadingTest.js" />
-      <item index="2" class="java.lang.String" itemvalue="Node.js.functionLoader" />
-      <item index="3" class="java.lang.String" itemvalue="Node.js.S2S" />
-      <item index="4" class="java.lang.String" itemvalue="Node.js.TestTransformer" />
-      <item index="5" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
-      <item index="6" class="java.lang.String" itemvalue="Mocha.tests/input/nodejs/sample-project/test/test.js" />
-      <item index="7" class="java.lang.String" itemvalue="Mocha.Array" />
-      <item index="8" class="java.lang.String" itemvalue="Node.js.__run_tests.js" />
-      <item index="9" class="java.lang.String" itemvalue="Node.js.tests-nodejs.js" />
+    <list size="9">
+      <item index="0" class="java.lang.String" itemvalue="Mocha.test/CheckModuleLoadingTest.js" />
+      <item index="1" class="java.lang.String" itemvalue="Node.js.functionLoader" />
+      <item index="2" class="java.lang.String" itemvalue="Node.js.S2S" />
+      <item index="3" class="java.lang.String" itemvalue="Node.js.TestTransformer" />
+      <item index="4" class="java.lang.String" itemvalue="Mocha.require parameters update" />
+      <item index="5" class="java.lang.String" itemvalue="Mocha.CheckModuleLoading" />
+      <item index="6" class="java.lang.String" itemvalue="Mocha.Main" />
+      <item index="7" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
+      <item index="8" class="java.lang.String" itemvalue="Node.js.CheckModuleLoading.js" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Node.js.tests-nodejs.js" />
-        <item index="1" class="java.lang.String" itemvalue="Mocha.tests/input/nodejs/sample-project/test/test.js" />
-        <item index="2" class="java.lang.String" itemvalue="Node.js.__run_tests.js" />
-        <item index="3" class="java.lang.String" itemvalue="Mocha.Array" />
-        <item index="4" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
+        <item index="0" class="java.lang.String" itemvalue="Mocha.check-exit-code-Main-run-unit" />
+        <item index="1" class="java.lang.String" itemvalue="Mocha.Main" />
+        <item index="2" class="java.lang.String" itemvalue="Mocha.CheckModuleLoading" />
+        <item index="3" class="java.lang.String" itemvalue="Node.js.CheckModuleLoading.js" />
+        <item index="4" class="java.lang.String" itemvalue="Mocha.require parameters update" />
       </list>
     </recent_temporary>
   </component>
@@ -442,85 +471,87 @@
       <workItem from="1529330492117" duration="5632000" />
       <workItem from="1529340963820" duration="688000" />
       <workItem from="1529417358702" duration="52451000" />
-      <workItem from="1530745959833" duration="2839000" />
+      <workItem from="1530193490729" duration="5806000" />
+      <workItem from="1530292561482" duration="35285000" />
+      <workItem from="1530727285436" duration="16455000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 06m 11s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.04 at 20h 35m 10s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 06m 19s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.04 at 20h 37m 05s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 06m 34s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.04 at 20h 38m 30s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 06m 47s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.04 at 20h 43m 52s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 07m 45s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.05 at 07h 14m 13s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 07m 53s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.05 at 07h 22m 04s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 08m 18s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.05 at 09h 28m 20s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 08m 40s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.05 at 09h 30m 52s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 08m 59s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.05 at 09h 42m 17s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="nodejs-tests - 2018.07.04 at 20h 09m 48s.xml">
-      <configuration name="nodejs-tests" configurationId="mocha-javascript-test-runner" />
+    <history-entry file="test_CheckModuleLoadingTest_js - 2018.07.05 at 09h 43m 55s.xml">
+      <configuration name="test/CheckModuleLoadingTest.js" configurationId="mocha-javascript-test-runner" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="528011000" />
+    <option name="totallyTimeSpent" value="609230000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3" y="23" width="1272" height="719" extended-state="6" />
+    <frame x="-1" y="1113" width="1922" height="1033" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19824141" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46422628" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10279389" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="false" show_stripe_button="true" weight="0.3298351" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="1921" y="509" width="2558" height="443" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4152824" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="1939" y="963" width="2560" height="210" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3810316" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.325054" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298351" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32418" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3125937" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10195313" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="false" show_stripe_button="true" weight="0.3298351" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="1921" y="509" width="2558" height="443" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4152824" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="1939" y="963" width="2560" height="210" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298351" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10279389" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32418" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3261339" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -570,12 +601,57 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/analysis/commons.js" />
+    <entry file="file://$PROJECT_DIR$/scribble/astTest.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="40" lean-forward="false" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/exported_circle_second.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="1" lean-forward="false" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scribble/functionbodyloader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="146" column="62" lean-forward="false" selection-start-line="146" selection-start-column="62" selection-end-line="146" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/invokedfunctions.json" />
+    <entry file="file://$PROJECT_DIR$/analysis/stubList.json" />
+    <entry file="file://$PROJECT_DIR$/tests/test-loading-semantics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="18" lean-forward="false" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/laodedfunctions.json" />
     <entry file="file://$PROJECT_DIR$/stubList.json" />
-    <entry file="file://$PROJECT_DIR$/scribble/createupdatedrequire_jalangi_.js" />
+    <entry file="file://$PROJECT_DIR$/scribble/createupdatedrequire_jalangi_.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="155" column="16" lean-forward="false" selection-start-line="155" selection-start-column="16" selection-end-line="155" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/analysis/Transformer.js" />
     <entry file="file://$PROJECT_DIR$/tests/input/unit/circle.js" />
     <entry file="file://$PROJECT_DIR$/tests/input/unit/circle-test2.js" />
-    <entry file="file://$PROJECT_DIR$/scribble/tests/exported_circle_second_modified.js" />
+    <entry file="file://$PROJECT_DIR$/scribble/tests/exported_circle_second_modified.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="151" column="60" lean-forward="false" selection-start-line="151" selection-start-column="60" selection-end-line="151" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/analysis/jalangi_examples_analyses/BranchCoverage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-16">
@@ -606,7 +682,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/analysis/CheckModuleLoading.js" />
-    <entry file="file://$PROJECT_DIR$/scribble/tests/TraceAll.js" />
+    <entry file="file://$PROJECT_DIR$/scribble/tests/TraceAll.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4014">
+          <caret line="32" column="23" lean-forward="false" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/analysis/jalangi_examples_analyses/TraceAll.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-697">
@@ -629,7 +711,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scribble/testErrorAndOut.js" />
+    <entry file="file://$PROJECT_DIR$/scribble/testErrorAndOut.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="15" lean-forward="false" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tests/input/unit/line.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -679,18 +767,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/assert/assert.js" />
+    <entry file="file://$PROJECT_DIR$/node_modules/assert/assert.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="238" column="0" lean-forward="false" selection-start-line="238" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tests/output-expected/unit/test1_persistent.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/Utility.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -701,166 +788,120 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/javascript/nodejs/4.2.6/core-modules/assert.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1036">
-          <caret line="508" column="27" lean-forward="false" selection-start-line="508" selection-start-column="27" selection-end-line="508" selection-end-column="27" />
+        <state relative-caret-position="1870">
+          <caret line="132" column="0" lean-forward="false" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../src/js/instrument/esnstrument.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32929">
+          <caret line="1951" column="0" lean-forward="false" selection-start-line="1951" selection-start-column="0" selection-end-line="1951" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/esquery/parser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9945">
+          <caret line="585" column="15" lean-forward="false" selection-start-line="585" selection-start-column="15" selection-end-line="585" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../node_modules/esotope/esotope.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="650" column="32" lean-forward="false" selection-start-line="650" selection-start-column="32" selection-end-line="650" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/src/cutility.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/output-actual/unit/function-expression-as-argument_modified.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/input/unit/function-expression-as-argument.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../node_modules/acorn/dist/acorn.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42857">
+          <caret line="2521" column="23" lean-forward="false" selection-start-line="2521" selection-start-column="23" selection-end-line="2521" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/analysis/src/CheckModuleLoading.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1870">
-          <caret line="168" column="22" lean-forward="false" selection-start-line="168" selection-start-column="22" selection-end-line="168" selection-end-column="22" />
+        <state relative-caret-position="273">
+          <caret line="114" column="202" lean-forward="false" selection-start-line="114" selection-start-column="200" selection-end-line="114" selection-end-column="202" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../src/js/instrument/esnstrument.js" />
     <entry file="file://$PROJECT_DIR$/analysis/src/S2STransformer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="727">
-          <caret line="66" column="25" lean-forward="false" selection-start-line="66" selection-start-column="25" selection-end-line="66" selection-end-column="25" />
+        <state relative-caret-position="273">
+          <caret line="184" column="38" lean-forward="false" selection-start-line="184" selection-start-column="37" selection-end-line="184" selection-end-column="38" />
+          <folding>
+            <element signature="e#13510#14056#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis/src/Utility.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="21" lean-forward="false" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/conditional-execution-3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="12" lean-forward="false" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/conditional-execution-2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/conditional-execution-1.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/test4.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/analysis/src/Main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2006">
-          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/src/sample-file.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/sample-app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/debloatingJS/__run_tests.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="18" lean-forward="false" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/nodejs/sample-project/test/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="3" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="58" lean-forward="false" selection-start-line="12" selection-start-column="58" selection-end-line="12" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/callback-unexecuted.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="9" lean-forward="false" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/callback-unexecuted-anonymous.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="1" lean-forward="false" selection-start-line="3" selection-start-column="4" selection-end-line="5" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/callback-executed.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/input/unit/callback-executed-anonymous.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="647">
+          <caret line="55" column="35" lean-forward="false" selection-start-line="55" selection-start-column="35" selection-end-line="55" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/commons.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state relative-caret-position="-250">
+          <caret line="192" column="9" lean-forward="false" selection-start-line="192" selection-start-column="9" selection-end-line="192" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package-lock.json">
+    <entry file="file://$PROJECT_DIR$/analysis/src/Transformer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4730">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="-4895">
+          <caret line="207" column="83" lean-forward="false" selection-start-line="207" selection-start-column="83" selection-end-line="207" selection-end-column="83" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/tests-nodejs.js">
+    <entry file="file://$PROJECT_DIR$/test/CheckModuleLoadingTest.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="7" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+        <state relative-caret-position="170">
+          <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
           <folding />
         </state>
       </provider>
