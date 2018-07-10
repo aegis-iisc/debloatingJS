@@ -87,7 +87,6 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                 var fileName = fileName_Func_Location[elem].fileName;
                 var location = fileName_Func_Location[elem].funcLoc;
                 var startLineNumber = location[0];
-                //var startLineNumber = location.toString().split(':')[0];
                 var functionName = findFun(fileName, location, startLineNumber);
 
                 if (functionName === undefined)
@@ -162,6 +161,8 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         var _loc = location;
         var result = null;
 
+        console.log('*** location: ' + location);
+
         if (_fn.length > 0) {
             var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
             var astForInput = esprima.parse(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false});
@@ -170,29 +171,23 @@ const LOCATION_DELTA_THRESSHOLD = 2;
             estraverse.traverse(astForInput,
                 { // define the visitor as an object with two properties/functions defining task at enter and leave
                     enter: function (node, parent) { // check for function name and replace
-                        if (node.type == 'FunctionDeclaration') {
-                            console.log(startLineNumber);
-                            console.log(node.loc.start.line);
-                            console.log("**** "+startLineNumber);
-                            console.log("***  "+location);
-
-                            if (startLineNumber == node.loc.start.line) {
+                        if (node.type === 'FunctionDeclaration') {
+                            if (startLineNumber === node.loc.start.line.toString()) {
                                 // found the function name .
                                 result = node.id.name;
                                 this.break();
-
                             }
-
                         } // lhs = function(){ }
-                        else if (node.type == 'ExpressionStatement') {
-                            if (node.expression.type == 'AssignmentExpression') {
+                        else if (node.type === 'ExpressionStatement') {
+                            if (node.expression.type === 'AssignmentExpression') {
                                 var left = node.expression.left;
                                 var right = node.expression.right;
-                                if (startLineNumber == node.loc.start.line) {
-                                    if (right.type == 'FunctionExpression') {
+
+                                if (startLineNumber === node.loc.start.line.toString()) {
+                                    if (right.type === 'FunctionExpression') {
                                         // lhs = MemberExpression rhs = FunctionExpression
 
-                                        if (left.type == 'MemberExpression') {
+                                        if (left.type === 'MemberExpression') {
                                             var leftVarBaseName = left.object.name;
                                             var leftVarExtName = left.property.name;
                                             var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
@@ -201,7 +196,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
 
                                         }
                                         // lhs = Identifier , rhs = function expression
-                                        else if(left.type == 'Identifier'){
+                                        else if(left.type === 'Identifier'){
                                             if(left.name){
                                                 var functionName = left.name;
                                                 result = functionName;
@@ -221,7 +216,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                                     estraverse.VisitorOption.skip;
 
                                 }
-                            } else if(node.expression.type == 'FunctionExpression'){
+                            } else if(node.expression.type === 'FunctionExpression'){
                                 if(node.loc.start.line == startLineNumber){
                                     var functionID = node.expression.id;
                                     if(functionID !== null){
@@ -230,21 +225,17 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                                         this.break();
 
                                     }
-                                }else{
+                                } else{
                                     estraverse.VisitorOption.skip;
 
                                 }
-
-
-                            } else if(node.expression.type == 'ObjectExpression'){
+                            } else if(node.expression.type === 'ObjectExpression'){
+                                estraverse.VisitorOption.skip;
+                            }else if(node.expression.type === 'ArrowFunctionExpression'){
 
                                 estraverse.VisitorOption.skip;
 
-                            }else if(node.expression.type == 'ArrowFunctionExpression'){
-
-                                estraverse.VisitorOption.skip;
-
-                            }else if(node.expression.type == 'CallExpression'){
+                            }else if(node.expression.type === 'CallExpression'){
                                 estraverse.VisitorOption.skip;
 
                             }
@@ -252,20 +243,14 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                             else {
                                 estraverse.VisitorOption.skip;
                             }
-                        }else if(node.type == 'CallExpression'){
+                        }else if(node.type === 'CallExpression'){
                             /*   console.log("node type callExpression");
                                console.log(node);
    */
-                        }else if(node.type == 'FunctionExpression') {
+                        }else if(node.type === 'FunctionExpression') {
                             //compare the location
-                           /* console.log("anonymous function location");
-                            console.log(_loc);
-                            console.log(node);
-                           */ /*Temporary logic: The location of the function as given by Jalangi differs than the location generated by esprima module
-                            * A more flexible comparision \ls - la\ <= thresshold
-                             */
-                            console.log("ERROR "+node.loc.start.column+" - "+_loc[1]+ " = "+  Math.abs(node.loc.start.column -_loc[1]));
-                            if( node.loc.start.line == _loc[0] && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
+                            // console.log("ERROR "+node.loc.start.column+" - "+_loc[1]+ " = "+  Math.abs(node.loc.start.column -_loc[1]));
+                            if( node.loc.start.line === _loc[0] && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
                                 //if (node.loc.start.line === _loc[0] && node.loc.start.column === _loc[2]){
                                 if (node.id !== null) {// has an id
                                     result = node.id.name;
@@ -283,12 +268,6 @@ const LOCATION_DELTA_THRESSHOLD = 2;
                     },
 
                     leave: function (node, parent) {
-                       /* console.log("leaving");
-                        console.log(node);
-                       */ // if (node.type == 'VariableDeclarator') {
-                        //     estraverse.VisitorOption.skip;
-                        //     //console.log("variable "+node.id.name);
-                        // }
                     }
 
                 });
