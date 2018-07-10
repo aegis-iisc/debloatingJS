@@ -85,7 +85,6 @@ function loadAndInvoke(funName, srcFile) {
                 for (var fun in functions) {
                     if (functions.hasOwnProperty(fun)) {
                         if (fun === funName) {
-                            console.log(functions[fun]);
                             return functions[fun];
                         }
                     }

@@ -17,9 +17,10 @@ function printObject (obj){
 }
 
 function createExpectedOutputFile (fileName){
-    var loadedFunctions = {};
-    var invokedFunctions = {};
-    var stubList = {};
+    var loadedFunctions = [];
+    var invokedFunctions = [];
+    var stubList = [];
+
     var jsonPath = fileName+'.json';
     var jsonObject = {'loadedfunctions': loadedFunctions, 'invokedfunctions': invokedFunctions, 'stubList': stubList};
     fs.writeFileSync(jsonPath, JSON.stringify(jsonObject));

@@ -46,7 +46,7 @@ var parser = new argparse.ArgumentParser({
 
         var outputRoot = testsRoot.replace('input','output-actual');
 
-        // TODO Create a function for writing an expected output file with the boilerplace code needed.
+        // TODO Create a function for writing an expected output file with the boilerplate code needed.
         var outputRootExpected = testsRoot.replace('input','output-expected');
 
         if(args.inputFile) {
