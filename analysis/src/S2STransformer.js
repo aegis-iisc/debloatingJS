@@ -125,16 +125,6 @@ function readStubListJSON(outFileJSON) {
         fileName_Func_Location[i] = {fileName: filePath_LineNo[0], funcLoc: locArray};
 
     }
-/*
-    for (elem in obj) {
-        var stubLoction_elem = obj[elem].stubLocation;
-        var filePath_LineNo = stubLoction_elem.split(".js:");
-        var locArray = filePath_LineNo[1].split(':');
-
-        // fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: filePath_LineNo[1]};
-        fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: locArray};
-    }*/
-
     return fileName_Func_Location;
 
 }
