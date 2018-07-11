@@ -9,6 +9,10 @@ var commons = require('../../commons.js');
 
 var path = require('path');
 var copydir = require('copy-dir');
+const testsRoot = './tests/input/unit/'
+const EXPECTED_OUTPUT_PATH_PREFIX = "output-expected";
+const INPUT_PATH_PREFIX = "input";
+
 
 
 var parser = new argparse.ArgumentParser({
@@ -33,52 +37,21 @@ var parser = new argparse.ArgumentParser({
     }
 
     var analysis = args.analysis;
-    var testsRoot = null;
-
-    // get the input file or directory
-
-    //console.log("analysis " + analysis);
-    //console.log("inputFile " + inputFile);
+    var inputFile = args.inputFile;
 
     var resultJalangi = null;
     if (!args.node || args.node === 'false') { // unit
-        testsRoot = './tests/input/unit/';
-
-        var outputRoot = testsRoot.replace('input','output-actual');
-
-        // TODO Create a function for writing an expected output file with the boilerplate code needed.
-        var outputRootExpected = testsRoot.replace('input','output-expected');
-
-        if(args.inputFile) {
-            var inputFile = args.inputFile;
-            console.log("CASE :: UNIT INPUT FILE");
-            //console.log("test root " + testsRoot);
-            utility.createExpectedOutputFile(outputRootExpected+inputFile.substring(0,inputFile.lastIndexOf('.')));
+           var outputRoot = testsRoot.replace('input','output-actual');
+           var outputRootDir = path.dirname(outputRoot);
+           var outputPathDir = path.resolve(outputRootDir,'unit');
+            //var outputExpectedRoot = testsRoot.replace('input','output-expected');
+            var outputExpectedPathDir = path.resolve(outputRootDir,'../'+EXPECTED_OUTPUT_PATH_PREFIX, path.basename(outputPathDir));
 
             resultJalangi = commons.runJalangi(analysis, inputFile, testsRoot);
-        }else if(args.inputDir){
-            var appInputDir = args.inputDir;
-            var appOutputDir = appInputDir.replace('input','output-actual');
-            console.log("CASE :: UNIT INPUT DIR");
-            var inputFileName = appInputDir+'/'+appInputDir+'.js';
 
-            // copy the input directory structure in the actual output
-            copydir.sync(testsRoot+appInputDir, outputRoot+appInputDir, function(stat, filepath, filename){
-                if(stat === 'file' && path.extname(filepath) === '.js') {
-                    return false;
-                }
-
-                return true;
-            }, function(err){
-                console.log('ok');
-            });
-
-            resultJalangi = commons.runJalangi(analysis, inputFileName, testsRoot);
-        }
     }else{
-        testsRoot = './tests/input/nodejs/';
-        //console.log("test root " + testsRoot);
-
+        //TODO handle Nodejs case
+        //resultJalangi = commons.runJalangi(analysis, inputFileName, testsRoot);
     }
 
 
@@ -100,8 +73,10 @@ var parser = new argparse.ArgumentParser({
                 var stubFilePrefix = inputFilePrefix.replace('input', 'output-actual');
 
 
-                const stubListOutJSON = stubFilePrefix + "_stubList.json";
-                var transformerResult = commons.runTransformer(srcroot + transformer, stubListOutJSON, testsRoot, stubFilePrefix.substring(0, stubFilePrefix.lastIndexOf('/') + 1));
+                //const stubListOutJSON = stubFilePrefix + "_stubList.json";
+                const outJSON = path.resolve(stubFilePrefix+"_out.json");
+
+                var transformerResult = commons.runTransformer(srcroot + transformer, outJSON, testsRoot, stubFilePrefix.substring(0, stubFilePrefix.lastIndexOf('/') + 1));
                 console.log("Transformer Out " + transformerResult);
             }else if(args.inputDir){
                 console.log("CASE :: Transforming input unit test Application");
@@ -123,3 +98,8 @@ var parser = new argparse.ArgumentParser({
 
 })();
 
+module.exports = {
+    testsRoot : testsRoot,
+    EXPECTED_OUTPUT_PATH_PREFIX : EXPECTED_OUTPUT_PATH_PREFIX,
+    INPUT_PATH_PREFIX : INPUT_PATH_PREFIX
+}

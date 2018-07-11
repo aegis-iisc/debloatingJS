@@ -20,6 +20,8 @@ function runWithNode (fileName, args, output){
     var nodeExecString = '';
     nodeExecString = nodeExecString + $nodePath + ' ' +fileName;
     nodeExecString = nodeExecString + ' ' +params;
+
+    console.log("executing "+nodeExecString);
     if(!output || output === 'exit' ) {
         return shelljs.exec(nodeExecString).code;
     } else if (output === 'stdout'){
@@ -65,6 +67,7 @@ function interceptAppExecution (originalFileName, modifiedFileName, params, done
                 assert.ifError(mError);
                 assert.equal(originalResults.stdout, mStdout);
                 assert.equal(originalResults.stderr, mStderr);
+                console.log("*** Original and Modified execution asserted ***");
                 done();
             })
         });
