@@ -29,6 +29,8 @@ function runTests (testName) {
 describe('unit-tests', function () {
 
     describe('basic logical operations', function () {
+        this.timeout(10000);
+
         describe('conditional-execution-1', function () { runTests('conditional-execution-1'); });
         describe('conditional-execution-2', function () { runTests('conditional-execution-2'); });
         describe('conditional-execution-3', function () { runTests('conditional-execution-3'); });
