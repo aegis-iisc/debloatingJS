@@ -6,7 +6,7 @@
 *-bkp.js
 
 #project specific
-
+./tests/output-actual/
 #webstorm
 # User-specific stuff
 .idea/**/tasks.xml

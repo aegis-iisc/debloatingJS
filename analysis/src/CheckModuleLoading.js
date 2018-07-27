@@ -128,8 +128,10 @@ var parser = new argparse.ArgumentParser({
             var resultantStubList = generatePotentialStubs(collectivefunctionsLoaded, collectivefunctionsCalled);
             writeCollectiveJSON(collectivefunctionsLoaded, resultantStubList);
 
+/*
             // TODO refactor this later
             fs.writeFileSync(stubListOutJSON, JSON.stringify(resultantStubList));
+*/
         };
     }
     /*
