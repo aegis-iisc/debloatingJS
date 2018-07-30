@@ -1,0 +1,17 @@
+{
+  "name": "debloating-dynamic",
+  "version": "1.0.0",
+  "description": "dynamic analysis for JS debloating",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel dynamic/scribble/babeltest -d dynamic/scribble/babeltestout"
+  },
+  "author": "ashish",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "mocha": "^5.1.1"
+  }
+}

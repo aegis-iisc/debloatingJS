@@ -30,6 +30,7 @@ var parser = new argparse.ArgumentParser({
     parser.addArgument(['--inputDir'], {help: 'input dir to Jalangi, name of the dir and the index file inside must be equal'});
     parser.addArgument(['--transformer'], {help: 'Transformer path'});
     parser.addArgument(['--node'], {help: 'is input a node js application'});
+    parser.addArgument(['--nodeapp'], {help: 'node application'});
 
     var args = parser.parseArgs();
     if (!args.analysis || !(args.inputFile || args.inputDir)) {
@@ -52,6 +53,13 @@ var parser = new argparse.ArgumentParser({
     }else{
         //TODO handle Nodejs case
         //resultJalangi = commons.runJalangi(analysis, inputFileName, testsRoot);
+        // for each application , we just need to run the app/debloatingJS/__run_tests.js
+        var __runTestFile = args.inputFile;
+        var __inputApp = args.nodeapp;
+
+        resultJalangi = commons.runJalangi(analysis, __runTestFile, __inputApp);
+
+
     }
 
 
@@ -90,6 +98,9 @@ var parser = new argparse.ArgumentParser({
 
             }
         }else {
+
+
+            // handle the node case
 
 
         }
