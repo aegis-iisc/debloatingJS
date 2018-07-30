@@ -28,7 +28,7 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
     var inputFileName = argument[argument.length-1];
     var inputFilePrefix = path.basename(inputFileName); //inputFileName.substring(0, inputFileName.lastIndexOf('.'));
     var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
-    const jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
+    // const jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
 
     var jsonOutputPath = null;
     if (isNodeApp(inputFileName)) { // Nodejs case
