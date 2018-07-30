@@ -25,20 +25,21 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
 
     console.log(argument);
     // extracting outputpaths
-    var inputFileName = argument[argument.length - 1];
+    var inputFileName = argument[argument.length-1];
     var inputFilePrefix = path.basename(inputFileName); //inputFileName.substring(0, inputFileName.lastIndexOf('.'));
+    var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
+    const jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
 
-    //var jsonOutputPath = null;
-   /* if (isNodeApp(inputFileName)) { // Nodejs case
+    var jsonOutputPath = null;
+    if (isNodeApp(inputFileName)) { // Nodejs case
        var inputDir = path.dirname(inputFileName);
        var outputFilePrefix = inputDir.replace('input', 'output-actual');
        jsonOutputPath = path.resolve(outputFilePrefix, path.basename(inputFileName).toString().replace('.js', '_out.json'));
 
     } else {
-   */
    var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
         jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
-   // }
+    }
     // var stubListOut = outputFilePrefix+"_stubList.txt";
     //const stubListOutJSON = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_stubList.json");
 
@@ -199,7 +200,6 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
         console.log("Writing generated JSON to "+path.resolve(jsonOutputPath).toString());
         fs.writeFileSync(path.resolve(jsonOutputPath), JSON.stringify(traceItems, null, 2));
     }
-
     function isNodeApp(inputpath){
 
         var fileDirectory = path.dirname(inputpath);
@@ -208,7 +208,6 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
            return true;
         return false;
     }
-
     sandbox.analysis = new MyAnalysis();
 
 }(J$))

@@ -1,22 +1,7 @@
-// DO not remove the following comment
-
 /*
 *@author Ashish Mishra
 */
 
-
-/*
-    Source to Source Transformation algorithm
-    for file in nodeProject
-        for f in file
-            if f in StubbingList && f.size >= threshold{
-                replace f with f_in_file_STUB
-
-            }else
-                skip f
-
-
- */
 var esprima = require('esprima');
 var escodegen = require('escodegen');
 var estraverse = require('estraverse');
@@ -35,7 +20,6 @@ var parser = new argparse.ArgumentParser({
     version : 0.1,
     addHelp : true,
     description : "The source to source transformer for the feature reduction of JS"
-
 });
 
 parser.addArgument(['-sl'], {help: 'potential stub list' } );
@@ -46,7 +30,6 @@ var args = parser.parseArgs();
 if(!args.sl || !args.in || !args.o){
     console.log("ERROR: Insufficient inputs, try -h option");
 }
-
 
 const NO_CHANGES_NEEDED = 'NO-STUB';
 const LOCATION_DELTA_THRESSHOLD = 2;
@@ -181,7 +164,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
 
             } else {
 
-                transformer.replace(astForInput, functionName);
+              transformer.replace(astForInput, functionName);
                 // create and add a body for lazy Loading
                 var modifiedProgram = escodegen.generate(astForInput);
                 updatedASTList[fileName] = astForInput;
@@ -268,7 +251,6 @@ function findFun(fileName, location, startLineNumber) {
                                 }
                             }else{
                                 estraverse.VisitorOption.skip;
-
                             }
                         } else if(node.expression.type === 'FunctionExpression'){
                             if(node.loc.start.line == startLineNumber){
@@ -281,7 +263,6 @@ function findFun(fileName, location, startLineNumber) {
                                 }
                             } else{
                                 estraverse.VisitorOption.skip;
-
                             }
                         } else if(node.expression.type === 'ObjectExpression'){
                             estraverse.VisitorOption.skip;
@@ -327,7 +308,6 @@ function findFun(fileName, location, startLineNumber) {
             });
         // traverse the file
 
-
     } else {
         console.log("Error : Not a javascript file " + _fn.substring(_fn.indexOf('.') + 1, _fn.length));
 
@@ -354,7 +334,6 @@ function splitStubFile() {
         fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: filePath_LineNo[1]};
         //console.log(fileName_Func_Location);
     }
-
 }
 
 function populateGlobalModifiedFilesList(fileName_Func_Location){
@@ -367,7 +346,6 @@ function populateGlobalModifiedFilesList(fileName_Func_Location){
         }catch (error){
             console.error(error.toString());
         }
-
     }
     return globalModifiedFilesList;
 
