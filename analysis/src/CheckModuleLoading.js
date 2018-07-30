@@ -17,9 +17,11 @@ var parser = new argparse.ArgumentParser({
     description : "The source to source transformer for the feature reduction of JS"
 });
 
+const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
+
 // TODO : read the set of tests of a node js application and run the dynamic analysis for each test to collect the output
 
-(function (sandbox){
+(function (sandbox) {
 
     console.log(argument);
     // extracting outputpaths
@@ -28,11 +30,22 @@ var parser = new argparse.ArgumentParser({
     var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
     const jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
 
+    var jsonOutputPath = null;
+    if (isNodeApp(inputFileName)) { // Nodejs case
+       var inputDir = path.dirname(inputFileName);
+       var outputFilePrefix = inputDir.replace('input', 'output-actual');
+       jsonOutputPath = path.resolve(outputFilePrefix, path.basename(inputFileName).toString().replace('.js', '_out.json'));
+
+    } else {
+   var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
+        jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
+    }
     // var stubListOut = outputFilePrefix+"_stubList.txt";
-    const stubListOutJSON = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_stubList.json");
+    //const stubListOutJSON = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_stubList.json");
 
     function MyAnalysis(){
 
+        console.log("Runnning MyAnalysis");
         // collective ojects for loaded and invoked functions
         // collectiveFunctionLoaded = {giid : {laodingLocation : ...  loadedFunName : ...}
         // collectiveFunctionCalled = {giid : {CallingLocation :  val  , calledDefinitionLocation : val,  loadedFunName : val}}
@@ -55,21 +68,16 @@ var parser = new argparse.ArgumentParser({
                 // write the function and the file name to the log
                 functionsLoaded[id] = J$.iidToLocation(id, iid);
                 loadedFunctionNames[id] = name;
-                //collectivefunctionsLoaded[id] = {loadingLocation : J$.iidToLocation(id, iid), loadedFunName : name, isLiteral: false};
             }
         };
         // or defined as a literal
         this.literal = function(iid, val, hasGetterSetter){
             if( typeof val === 'function'){
-                //    console.log("function Name " +val.name);
-                //if (hasGetterSetter)
-                    //console.log(" GT-ST "+val.toString());
                 var giid = J$.getGlobalIID(iid);
                 // write the function and the file name to the log
                 functionsLoaded[giid] = J$.iidToLocation(giid,iid);
                 loadedFunctionNames[giid] = val.toString().slice(0, val.toString().indexOf('{')).trim();
                 var relativePath = util.getReletivePath(J$.iidToLocation(giid, iid));
-                // collectivefunctionsLoaded[giid] = {loadingLocation : relativePath, loadedFunName : val.toString().slice(0, val.toString().indexOf('{')).trim() ,isLiteral : true};
                 collectivefunctionsLoaded.push({
                     loadingLocation: relativePath,
                     loadedFunName: val.toString().slice(0, val.toString().indexOf('{')).trim(),
@@ -79,10 +87,8 @@ var parser = new argparse.ArgumentParser({
         };
 
         this.invokeFun = function(iid, f, base, args, result, isConstructor, isMethod, functionIid, functionSid) {
-
             var func_def_loc = null;
             if(functionSid) {
-                // console.log("function SID " + functionSid.toString() + " Name "+f.name);
                 func_def_loc = J$.iidToLocation(functionSid, functionIid);
                 //console.log("function definition location "+ func_loc);
             }else{
@@ -95,7 +101,6 @@ var parser = new argparse.ArgumentParser({
             calledFunctionNames[giid] = f.name ? f.name : f.toString().slice(0, f.toString().indexOf('{')).trim();
             var callingFunctionRelative = util.getReletivePath(J$.iidToLocation(giid, iid));
             var calledDefRelative = util.getReletivePath(func_def_loc);
-            // collectivefunctionsCalled[giid] = {
             collectivefunctionsCalled.push({
                 callingLocation: callingFunctionRelative,
                 calledDefLocation: calledDefRelative,
@@ -186,14 +191,23 @@ var parser = new argparse.ArgumentParser({
     }
 
     function writeCollectiveJSON (loadedFunctions, unexecutedFunctions) {
+
         var traceItems = {
             'loadedFunctions': loadedFunctions,
             'unexecutedFunctions': unexecutedFunctions
         };
         // mkdirp.sync(path.basename(jsonOutputPath));
+        console.log("Writing generated JSON to "+path.resolve(jsonOutputPath).toString());
         fs.writeFileSync(path.resolve(jsonOutputPath), JSON.stringify(traceItems, null, 2));
     }
+    function isNodeApp(inputpath){
 
+        var fileDirectory = path.dirname(inputpath);
+        var relative =  path.relative(inputpath, NODE_TEST_ROOT);
+        if(relative.toString().charAt(0) === '.' && relative.toString().charAt(relative.length-1) === '.')
+           return true;
+        return false;
+    }
     sandbox.analysis = new MyAnalysis();
 
 }(J$))

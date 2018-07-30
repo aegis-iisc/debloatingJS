@@ -10,6 +10,7 @@ function qux () {
 }
 
 var x = sampleFunction();
+console.log(x);
 
 module.exports = {
     baz: baz,

@@ -108,25 +108,42 @@ function runBothPhases (testName, isNode) {
     if(!isNode) {
         return runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputFile ' + testName + '.js', '--transformer S2STransformer.js']);
     } else{
+
+        // for node case also pass the appication parameter to the Main.js
         assert(false);
     }
 }
 
-function jalangiAnalysis (analysis, inputFile, testsRoot){
+function jalangiAnalysis (analysis, inputFile, testsRoot, isNode){
     var testroot = null;
-    if(!testsRoot) {
-        testroot = './tests/input/unit/';
-    } else{
-        testroot = testsRoot;
-    }
     var srcdir = './analysis/src/';
-    var jalangiExecString = '';
-    jalangiExecString = jalangiExecString + $nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
-    jalangiExecString = jalangiExecString + ' --inlineIID --inlineSource';
-    jalangiExecString = jalangiExecString + ' --analysis '+srcdir+analysis;
-    jalangiExecString = jalangiExecString +' '+testroot+inputFile;
+    if(!isNode || isNode === false) {
+        if (!testsRoot) {
+            testroot = './tests/input/unit/';
+        } else {
+            testroot = testsRoot;
+        }
+        var jalangiExecString = '';
+        jalangiExecString = jalangiExecString + $nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
+        jalangiExecString = jalangiExecString + ' --inlineIID --inlineSource';
+        jalangiExecString = jalangiExecString + ' --analysis ' + srcdir + analysis;
+        jalangiExecString = jalangiExecString + ' ' + testroot + inputFile;
 
-    return shelljs.exec(jalangiExecString).code;
+        return shelljs.exec(jalangiExecString).code;
+    }else{ // node js case handling
+        // Case , application/jsDebloat/__run_tests.js is the input file for nodejs case.
+        console.log("Running Dynamic reachability Analysis for application "+inputFile);
+        var jalangiExecStringForNode = '';
+        jalangiExecStringForNode = jalangiExecStringForNode + $nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
+        jalangiExecStringForNode = jalangiExecStringForNode + ' --inlineIID --inlineSource';
+        jalangiExecStringForNode = jalangiExecStringForNode + ' --analysis ' + srcdir + analysis;
+        jalangiExecStringForNode = jalangiExecStringForNode + ' ' + inputFile;
+
+        console.log("Jalangi running String "+jalangiExecStringForNode);
+        return shelljs.exec(jalangiExecStringForNode).code;
+
+
+    }
 }
 
 /**

@@ -8,6 +8,7 @@ function foo () {
 
 function bar () {
     console.log('bar');
+
 }
 
 module.exports = foo();
