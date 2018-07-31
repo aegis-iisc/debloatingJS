@@ -32,6 +32,19 @@ var parser = new argparse.ArgumentParser({
     var analysis = args.analysis;
     var inputFile = args.inputFile;
 
+    /********** Copy the original Application to the Target *******************/
+
+    var mochaInputForApplication = path.resolve(inputFile);
+    var applicationDir = path.resolve(path.dirname(mochaInputForApplication), '../');
+
+
+    //get the stubFile generated for the application
+    var outputDirForInput = applicationDir.replace('input', 'output-actual');
+
+    // copy the directory structure of the input application to the actual output-directory
+    createDirectoryStructure(applicationDir, outputDirForInput);
+
+
     var resultJalangi = null;
     if (!args.node || args.node === 'false') { // unit
            var outputRoot = testsRoot.replace('input','output-actual');
@@ -44,14 +57,18 @@ var parser = new argparse.ArgumentParser({
 
     }else{
         //TODO handle Nodejs case
+        console.log("Main :: Nodejs case");
+
         //resultJalangi = commons.runJalangi(analysis, inputFileName, testsRoot);
         // for each application , we just need to run the app/debloatingJS/__run_tests.js
-        var __runTestFile = args.inputFile;
+        var __runTestFile = args.inputFile; // mocha test file for the application
         var __inputApp = args.nodeapp;
-
-        resultJalangi = commons.runJalangi(analysis, __runTestFile, __inputApp);
-
-
+        console.log(__inputApp);
+        resultJalangi = commons.runJalangi(analysis, __runTestFile, __inputApp, true);
+        if(resultJalangi === 0)
+            console.log("Main::Jalangi Analysis Phase Executed Successfully");
+        else
+            console.error("Main::Jalangi Analysis Phase Failed");
     }
 
     // if dynamic analysis phase exited successfully, compose it with the transformation.
@@ -59,6 +76,8 @@ var parser = new argparse.ArgumentParser({
         return -1;
 
     }else{ // Jalangi ran successfully
+
+        console.log("Running Transformer");
         var transformer = args.transformer;
         var srcroot = './analysis/src/';
 
@@ -67,6 +86,8 @@ var parser = new argparse.ArgumentParser({
                 console.log("CASE :: Transforming input unit test File")
                 var fullInputFile = testsRoot + inputFile;
                 console.log("fif "+fullInputFile);
+
+
                 var inputFilePrefix = fullInputFile.substring(0, fullInputFile.lastIndexOf('.'));
                 var stubFilePrefix = inputFilePrefix.replace('input', 'output-actual');
 
@@ -87,8 +108,13 @@ var parser = new argparse.ArgumentParser({
 
 
             }
-        }else {
+        }else { // node application case
+            console.log("CASE :: Transforming input nodejs Application");
+            var jsonOutputPath = path.resolve(outputDirForInput, 'debloatingJS', path.basename(mochaInputForApplication).toString().replace('.js', '_out.json'));
 
+            console.log("Path to the json file "+jsonOutputPath);
+            var transformerResult = commons.runTransformer(srcroot + transformer, jsonOutputPath, applicationDir, outputDirForInput, true);
+            console.log("Transformer Out " + transformerResult);
 
             // handle the node case
 
@@ -98,6 +124,25 @@ var parser = new argparse.ArgumentParser({
     }
 
 })();
+
+function createDirectoryStructure(inDir, outDir){
+
+    // copy the application to the output dir
+    copydir.sync(inDir, outDir, function(stat, filepath, filename){
+        if(stat === 'file' && path.extname(filepath) === '.json') {
+            return false;
+        }
+        if (stat === 'file' && filename.toString().indexOf('_jalangi_.js') !== -1) {
+            return false;
+        }
+        return true;
+    }, function(err){
+        console.log('ok');
+    });
+    console.log("Main:Sucessfully copied the application to the target");
+
+
+}
 
 module.exports = {
     testsRoot : testsRoot,
