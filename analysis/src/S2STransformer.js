@@ -25,6 +25,8 @@ var parser = new argparse.ArgumentParser({
 parser.addArgument(['-sl'], {help: 'potential stub list' } );
 parser.addArgument(['-in'], {help: 'input path, the directory containing files to be transofrmed' });
 parser.addArgument(['-o'], {help: 'output path, the directory where transformed files are written' });
+parser.addArgument(['-isNode'], {help: 'true if the input is a node, -in will be the root directory of the node app ' +
+    'and -o will the root directory for the app in the output-actual'});
 var args = parser.parseArgs();
 // verify the argumensts
 if(!args.sl || !args.in || !args.o){
@@ -33,19 +35,47 @@ if(!args.sl || !args.in || !args.o){
 
 const NO_CHANGES_NEEDED = 'NO-STUB';
 const LOCATION_DELTA_THRESSHOLD = 2;
+
 //  console.log("Args "+args.toString());
 
 
 (function () {
-    var stubListFile = path.resolve(args.sl);
-    var pathToRoot = path.resolve(args.in);
-    var pathToOutput = path.resolve(args.o);
-    preprocessInput(stubListFile);
-    var changes  = mainTransformer(fileName_Func_Location, pathToOutput);
-    if(changes === NO_CHANGES_NEEDED)
-        generateModifiedAsOriginal(stubListFile);
+    var isNode = false;
+    if(!args.isNode || args.isNode === false) { // unit application case
+        console.log("S2STransformer:Transforming a unit test");
+        var stubListFile = path.resolve(args.sl);
+        var pathToRoot = path.resolve(args.in);
+        var pathToOutput = path.resolve(args.o);
+        preprocessInput(stubListFile);
+        var changes = mainTransformer(fileName_Func_Location, pathToOutput);
+        if (changes === NO_CHANGES_NEEDED)
+            generateModifiedAsOriginal(stubListFile);
 
-    return;
+        return;
+    }else{ // node js case
+        isNode = true;
+        console.log("S2STransformer:Transforming a Nodejs Application");
+        console.log("parameters to Transformer "+args.sl, args.in, args.o);
+        var stubListFile = path.resolve(args.sl);
+        var inputAppDir = path.resolve(args.in);
+        var outputAppDir = path.resolve(args.o);
+        console.log("S2STransformer:preprocessing the generated stubs list");
+        preprocessInput(stubListFile);
+
+        console.log("S2STransformer:stubs list preprocessing done");
+
+        console.log("S2STransformer:starting tranformation of potentially unused function")
+
+        //TODO for each file processed, create the generated file with the same name
+
+        var changes = mainTransformer(fileName_Func_Location, outputAppDir);
+        if (changes === NO_CHANGES_NEEDED)
+            generateModifiedAsOriginal(stubListFile);
+
+        return;
+
+
+    }
 }());
 
 
@@ -83,8 +113,7 @@ function getModifiedPath(_fileName){
 /* preprocesses the input, read the stubList,
    populates the fineName_Func_Location
    populates the globalModifiedFileList
-   @params
-   @stubFile
+   @params stubFile
 
  */
 function preprocessInput(stubFile){ // file -> Map -> ()
@@ -125,7 +154,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
             var location = fileName_Func_Location[elem].funcLoc;
             var startLineNumber = location[0];
             //var startLineNumber = location.toString().split(':')[0];
-            console.log("********* finding function at line number "+startLineNumber);
+            console.log(" Searching for file " +fileName+ ":: function at line number "+startLineNumber);
             var functionName = findFun(fileName, location, startLineNumber);
 
             if (functionName === undefined)
@@ -178,12 +207,28 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
     }
 
     try {
+        // writing the modified files corresponding to the changed original file
         for(fileN in updatedASTList){
-           var baseFileName = path.basename(fileN);
-           var modifiedBase = path.join(baseFileName+'_modified.js');
+            //TODO :: The output generated is flattened out, need to recursively write out the file in correct location.
+            var baseFileName = path.basename(fileN);
+            var fullOriginalPath = path.resolve(fileN);
+
+            //TODO : A bug, changes the files not under /input right in place , for example
+
+            if(fullOriginalPath.toString().indexOf(path.sep+'input'+path.sep) === -1){
+               // console.log("S2STransformer: Not replacing the file "+fullOriginalPath);
+                continue;
+
+            }
+
+            var fullModifiedPath = path.resolve(fullOriginalPath.toString().replace('input', 'output-actual') + '.js');
+            console.log("S2STransformer: resolved outputPath "+fullModifiedPath);
+
+           /* var modifiedBase = path.join(baseFileName+'.js');
            var modifiedAbsolutePath = path.join(pathToOutput,modifiedBase);
-            console.log("fileName-to-be-written " +modifiedAbsolutePath );
-            fs.writeFileSync(modifiedAbsolutePath, escodegen.generate(updatedASTList[fileN]));
+           */
+            console.log("fileName-to-be-written " +fullModifiedPath );
+            fs.writeFileSync(fullModifiedPath, escodegen.generate(updatedASTList[fileN]));
         }
     } catch (Fileerror) {
         console.log("File Error " + Fileerror.stack);
