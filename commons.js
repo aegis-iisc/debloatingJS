@@ -21,7 +21,7 @@ function runWithNode (fileName, args, output){
     nodeExecString = nodeExecString + $nodePath + ' ' +fileName;
     nodeExecString = nodeExecString + ' ' +params;
 
-    console.log("executing "+nodeExecString);
+    console.log("commons.runWithNode :: executing "+nodeExecString);
     if(!output || output === 'exit' ) {
         return shelljs.exec(nodeExecString).code;
     } else if (output === 'stdout'){
@@ -84,33 +84,64 @@ function interceptAppExecution (originalFileName, modifiedFileName, params, done
  * @param root dir for the inputfile
  *
  */
-function runJalangi (analysis, inputFile, testsRoot){
+function runJalangi (analysis, inputFile, testsRoot, isNode){
     var testroot = null;
-    if(!testsRoot) {
+    if(!testsRoot || testsRoot == null) {
         console.log("testRoot Not defined")
         testroot = './tests/input/unit/';
     }else{
         testroot = testsRoot;
     }
     var srcdir = './analysis/src/';
-    var jalangiExecString = '';
-    jalangiExecString = jalangiExecString + $nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
-    jalangiExecString = jalangiExecString + ' --inlineIID --inlineSource';
-    jalangiExecString = jalangiExecString + ' --analysis '+srcdir+analysis;
-    jalangiExecString = jalangiExecString +' '+testroot+inputFile;
+    if(!isNode || isNode === false) {
+        var jalangiExecString = '';
+        jalangiExecString = jalangiExecString + $nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
+        jalangiExecString = jalangiExecString + ' --inlineIID --inlineSource';
+        jalangiExecString = jalangiExecString + ' --analysis ' + srcdir + analysis;
+        jalangiExecString = jalangiExecString + ' ' + testroot + inputFile;
 
-    //shelljs.exec($nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js ./tests/test-loading-semantics.js');
-    return shelljs.exec(jalangiExecString).code;
+        //shelljs.exec($nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js ./tests/test-loading-semantics.js');
+        return shelljs.exec(jalangiExecString).code;
+    }else{
+
+        // node js case handling
+        // Case , application/jsDebloat/__run_tests.js is the input file for nodejs case.
+        console.log("Running Dynamic reachability Analysis for application "+inputFile);
+        var jalangiExecStringForNode = '';
+        jalangiExecStringForNode = jalangiExecStringForNode + $nodePath + ' '+'--max_old_space_size=2000000' +' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
+        jalangiExecStringForNode = jalangiExecStringForNode + ' --inlineIID --inlineSource';
+        jalangiExecStringForNode = jalangiExecStringForNode + ' --analysis ' + srcdir + analysis;
+        jalangiExecStringForNode = jalangiExecStringForNode + ' ' + inputFile;
+
+        console.log("Jalangi running String "+jalangiExecStringForNode);
+        return shelljs.exec(jalangiExecStringForNode).code;
+
+
+
+    }
 }
 
 //TODO Change it to two different phases with assertions in between
 function runBothPhases (testName, isNode) {
-    if(!isNode) {
-        return runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputFile ' + testName + '.js', '--transformer S2STransformer.js']);
-    } else{
+    var testFile = path.resolve(testName);
+    var ext = path.extname(testFile);
 
+    if(!isNode) {
+        if(ext.toString() === '.js') {
+            console.log("A JS FILE ");
+            return runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputFile ' + testName, '--transformer S2STransformer.js', '--node true']);
+        }else {
+            return runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputFile ' + testName + '.js', '--transformer S2STransformer.js']);
+        }
+    } else{
+        if(ext.toString() === '.js') {
+            console.log("A JS FILE ");
+            return runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputFile ' + testName, '--transformer S2STransformer.js', '--node true']);
+        }else {
+            return runWithNode('./analysis/src/Main.js', ['--analysis CheckModuleLoading.js', '--inputFile ' + testName + '.js', '--transformer S2STransformer.js', '--node true']);
+        }
         // for node case also pass the appication parameter to the Main.js
-        assert(false);
+        //assert(false);
     }
 }
 
@@ -124,7 +155,7 @@ function jalangiAnalysis (analysis, inputFile, testsRoot, isNode){
             testroot = testsRoot;
         }
         var jalangiExecString = '';
-        jalangiExecString = jalangiExecString + $nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
+        jalangiExecString = jalangiExecString + $nodePath + ' ' +'--max_old_space_size=2000000' +' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
         jalangiExecString = jalangiExecString + ' --inlineIID --inlineSource';
         jalangiExecString = jalangiExecString + ' --analysis ' + srcdir + analysis;
         jalangiExecString = jalangiExecString + ' ' + testroot + inputFile;
@@ -134,7 +165,7 @@ function jalangiAnalysis (analysis, inputFile, testsRoot, isNode){
         // Case , application/jsDebloat/__run_tests.js is the input file for nodejs case.
         console.log("Running Dynamic reachability Analysis for application "+inputFile);
         var jalangiExecStringForNode = '';
-        jalangiExecStringForNode = jalangiExecStringForNode + $nodePath + ' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
+        jalangiExecStringForNode = jalangiExecStringForNode + $nodePath + ' '+'--max_old_space_size=2000000' +' ' + $JALANGI_HOME + '/src/js/commands/jalangi.js';
         jalangiExecStringForNode = jalangiExecStringForNode + ' --inlineIID --inlineSource';
         jalangiExecStringForNode = jalangiExecStringForNode + ' --analysis ' + srcdir + analysis;
         jalangiExecStringForNode = jalangiExecStringForNode + ' ' + inputFile;
@@ -163,12 +194,17 @@ function compareOutputs (testName, testType) {
 
     return assert.deepStrictEqual(actualOutput, expectedOutput, "Actual and Expected Mismatch");
 }
+/*
+    A utility function to fire the src/S2STransformer.js
+    @param path to the S2STransormer file to be passed to node
+    @param
 
-function runTransformer(transformer, sl, inp, outp ){
+ */
+function runTransformer(transformer, sl, inp, outp, isNode ){
     console.log("sl "+sl);
     console.log("inp "+inp);
     console.log("outp "+outp);
-    return runWithNode(transformer, ['-sl '+sl, '-in '+inp, '-o '+outp]);
+    return runWithNode(transformer, ['-sl '+sl, '-in '+inp, '-o '+outp, '-isNode '+isNode]);
 }
 
 // returns the path for the modified file or application directory
