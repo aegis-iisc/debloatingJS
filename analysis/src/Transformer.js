@@ -12,7 +12,7 @@ var estraverse = require('estraverse');
 var esquery = require('esquery');
 var utility = require('./Utility.js');
 //var cutility = require('./cutility.js')
-
+var path = require('path');
 var fs = require('fs');
 
 var exports = module.exports = {};
@@ -536,8 +536,11 @@ exports.addOriginalDeclaration = function(astForInput, functionName){
 
 exports.addSrcfileDeclaration = function (astForInput, filename) {
     //console.log("SRC "+filename);
+    console.log("Transformer[D]: fileName "+filename);
+    var normalized = path.normalize(path.resolve(filename));
+
     var srcFileDeclaration ='';
-    var srcFileDeclaration = srcFileDeclaration+' var srcFile = \''+filename+ '.js\';';
+    var srcFileDeclaration = srcFileDeclaration+' var srcFile = \''+normalized.toString()+ '.js\';';
     var _srcFileDeclaration = esprima.parse(srcFileDeclaration.toString(), {range: true, loc: true, tokens: false});
 
     // add just after the require statements
