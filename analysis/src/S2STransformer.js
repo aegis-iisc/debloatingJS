@@ -61,12 +61,9 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         var outputAppDir = path.resolve(args.o);
         console.log("S2STransformer:preprocessing the generated stubs list");
         preprocessInput(stubListFile);
-
         console.log("S2STransformer:stubs list preprocessing done");
 
         console.log("S2STransformer:starting tranformation of potentially unused function")
-
-        //TODO for each file processed, create the generated file with the same name
 
         var changes = mainTransformer(fileName_Func_Location, outputAppDir);
         if (changes === NO_CHANGES_NEEDED)
@@ -145,7 +142,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
     var updatedASTList = {};
     // if no stub generated the transformed file is similar to original and return;
     if (Object.keys(fileName_Func_Loctaion).length === 0 && fileName_Func_Loctaion.constructor === Object) {
-        console.error("Empty StubList");
+        console.error("No potentially unreachble functions found by the analysis");
         return NO_CHANGES_NEEDED;
     }
     for (elem in fileName_Func_Location) {
@@ -153,7 +150,11 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
             var fileName = fileName_Func_Location[elem].fileName;
             var location = fileName_Func_Location[elem].funcLoc;
             var startLineNumber = location[0];
-            //var startLineNumber = location.toString().split(':')[0];
+
+            // Ignore the files outside the input project directory
+            if(path.resolve(fileName).toString().indexOf(path.sep+'input'+path.sep) === -1){
+                continue;
+            }
             console.log(" Searching for file " +fileName+ ":: function at line number "+startLineNumber);
             var functionName = findFun(fileName, location, startLineNumber);
 
@@ -214,13 +215,12 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
             var fullOriginalPath = path.resolve(fileN);
 
             //TODO : A bug, changes the files not under /input right in place , for example
-
+            // decide if we want to update the unused files outside the application directory.          
             if(fullOriginalPath.toString().indexOf(path.sep+'input'+path.sep) === -1){
                // console.log("S2STransformer: Not replacing the file "+fullOriginalPath);
                 continue;
 
             }
-
             var fullModifiedPath = path.resolve(fullOriginalPath.toString().replace('input', 'output-actual') + '.js');
             console.log("S2STransformer: resolved outputPath "+fullModifiedPath);
 

@@ -36,13 +36,11 @@ var parser = new argparse.ArgumentParser({
 
     var mochaInputForApplication = path.resolve(inputFile);
     var applicationDir = path.resolve(path.dirname(mochaInputForApplication), '../');
-
-
     //get the stubFile generated for the application
     var outputDirForInput = applicationDir.replace('input', 'output-actual');
-
     // copy the directory structure of the input application to the actual output-directory
     createDirectoryStructure(applicationDir, outputDirForInput);
+
 
 
     var resultJalangi = null;
@@ -56,7 +54,6 @@ var parser = new argparse.ArgumentParser({
             resultJalangi = commons.runJalangi(analysis, inputFile, testsRoot);
 
     }else{
-        //TODO handle Nodejs case
         console.log("Main :: Nodejs case");
 
         //resultJalangi = commons.runJalangi(analysis, inputFileName, testsRoot);
@@ -86,15 +83,10 @@ var parser = new argparse.ArgumentParser({
                 console.log("CASE :: Transforming input unit test File")
                 var fullInputFile = testsRoot + inputFile;
                 console.log("fif "+fullInputFile);
-
-
                 var inputFilePrefix = fullInputFile.substring(0, fullInputFile.lastIndexOf('.'));
                 var stubFilePrefix = inputFilePrefix.replace('input', 'output-actual');
-
-
                 //const stubListOutJSON = stubFilePrefix + "_stubList.json";
                 const outJSON = path.resolve(stubFilePrefix+"_out.json");
-
                 var transformerResult = commons.runTransformer(srcroot + transformer, outJSON, testsRoot, stubFilePrefix.substring(0, stubFilePrefix.lastIndexOf('/') + 1));
                 console.log("Transformer Out " + transformerResult);
             }else if(args.inputDir){
@@ -105,8 +97,6 @@ var parser = new argparse.ArgumentParser({
                 const stubListOutJSONAPP = stubFilePrefix+"_stubList.json";
                 console.log("stubFile "+stubListOutJSONAPP);
                 var transformerResult = commons.runTransformer(srcroot + transformer, stubListOutJSONAPP, testsRoot, stubFilePrefix.substring(0, stubFilePrefix.lastIndexOf('/') + 1));
-
-
             }
         }else { // node application case
             console.log("CASE :: Transforming input nodejs Application");

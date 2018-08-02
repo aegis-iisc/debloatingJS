@@ -57,4 +57,11 @@ describe('all tests for nodejs', function () {
         runNodeTests(testFile);
         //shell.exec('node ' + testFile);
     })
+    /*describe('sample application 2', function () {
+        var testFile = path.join(nodejsTestsPath, projectName, testFileName);
+        console.log("TestFile "+testFile);
+        runNodeTests(testFile);
+        //shell.exec('node ' + testFile);
+    });
+*/
 });
