@@ -164,7 +164,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
             var astForInput = {};
             if (updatedASTList.hasOwnProperty(fileName)) {
                 astForInput = updatedASTList[fileName];
-            } else { // performed once
+            }else { // performed once
                 var inputProgramFromFile = fs.readFileSync(fileName + '.js', 'utf8');
                 astForInput = esprima.parse(inputProgramFromFile.toString(), {
                     range: true,
@@ -174,14 +174,15 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
                 transformer.addCachedCodeDeclaration(astForInput);
                 transformer.addHeaderInstructions(astForInput);
                 transformer.addSrcfileDeclaration(astForInput, fileName);
-                var astForLazyLoad = transformer.createLazyLoad(functionName);
+                /*var astForLazyLoad = transformer.createLazyLoad(functionName, fileName);
                 astForInput.body.push(astForLazyLoad);
                 var astForExtractBody = transformer.createExtractBodies();
                 astForInput.body.push(astForExtractBody);
-                transformer.updateRequireDeclaration(astForInput, globalModifiedFilesList);
-                var astForLoadAndInvokeBody = transformer.createLoadAndInvokeBody();
+                */
+                //transformer.updateRequireDeclaration(astForInput, globalModifiedFilesList);
+               /* var astForLoadAndInvokeBody = transformer.createLoadAndInvokeBody();
                 astForInput.body.push(astForLoadAndInvokeBody);
-
+*/
             }
 
             //transformer.addOriginalDeclaration(astForInput, functionName);
@@ -189,7 +190,6 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
                 transformer.replace(astForInput, null, functionName);
                 // create and add a body for lazy Loading
                 var modifiedProgram = escodegen.generate(astForInput);
-                updatedASTList[fileName] = astForInput;
 
 
             } else {
@@ -197,8 +197,9 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
               transformer.replace(astForInput, functionName);
                 // create and add a body for lazy Loading
                 var modifiedProgram = escodegen.generate(astForInput);
-                updatedASTList[fileName] = astForInput;
+
             }
+            updatedASTList[fileName] = astForInput;
         }
         catch (error) {
             console.log(error.stack);
@@ -245,10 +246,9 @@ function findFun(fileName, location, startLineNumber) {
 
     if (_fn.length > 0) {
 
+        //read the whole input file
         var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
         var astForInput = esprima.parse(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false});
-
-        //console.log(astForInput);
         estraverse.traverse(astForInput,
             { // define the visitor as an object with two properties/functions defining task at enter and leave
                 enter: function (node, parent) { // check for function name and replace
@@ -329,13 +329,11 @@ function findFun(fileName, location, startLineNumber) {
 */
                     }else if(node.type === 'FunctionExpression') {
                         //compare the location
-                        // console.log("ERROR "+node.loc.start.column+" - "+_loc[1]+ " = "+  Math.abs(node.loc.start.column -_loc[1]));
                         if( node.loc.start.line === _loc[0] && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
-                            //if (node.loc.start.line === _loc[0] && node.loc.start.column === _loc[2]){
                             if (node.id !== null) {// has an id
                                 result = node.id.name;
                                 this.break();
-                            } else {
+                            } else { // anonymous function case, create a unique-Id based on the function location
                                 result = utility.cerateUniqueId(node.loc);
                                 this.break();
                             }
