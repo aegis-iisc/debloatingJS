@@ -20,3 +20,14 @@ describe('function baz', function () {
         assert.equal(sampeApp.baz(), 2);
     });
 });
+
+
+/*
+
+describe('function qux', function() {
+	it('should print qux', function(){
+		assert.equal(sampeApp.qux(), 0);
+	})
+
+});
+*/

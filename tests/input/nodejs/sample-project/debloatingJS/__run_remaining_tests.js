@@ -4,7 +4,7 @@ var Mocha = require('mocha'),
 
 // Instantiate a Mocha instance.
 var mocha = new Mocha();
-var testDir = path.join(path.resolve(__dirname), '../test');
+var testDir = path.join(path.resolve(__dirname), '../remaining_test');
 
 // Add each .js file to the mocha instance
 fs.readdirSync(testDir).filter(function(file){
@@ -15,10 +15,6 @@ fs.readdirSync(testDir).filter(function(file){
     if(file.toString().indexOf('_jalangi') !== -1 ) {
         //console.log("Jalangi file "+file);
         return;
-    }if(file.toString() === 'othertest.js'){
-        console.log("Skipping othertest");
-        return;
-
     }
     mocha.addFile(
         path.join(testDir, file)

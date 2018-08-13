@@ -7,6 +7,7 @@ function baz () {
 
 function qux () {
     console.log('qux');
+    return 3;
 }
 
 var x = sampleFunction();
@@ -14,5 +15,7 @@ console.log(x);
 
 module.exports = {
     baz: baz,
-    x: x
+    x: x,
+    qux: qux
+
 };
