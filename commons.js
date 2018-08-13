@@ -55,6 +55,7 @@ function interceptAppExecution (originalFileName, modifiedFileName, params, done
     var modifiedExecution = retrieveCommand(modifiedFileName, params);
     try {
         // execute original application and store output
+        console.log(">>>" +originalExecution);
         exec(originalExecution, function (error, stdout, stderr) {
             assert.ifError(error);
             var originalResults = {
@@ -213,7 +214,9 @@ function getModifiedPathOrDir(inputName, isUnit) {
         return path.resolve(actualOutputPath, 'unit', inputName + '_modified.js');
     }
     else { // TODO :: nodejs application case
-        return '';
+        var outputName = inputName.toString().replace('input', 'output-actual');
+        var pathModified = path.resolve(outputName);
+        return pathModified;
     }
 }
 
@@ -224,8 +227,13 @@ function getOriginalPathOrDir(inputName, isUnit){
     }
     else {
         // TODO :: nodejs application case
-        return '';
+        var pathOriginal = path.resolve(inputName);
+        return pathOriginal;
     }
+}
+
+function remainingTest(mainTestFilePath){
+    return path.resolve(path.dirname(mainTestFilePath), '__run_remaining_tests.js');
 }
 
 module.exports = {
@@ -236,5 +244,7 @@ module.exports = {
     runJalangi: runJalangi,
     runTransformer: runTransformer,
     getOriginalPathOrDir: getOriginalPathOrDir,
-    getModifiedPathOrDir: getModifiedPathOrDir
+    getModifiedPathOrDir: getModifiedPathOrDir,
+    remainingTest : remainingTest
+
 };

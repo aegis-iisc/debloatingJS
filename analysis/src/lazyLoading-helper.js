@@ -1,4 +1,11 @@
-function lazyLoad(funName, fileName) {
+var fs = require('fs');
+var esprima = require('esprima');
+var estraverse = require('estraverse');
+var escodegen = require('escodegen');
+
+var cachedCode = {};
+
+function lazyLoad(funName, fileName, srcFile) {
     var code = fs.readFileSync(fileName, 'utf8');
     var ast = esprima.parse(code.toString(), {
         range: true,
