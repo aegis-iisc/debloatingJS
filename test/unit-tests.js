@@ -62,6 +62,7 @@ describe('unit-tests', function () {
     });
 
     describe('function expressions', function () {
+        this.timeout(10000);
         describe('single-function-not-executed', function () {
             runTests('test1');
         });
