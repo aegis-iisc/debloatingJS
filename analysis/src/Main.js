@@ -122,7 +122,7 @@ function createDirectoryStructure(inDir, outDir){
         if (stat === 'directory' && filename.toString() === '.git') {
             return false;
         }
-        if(stat === 'file' && path.extname(filepath) === '.json') {
+        if(stat === 'file' && path.extname(filepath) === '.json' && filename !== 'package.json') {
             return false;
         }
         if (stat === 'file' && filename.toString().indexOf('_jalangi_.js') !== -1) {
