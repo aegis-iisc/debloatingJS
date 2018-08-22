@@ -28,7 +28,7 @@ function compareLoc (loc1, loc2){
     function to create unique Id from a loc
  */
 function cerateUniqueId (locFrom){
-    return {"type": exports.UNIQUE_ID_TYPE, "startline" : locFrom.start.line, "startcol":locFrom.start.column};
+    return {"type": 'UniqueFunctionId', "startline" : locFrom.start.line, "startcol":locFrom.start.column};
 }
 
 function getReletivePath (absolutePath) {
