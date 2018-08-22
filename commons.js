@@ -211,7 +211,7 @@ function runTransformer(transformer, sl, inp, outp, isNode ){
 // returns the path for the modified file or application directory
 function getModifiedPathOrDir(inputName, isUnit) {
     if (isUnit) {
-        return path.resolve(actualOutputPath, 'unit', inputName + '_modified.js');
+        return path.resolve(actualOutputPath, 'unit', inputName + '.js');
     }
     else { // TODO :: nodejs application case
         var outputName = inputName.toString().replace('input', 'output-actual');

@@ -36,9 +36,6 @@ if(!args.sl || !args.in || !args.o){
 const NO_CHANGES_NEEDED = 'NO-STUB';
 const LOCATION_DELTA_THRESSHOLD = 2;
 
-//  console.log("Args "+args.toString());
-
-
 (function () {
     var isNode = false;
     if(!args.isNode || args.isNode === false) { // unit application case
@@ -62,7 +59,6 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         console.log("S2STransformer:preprocessing the generated stubs list");
         preprocessInput(stubListFile);
         console.log("S2STransformer:stubs list preprocessing done");
-
         console.log("S2STransformer:starting tranformation of potentially unused function")
 
         var changes = mainTransformer(fileName_Func_Location, outputAppDir);
@@ -70,8 +66,6 @@ const LOCATION_DELTA_THRESSHOLD = 2;
             generateModifiedAsOriginal(stubListFile);
 
         return;
-
-
     }
 }());
 
@@ -84,7 +78,7 @@ function generateModifiedAsOriginal(stubFile){ // File -> File -> ()
     var inputPathDir = path.resolve(outputPathDir, '../../input', path.basename(outputPathDir));
     var stubFileBase = path.basename(stubFile);
     var basefileName = getActualPath(stubFileBase);
-    var basefileModified = getModifiedPath(basefileName);
+    var basefileModified = getModifiedPath(basefileName); //Identity fn now
     var outputFilePath = path.join(outputPathDir, basefileModified);
     var inputFilePath = path.join(inputPathDir, basefileName);
 
@@ -104,8 +98,7 @@ function getActualPath(_outPath){
 }
 
 function getModifiedPath(_fileName){
-   return  _fileName.replace('.js','_modified.js');
-
+   return  _fileName;
 }
 /* preprocesses the input, read the stubList,
    populates the fineName_Func_Location
@@ -137,10 +130,13 @@ function readStubListJSON(outFileJSON) {
     return fileName_Func_Location;
 
 }
-
+/*
+ * Main code transformer function
+ */
 function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
     var updatedASTList = {};
     // if no stub generated the transformed file is similar to original and return;
+    //TODO : why constructor === Object
     if (Object.keys(fileName_Func_Loctaion).length === 0 && fileName_Func_Loctaion.constructor === Object) {
         console.error("No potentially unreachble functions found by the analysis");
         return NO_CHANGES_NEEDED;
@@ -174,16 +170,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
                 transformer.addCachedCodeDeclaration(astForInput);
                 transformer.addHeaderInstructions(astForInput);
                 transformer.addSrcfileDeclaration(astForInput, fileName);
-                /*var astForLazyLoad = transformer.createLazyLoad(functionName, fileName);
-                astForInput.body.push(astForLazyLoad);
-                var astForExtractBody = transformer.createExtractBodies();
-                astForInput.body.push(astForExtractBody);
-                */
-                //transformer.updateRequireDeclaration(astForInput, globalModifiedFilesList);
-               /* var astForLoadAndInvokeBody = transformer.createLoadAndInvokeBody();
-                astForInput.body.push(astForLoadAndInvokeBody);
-*/
-            }
+             }
 
             //transformer.addOriginalDeclaration(astForInput, functionName);
             if (functionName.type == utility.UNIQUE_ID_TYPE) {
@@ -329,7 +316,7 @@ function findFun(fileName, location, startLineNumber) {
 */
                     }else if(node.type === 'FunctionExpression') {
                         //compare the location
-                        if( node.loc.start.line === _loc[0] && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
+                        if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
                             if (node.id !== null) {// has an id
                                 result = node.id.name;
                                 this.break();
@@ -356,7 +343,7 @@ function findFun(fileName, location, startLineNumber) {
 
     }
 
-    console.log("Returned function name " + result);
+    console.log("Returned function name " + JSON.stringify(result));
     if (result !== null)
         return result;
     else
@@ -365,27 +352,13 @@ function findFun(fileName, location, startLineNumber) {
 
 }
 
-
-// with JSON input this becomes unused
-function splitStubFile() {
-
-    var buffer = fs.readFileSync(stubbingFuncList);
-    var dataAsArray = buffer.toString().split("\n");
-    for (elem in dataAsArray) {
-        var temp = dataAsArray[elem].substring(1, dataAsArray[elem].length - 1);
-        var filePath_LineNo = temp.split(".js:");
-        fileName_Func_Location[elem] = {fileName: filePath_LineNo[0], funcLoc: filePath_LineNo[1]};
-        //console.log(fileName_Func_Location);
-    }
-}
-
 function populateGlobalModifiedFilesList(fileName_Func_Location){
 
     for (elem in fileName_Func_Location){
         try {
             var fileName = fileName_Func_Location[elem].fileName;
             var fileNameRelative =fileName.substring(fileName.lastIndexOf('/')+1, fileName.length);
-            globalModifiedFilesList[fileNameRelative+'.js'] = fileNameRelative+ '_modified.js';
+            globalModifiedFilesList[fileNameRelative+'.js'] = fileNameRelative+ '.js';
         }catch (error){
             console.error(error.toString());
         }

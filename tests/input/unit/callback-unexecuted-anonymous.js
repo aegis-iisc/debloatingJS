@@ -4,3 +4,4 @@ function foo (cb) {
 foo(function () {
     console.log('anonymous');
 });
+

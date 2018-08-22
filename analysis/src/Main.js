@@ -124,6 +124,8 @@ function createDirectoryStructure(inDir, outDir){
         }
         if (stat === 'file' && filename.toString().indexOf('_jalangi_.js') !== -1) {
             return false;
+        }if(stat === 'directory' && filename === '.git'){
+            return false;
         }
         return true;
     }, function(err){

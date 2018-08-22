@@ -8,7 +8,6 @@ var fs = require('fs');
 var argparse = require('argparse');
 var util = require('./Utility');
 var argument =  process.argv.slice(2);
-//var mkdirp = require('mkdirp');
 var path = require('path');
 
 var parser = new argparse.ArgumentParser({
@@ -24,12 +23,9 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
 (function (sandbox) {
 
     console.log(argument);
-    // extracting outputpaths
     var inputFileName = argument[argument.length-1];
     var inputFilePrefix = path.basename(inputFileName); //inputFileName.substring(0, inputFileName.lastIndexOf('.'));
     var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
-//    const jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
-
     var jsonOutputPath = null;
     if (isNodeApp(inputFileName)) { // Nodejs case
        var inputDir = path.dirname(inputFileName);
@@ -40,17 +36,12 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
    var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
         jsonOutputPath = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_out.json");
     }
-    // var stubListOut = outputFilePrefix+"_stubList.txt";
-    //const stubListOutJSON = path.resolve('./tests/output-actual/unit', outputFilePrefix + "_stubList.json");
 
     function MyAnalysis(){
 
         console.log("Runnning MyAnalysis");
-        // collective ojects for loaded and invoked functions
-        // collectiveFunctionLoaded = {giid : {laodingLocation : ...  loadedFunName : ...}
-        // collectiveFunctionCalled = {giid : {CallingLocation :  val  , calledDefinitionLocation : val,  loadedFunName : val}}
-        var collectivefunctionsLoaded = [];//{};
-        var collectivefunctionsCalled = [];//{};
+        var collectivefunctionsLoaded = [];
+        var collectivefunctionsCalled = [];
 
         var functionsLoaded = {};
         var loadedFunctionNames = {};
@@ -90,10 +81,8 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
             var func_def_loc = null;
             if(functionSid) {
                 func_def_loc = J$.iidToLocation(functionSid, functionIid);
-                //console.log("function definition location "+ func_loc);
             }else{
                 func_def_loc = f.name;
-                //console.log("NO sid "+ f.name);
             }
             var giid = J$.getGlobalIID(iid);
             functionsCalled[giid] = J$.iidToLocation(giid, iid);
@@ -113,8 +102,8 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
         };
 
         /*
-          Function entered due to execution using apply or call statements
-          e.g. P = {f : function {}}; P.f.apply();
+         * Function entered due to execution using apply or call statements
+         * CASE P = {f : function {}}; P.f.apply();
          */
         this.functionEnter = function(iid, f, dis, args){
             var giid = J$.getGlobalIID(iid);
@@ -133,16 +122,13 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
             var resultantStubList = generatePotentialStubs(collectivefunctionsLoaded, collectivefunctionsCalled);
             writeCollectiveJSON(collectivefunctionsLoaded, resultantStubList);
 
-/*
-            // TODO refactor this later
-            fs.writeFileSync(stubListOutJSON, JSON.stringify(resultantStubList));
-*/
-        };
+       };
     }
     /*
-    Takes two objects with Loaded and Called functions information and returns an object containing
-    information of functions potential candidates for stubs.
-     */
+    *   @param Loaded functions
+    *   @param Called Functions
+    *   @return Unexecuted Functions
+    */
     function generatePotentialStubs(collectiveLoaded, collectiveCalled){
         var resultantString = '';
         // sets maintained as objects
@@ -175,8 +161,8 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
         return potentialStubList;
     }
     /*
-    a set difference function , needed as we are not using native Set feature of JS introduced in ECMA S-6
-     */
+    * a set difference function , needed as we are not using native Set feature of JS introduced in ECMA S-6
+    */
     function setDifference(setA, setB){
         var diff = setA;
         for(var idA in setA){
@@ -196,7 +182,6 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
             'loadedFunctions': loadedFunctions,
             'unexecutedFunctions': unexecutedFunctions
         };
-        // mkdirp.sync(path.basename(jsonOutputPath));
         console.log("Writing generated JSON to "+path.resolve(jsonOutputPath).toString());
         try {
             fs.writeFileSync(path.resolve(jsonOutputPath), JSON.stringify(traceItems, null, 2));
