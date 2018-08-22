@@ -112,15 +112,18 @@ function replace(ast, funName, functionLocId){
               } else if (node.type == 'FunctionExpression') { // replace the function expression if it is anaonymous function
                   // compare the unique id for the function
                   if (node.id == null) {
-                      if (utility.compareLoc(node.loc, functionLocId)) {
-                          var uniqueFunId = createUniqueFunction(functionLocId);
-                          console.log("Txfrm >>> ");
-                          console.log(JSON.stringify(node.body));
-                          return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
-                      } else {
+                      if(node.loc){ // Skip if node.loc for the generated AST node is undefined.
+                          if (utility.compareLoc(node.loc, functionLocId)) {
+                              var uniqueFunId = createUniqueFunction(functionLocId);
+                              console.log("Txfrm @@@@@@@@@@@@@@@ ");
+                              console.log(JSON.stringify(node.body));
+                              return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
+                          } else {
+                              estraverse.VisitorOption.skip;
+                          }
+                      }else{
                           estraverse.VisitorOption.skip;
                       }
-
                   } else {
                         estraverse.VisitorOption.skip;
 
@@ -361,8 +364,8 @@ function addHeaderInstructions (ast){
         'var estraverse = require(\'estraverse\');\n' +
        // 'var cutility = require(\'./cutility.js\');\n' +
         'var escodegen = require(\'escodegen\'); \n' +
-        // 'var lazyLoader = require(\'/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/src/lazyLoading-helper.js\');'; //TODO give an exact path of the helper file
-        'var lazyLoader = require("' + path.resolve(__dirname, 'lazyLoading-helper.js') + '")';
+         'var lazyLoader = require(\'/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/src/lazyLoading-helper.js\');'; //TODO give an exact path of the helper file
+        //'var lazyLoader = require("' + path.resolve(__dirname, 'lazyLoading-helper.js') + '")';
       var _headerInstructions = esprima.parse(headerInstructions.toString(), {range: true, loc : true, tokens: true});
       ast.body.unshift(_headerInstructions);
       return ast;

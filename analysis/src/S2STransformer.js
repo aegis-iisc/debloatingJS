@@ -40,7 +40,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
     var isNode = false;
     if(!args.isNode || args.isNode === false) { // unit application case
         console.log("S2STransformer:Transforming a unit test");
-        var stubListFile = path.resolve(args.sl);
+        //var stubListFile = path.resolve(args.sl);
         var pathToRoot = path.resolve(args.in);
         var pathToOutput = path.resolve(args.o);
         preprocessInput(stubListFile);
