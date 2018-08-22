@@ -104,7 +104,7 @@ function getActualPath(_outPath){
 }
 
 function getModifiedPath(_fileName){
-   return  _fileName.replace('.js','_modified.js');
+   return  _fileName.replace('.js','.js');
 
 }
 /* preprocesses the input, read the stubList,

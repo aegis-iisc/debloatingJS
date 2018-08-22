@@ -8,7 +8,7 @@ var fs = require('fs');
 var argparse = require('argparse');
 var util = require('./Utility');
 var argument =  process.argv.slice(2);
-//var mkdirp = require('mkdirp');
+var mkdirp = require('mkdirp');
 var path = require('path');
 
 var parser = new argparse.ArgumentParser({
@@ -195,8 +195,8 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
             'loadedFunctions': loadedFunctions,
             'unexecutedFunctions': unexecutedFunctions
         };
-        // mkdirp.sync(path.basename(jsonOutputPath));
-        console.log("Writing generated JSON to "+path.resolve(jsonOutputPath).toString());
+        mkdirp.sync(path.dirname(jsonOutputPath));
+        console.log("Writing generated JSON to " + path.resolve(jsonOutputPath).toString());
         try {
             fs.writeFileSync(path.resolve(jsonOutputPath), JSON.stringify(traceItems, null, 2));
         }catch(e) {

@@ -1,0 +1,19 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/function-constructor-2.js:2:1:5:2",
+      "loadedFunName": "function foo(arg1, arg2)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "tests/input/unit/function-constructor-2.js:7:1:9:2",
+      "loadedFunName": "function bar(arg1)",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": [
+    {
+      "stubLocation": "tests/input/unit/function-constructor-2.js:7:1:9:2"
+    }
+  ]
+}

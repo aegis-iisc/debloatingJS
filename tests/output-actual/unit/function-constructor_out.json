@@ -1,0 +1,10 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/function-constructor.js:2:1:5:2",
+      "loadedFunName": "function myFunction(arg1, arg2)",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": []
+}
