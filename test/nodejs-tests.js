@@ -72,8 +72,15 @@ describe('all tests for nodejs', function () {
     */
 
     projectName = 'loader-runner';
+    var testFile = path.join(nodejsTestsPath, projectName, testFileName);
     describe(projectName + ' application', function () {
-        var testFile = path.join(nodejsTestsPath, projectName, testFileName);
+        runNodeTests(testFile);
+    });
+
+    projectName = 'node-directory-tree';
+    var testFile = path.join(nodejsTestsPath, projectName, testFileName);
+    describe(projectName + ' application', function () {
         runNodeTests(testFile);
     })
+
 });
