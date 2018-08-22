@@ -22,6 +22,7 @@
     "esquery": "^1.0.1",
     "estraverse": "^4.2.0",
     "fs": "0.0.1-security",
+    "json3": "^3.3.2",
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",
     "shelljs": "^0.8.2"

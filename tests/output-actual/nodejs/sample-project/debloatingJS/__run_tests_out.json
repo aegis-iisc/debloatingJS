@@ -1,0 +1,1098 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "node_modules/mocha/lib/mocha.js:60:1:62:2",
+      "loadedFunName": "function image(name)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/mocha.js:83:1:110:2",
+      "loadedFunName": "function Mocha(options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/escape-string-regexp/index.js:5:18:11:2",
+      "loadedFunName": "function (str)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:162:1:169:2",
+      "loadedFunName": "function showDiff(err)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:171:1:176:2",
+      "loadedFunName": "function stringifyDiffObjs(err)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:285:1:348:2",
+      "loadedFunName": "function Base(runner)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:400:1:403:2",
+      "loadedFunName": "function pad(str, len)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:413:1:440:2",
+      "loadedFunName": "function inlineDiff(actual, expected)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:450:1:483:2",
+      "loadedFunName": "function unifiedDiff(actual, expected)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:493:1:506:2",
+      "loadedFunName": "function errorDiff(actual, expected)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:516:1:523:2",
+      "loadedFunName": "function colorLines(name, str)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/reporters/base.js:538:1:540:2",
+      "loadedFunName": "function sameType(a, b)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/index.js:36:26:36:123",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:5:1:5:19",
+      "loadedFunName": "function Diff()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:179:1:230:2",
+      "loadedFunName": "function buildValues(diff, components, newString, oldString, useLongestToken)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:232:1:234:2",
+      "loadedFunName": "function clonePath(path)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:8:58:122:4",
+      "loadedFunName": "function diff(oldString, newString)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:123:67:132:4",
+      "loadedFunName": "function pushComponent(components, added, removed)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:133:67:151:4",
+      "loadedFunName": "function extractCommon(basePath, newString, oldString, diagonalPath)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:152:60:158:4",
+      "loadedFunName": "function equals(left, right)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:159:65:167:4",
+      "loadedFunName": "function removeEmpty(array)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:168:63:170:4",
+      "loadedFunName": "function castInput(value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:171:62:173:4",
+      "loadedFunName": "function tokenize(value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/base.js:174:58:176:4",
+      "loadedFunName": "function join(chars)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/character.js:11:1:11:98",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/character.js:14:1:16:2",
+      "loadedFunName": "function diffChars(oldStr, newStr, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/word.js:14:26:14:123",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/word.js:62:1:65:2",
+      "loadedFunName": "function diffWords(oldStr, newStr, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/word.js:67:1:69:2",
+      "loadedFunName": "function diffWordsWithSpace(oldStr, newStr, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/util/params.js:5:1:17:2",
+      "loadedFunName": "function generateOptions(options, defaults)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/word.js:39:19:45:2",
+      "loadedFunName": "function (left, right)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/word.js:46:21:60:2",
+      "loadedFunName": "function (value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/line.js:14:26:14:123",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/line.js:43:1:45:2",
+      "loadedFunName": "function diffLines(oldStr, newStr, callback)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/line.js:46:1:49:2",
+      "loadedFunName": "function diffTrimmedLines(oldStr, newStr, callback)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/line.js:17:21:41:2",
+      "loadedFunName": "function (value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/sentence.js:11:1:11:98",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/sentence.js:18:1:20:2",
+      "loadedFunName": "function diffSentences(oldStr, newStr, callback)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/sentence.js:14:25:16:2",
+      "loadedFunName": "function (value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/css.js:11:1:11:98",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/css.js:18:1:20:2",
+      "loadedFunName": "function diffCss(oldStr, newStr, callback)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/css.js:14:20:16:2",
+      "loadedFunName": "function (value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/json.js:17:26:17:123",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/json.js:44:1:46:2",
+      "loadedFunName": "function diffJson(oldObj, newObj, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/json.js:50:1:107:2",
+      "loadedFunName": "function canonicalize(obj, stack, replacementStack, replacer, key)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/json.js:6:85:6:122",
+      "loadedFunName": "function (obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/json.js:27:22:38:2",
+      "loadedFunName": "function (value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/json.js:39:19:42:2",
+      "loadedFunName": "function (left, right)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/array.js:11:1:11:98",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/array.js:21:1:23:2",
+      "loadedFunName": "function diffArrays(oldArr, newArr, callback)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/array.js:14:22:16:2",
+      "loadedFunName": "function (value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/diff/array.js:17:42:19:2",
+      "loadedFunName": "function (value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/apply.js:13:1:13:98",
+      "loadedFunName": "function _interopRequireDefault(obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/apply.js:15:24:148:2",
+      "loadedFunName": "function applyPatch(source, uniDiff)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/apply.js:151:1:179:2",
+      "loadedFunName": "function applyPatches(uniDiff, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/parse.js:5:1:146:2",
+      "loadedFunName": "function parsePatch(uniDiff)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/util/distance-iterator.js:5:45:46:2",
+      "loadedFunName": "function (start, minLine, maxLine)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:13:26:13:221",
+      "loadedFunName": "function _toConsumableArray(arr)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:15:24:31:2",
+      "loadedFunName": "function calcLineCount(hunk)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:33:1:107:2",
+      "loadedFunName": "function merge(mine, theirs, base)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:109:1:124:2",
+      "loadedFunName": "function loadPatch(param, base)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:126:1:128:2",
+      "loadedFunName": "function fileNameChanged(patch)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:130:1:137:2",
+      "loadedFunName": "function selectField(index, mine, theirs)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:139:1:141:2",
+      "loadedFunName": "function hunkBefore(test, check)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:143:1:149:2",
+      "loadedFunName": "function cloneHunk(hunk, offset)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:151:1:201:2",
+      "loadedFunName": "function mergeLines(hunk, mineOffset, mineLines, theirOffset, theirLines)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:203:1:228:2",
+      "loadedFunName": "function mutualChange(hunk, mine, their)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:230:1:240:2",
+      "loadedFunName": "function removal(hunk, mine, their, swap)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:242:1:249:2",
+      "loadedFunName": "function conflict(hunk, mine, their)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:251:1:257:2",
+      "loadedFunName": "function insertLeading(hunk, insert, their)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:258:1:263:2",
+      "loadedFunName": "function insertTrailing(hunk, insert)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:265:1:285:2",
+      "loadedFunName": "function collectChange(state)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:286:1:341:2",
+      "loadedFunName": "function collectContext(state, matchChanges)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:343:1:347:2",
+      "loadedFunName": "function allRemoves(changes)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:348:1:358:2",
+      "loadedFunName": "function skipRemoveSuperset(state, removeChanges, delta)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/merge.js:360:1:395:2",
+      "loadedFunName": "function calcOldNewLineCount(lines)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/create.js:10:26:10:221",
+      "loadedFunName": "function _toConsumableArray(arr)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/create.js:12:24:123:2",
+      "loadedFunName": "function structuredPatch(oldFileName, newFileName, oldStr, newStr, oldHeader, newHeader, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/create.js:125:1:143:2",
+      "loadedFunName": "function createTwoFilesPatch(oldFileName, newFileName, oldStr, newStr, oldHeader, newHeader, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/patch/create.js:145:1:147:2",
+      "loadedFunName": "function createPatch(fileName, oldStr, newStr, oldHeader, newHeader, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/util/array.js:6:1:12:2",
+      "loadedFunName": "function arrayEqual(a, b)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/util/array.js:14:1:26:2",
+      "loadedFunName": "function arrayStartsWith(array, start)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/convert/dmp.js:6:1:23:2",
+      "loadedFunName": "function convertChangesToDMP(changes)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/convert/xml.js:5:1:24:2",
+      "loadedFunName": "function convertChangesToXML(changes)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/diff/lib/convert/xml.js:26:1:34:2",
+      "loadedFunName": "function escapeHTML(s)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/ms.js:38:1:73:2",
+      "loadedFunName": "function parse(str)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/ms.js:82:1:96:2",
+      "loadedFunName": "function format(ms)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/ms.js:24:18:29:2",
+      "loadedFunName": "function (val)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:75:1:77:2",
+      "loadedFunName": "function ignored(path)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:181:1:197:2",
+      "loadedFunName": "function highlight(js)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:226:1:237:2",
+      "loadedFunName": "function emptyRepresentation(value, typeHint)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:336:1:411:2",
+      "loadedFunName": "function jsonStringify(object, spaces, depth)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:73:1:77:2",
+      "loadedFunName": "function useColors()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:106:1:120:2",
+      "loadedFunName": "function formatArgs(args)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:122:1:128:2",
+      "loadedFunName": "function getDate()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:134:1:136:2",
+      "loadedFunName": "function log()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:145:1:153:2",
+      "loadedFunName": "function save(namespaces)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:162:1:164:2",
+      "loadedFunName": "function load()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:173:1:180:2",
+      "loadedFunName": "function init(debug)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/debug.js:43:1:52:2",
+      "loadedFunName": "function selectColor(namespace)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/debug.js:62:1:132:2",
+      "loadedFunName": "function createDebug(namespace)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/debug.js:134:1:142:2",
+      "loadedFunName": "function destroy()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/debug.js:152:1:176:2",
+      "loadedFunName": "function enable(namespaces)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/debug.js:184:1:186:2",
+      "loadedFunName": "function disable()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/debug.js:196:1:212:2",
+      "loadedFunName": "function enabled(name)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/debug.js:222:1:225:2",
+      "loadedFunName": "function coerce(val)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/ms/index.js:47:1:98:2",
+      "loadedFunName": "function parse(str)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/ms/index.js:108:1:122:2",
+      "loadedFunName": "function fmtShort(ms)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/ms/index.js:132:1:138:2",
+      "loadedFunName": "function fmtLong(ms)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/ms/index.js:144:1:152:2",
+      "loadedFunName": "function plural(ms, n, name)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/ms/index.js:25:18:37:2",
+      "loadedFunName": "function (val, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:49:55:51:2",
+      "loadedFunName": "function (key)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:51:11:67:2",
+      "loadedFunName": "function (obj, key)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:83:24:89:2",
+      "loadedFunName": "function (v)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/node.js:95:24:98:2",
+      "loadedFunName": "function (v)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/debug/src/debug.js:66:3:116:4",
+      "loadedFunName": "function debug()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:2:3:342:2",
+      "loadedFunName": "function (root)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:66:12:68:3",
+      "loadedFunName": "function (object, propertyName)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:70:17:79:3",
+      "loadedFunName": "function (array, value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:81:14:93:3",
+      "loadedFunName": "function (options, defaults)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:96:26:124:3",
+      "loadedFunName": "function (codePoint, strict)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:126:18:128:3",
+      "loadedFunName": "function (codePoint)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:130:18:132:3",
+      "loadedFunName": "function (codePoint)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:134:19:136:3",
+      "loadedFunName": "function (message)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:140:15:216:3",
+      "loadedFunName": "function (string, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:226:15:296:3",
+      "loadedFunName": "function (html, options)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/he/he.js:303:15:308:3",
+      "loadedFunName": "function (string)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:33:18:35:2",
+      "loadedFunName": "function (html)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:44:20:46:2",
+      "loadedFunName": "function (obj)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:56:17:66:2",
+      "loadedFunName": "function (files, fn)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:88:17:107:2",
+      "loadedFunName": "function (dir, ext, ret)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:116:16:121:2",
+      "loadedFunName": "function (str)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:129:17:149:2",
+      "loadedFunName": "function (str)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:158:22:172:2",
+      "loadedFunName": "function (qs)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:205:25:210:2",
+      "loadedFunName": "function (name)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:260:28:272:2",
+      "loadedFunName": "function type(value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:289:21:325:2",
+      "loadedFunName": "function (value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:432:24:497:2",
+      "loadedFunName": "function canonicalize(value, stack, typeHint)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:510:23:562:2",
+      "loadedFunName": "function lookupFiles(filepath, extensions, recursive)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:570:26:574:2",
+      "loadedFunName": "function ()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:583:20:585:2",
+      "loadedFunName": "function (err)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:596:28:654:2",
+      "loadedFunName": "function ()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:662:21:664:2",
+      "loadedFunName": "function isPromise(value)",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "node_modules/mocha/lib/utils.js:670:16:670:29",
+      "loadedFunName": "function ()",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": [
+    {
+      "stubLocation": "node_modules/mocha/lib/mocha.js:60:1:62:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/mocha.js:83:1:110:2"
+    },
+    {
+      "stubLocation": "node_modules/escape-string-regexp/index.js:5:18:11:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:162:1:169:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:171:1:176:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:285:1:348:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:400:1:403:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:413:1:440:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:450:1:483:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:493:1:506:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:516:1:523:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/reporters/base.js:538:1:540:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:179:1:230:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:232:1:234:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:8:58:122:4"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:123:67:132:4"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:133:67:151:4"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:152:60:158:4"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:159:65:167:4"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:168:63:170:4"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:171:62:173:4"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/base.js:174:58:176:4"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/character.js:14:1:16:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/word.js:62:1:65:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/word.js:67:1:69:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/util/params.js:5:1:17:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/word.js:39:19:45:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/word.js:46:21:60:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/line.js:43:1:45:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/line.js:46:1:49:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/line.js:17:21:41:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/sentence.js:18:1:20:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/sentence.js:14:25:16:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/css.js:18:1:20:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/css.js:14:20:16:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/json.js:44:1:46:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/json.js:50:1:107:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/json.js:6:85:6:122"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/json.js:27:22:38:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/json.js:39:19:42:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/array.js:21:1:23:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/array.js:14:22:16:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/diff/array.js:17:42:19:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/apply.js:15:24:148:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/apply.js:151:1:179:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/parse.js:5:1:146:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/util/distance-iterator.js:5:45:46:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:13:26:13:221"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:15:24:31:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:33:1:107:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:109:1:124:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:126:1:128:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:130:1:137:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:139:1:141:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:143:1:149:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:151:1:201:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:203:1:228:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:230:1:240:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:242:1:249:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:251:1:257:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:258:1:263:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:265:1:285:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:286:1:341:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:343:1:347:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:348:1:358:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/merge.js:360:1:395:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/create.js:10:26:10:221"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/create.js:12:24:123:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/create.js:125:1:143:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/patch/create.js:145:1:147:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/util/array.js:6:1:12:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/util/array.js:14:1:26:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/convert/dmp.js:6:1:23:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/convert/xml.js:5:1:24:2"
+    },
+    {
+      "stubLocation": "node_modules/diff/lib/convert/xml.js:26:1:34:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/ms.js:38:1:73:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/ms.js:82:1:96:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/ms.js:24:18:29:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:75:1:77:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:181:1:197:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:226:1:237:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:336:1:411:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/node.js:106:1:120:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/node.js:122:1:128:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/node.js:134:1:136:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/debug.js:134:1:142:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/debug.js:184:1:186:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/debug.js:222:1:225:2"
+    },
+    {
+      "stubLocation": "node_modules/ms/index.js:47:1:98:2"
+    },
+    {
+      "stubLocation": "node_modules/ms/index.js:108:1:122:2"
+    },
+    {
+      "stubLocation": "node_modules/ms/index.js:132:1:138:2"
+    },
+    {
+      "stubLocation": "node_modules/ms/index.js:144:1:152:2"
+    },
+    {
+      "stubLocation": "node_modules/ms/index.js:25:18:37:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/node.js:51:11:67:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/node.js:83:24:89:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/node.js:95:24:98:2"
+    },
+    {
+      "stubLocation": "node_modules/debug/src/debug.js:66:3:116:4"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:66:12:68:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:70:17:79:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:81:14:93:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:96:26:124:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:126:18:128:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:130:18:132:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:134:19:136:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:140:15:216:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:226:15:296:3"
+    },
+    {
+      "stubLocation": "node_modules/he/he.js:303:15:308:3"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:33:18:35:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:44:20:46:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:56:17:66:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:88:17:107:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:116:16:121:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:129:17:149:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:158:22:172:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:205:25:210:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:260:28:272:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:289:21:325:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:432:24:497:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:510:23:562:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:570:26:574:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:583:20:585:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:596:28:654:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:662:21:664:2"
+    },
+    {
+      "stubLocation": "node_modules/mocha/lib/utils.js:670:16:670:29"
+    }
+  ]
+}
