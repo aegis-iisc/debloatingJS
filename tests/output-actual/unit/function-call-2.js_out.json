@@ -1,0 +1,10 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/function-call-2.js:2:14:4:6",
+      "loadedFunName": "function (city, country)",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": []
+}

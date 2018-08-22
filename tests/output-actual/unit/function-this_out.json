@@ -1,0 +1,27 @@
+{
+  "loadedFunctions": [
+    {
+      "loadingLocation": "tests/input/unit/function-this.js:3:1:6:2",
+      "loadedFunName": "function myFunction()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "tests/input/unit/function-this.js:8:1:10:2",
+      "loadedFunName": "function foo()",
+      "isLiteral": true
+    },
+    {
+      "loadingLocation": "tests/input/unit/function-this.js:12:1:14:2",
+      "loadedFunName": "function bar()",
+      "isLiteral": true
+    }
+  ],
+  "unexecutedFunctions": [
+    {
+      "stubLocation": "tests/input/unit/function-this.js:8:1:10:2"
+    },
+    {
+      "stubLocation": "tests/input/unit/function-this.js:12:1:14:2"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ var fs = require('fs');
 var argparse = require('argparse');
 var util = require('./Utility');
 var argument =  process.argv.slice(2);
+var mkdirp = require('mkdirp');
 var path = require('path');
 
 var parser = new argparse.ArgumentParser({
@@ -25,7 +26,7 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
     console.log(argument);
     var inputFileName = argument[argument.length-1];
     var inputFilePrefix = path.basename(inputFileName); //inputFileName.substring(0, inputFileName.lastIndexOf('.'));
-    var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual');
+    var outputFilePrefix = inputFilePrefix.replace('input', 'output-actual'
     var jsonOutputPath = null;
     if (isNodeApp(inputFileName)) { // Nodejs case
        var inputDir = path.dirname(inputFileName);
@@ -182,7 +183,8 @@ const NODE_TEST_ROOT = path.resolve("./tests/input/nodejs");
             'loadedFunctions': loadedFunctions,
             'unexecutedFunctions': unexecutedFunctions
         };
-        console.log("Writing generated JSON to "+path.resolve(jsonOutputPath).toString());
+        mkdirp.sync(path.dirname(jsonOutputPath));
+        console.log("Writing generated JSON to " + path.resolve(jsonOutputPath).toString());
         try {
             fs.writeFileSync(path.resolve(jsonOutputPath), JSON.stringify(traceItems, null, 2));
         }catch(e) {

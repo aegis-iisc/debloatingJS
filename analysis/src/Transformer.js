@@ -356,12 +356,16 @@ function createLazyLoad (funName) {
 
 
 function addHeaderInstructions (ast){
-    var headerInstructions = 'var lazyLoader = require(\'/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/src/lazyLoading-helper.js\');';
-    //TODO give an exact path of the helper file
-
-    var _headerInstructions = esprima.parse(headerInstructions.toString(), {range: true, loc : true, tokens: true});
-    ast.body.unshift(_headerInstructions);
-    return ast;
+   var headerInstructions = 'var fs = require(\'fs\');\n' +
+        'var esprima = require(\'esprima\');\n' +
+        'var estraverse = require(\'estraverse\');\n' +
+       // 'var cutility = require(\'./cutility.js\');\n' +
+        'var escodegen = require(\'escodegen\'); \n' +
+        // 'var lazyLoader = require(\'/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/src/lazyLoading-helper.js\');'; //TODO give an exact path of the helper file
+        'var lazyLoader = require("' + path.resolve(__dirname, 'lazyLoading-helper.js') + '")';
+      var _headerInstructions = esprima.parse(headerInstructions.toString(), {range: true, loc : true, tokens: true});
+      ast.body.unshift(_headerInstructions);
+      return ast;
 
 }
 

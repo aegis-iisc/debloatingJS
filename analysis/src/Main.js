@@ -119,6 +119,9 @@ function createDirectoryStructure(inDir, outDir){
 
     // copy the application to the output dir
     copydir.sync(inDir, outDir, function(stat, filepath, filename){
+        if (stat === 'directory' && filename.toString() === '.git') {
+            return false;
+        }
         if(stat === 'file' && path.extname(filepath) === '.json') {
             return false;
         }
