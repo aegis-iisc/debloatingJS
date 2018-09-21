@@ -20,6 +20,7 @@ function runNodeTests (appName) {
          commons.compareOutputs(testName, 'unit');
      });
  */
+    /*
     it('run both phases', function (){
         console.log("Running bothe the phases for "+appName);
         var exitCode = commons.runBothPhases(appName, true);
@@ -38,6 +39,7 @@ function runNodeTests (appName) {
         var modifiedFile = commons.getModifiedPathOrDir(commons.remainingTest(appName), false);
         commons.interceptAppExecution(originalFile, modifiedFile, [], done);
     });
+    */
 }
 
 
@@ -55,7 +57,8 @@ describe('execute node.js tests', function () {
 
 
 describe('all tests for nodejs', function () {
-    this.timeout(20000);
+    this.timeout(200000);
+
     describe('sample application', function () {
         var testFile = path.join(nodejsTestsPath, projectName, testFileName);
         console.log("TestFile "+testFile);
