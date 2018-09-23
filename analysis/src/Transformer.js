@@ -43,11 +43,13 @@ function replace(ast, funName, functionLocId){
                        */
                       if (right.type == 'FunctionExpression') {
                           if (left.type == 'MemberExpression') {
+                              var leftVarPath = getMemberExpressionName(left);
+
+/*
                               var leftVarBaseName = left.object.name;
                               var leftVarExtName = left.property.name;
-                              var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
-                              result = leftVarPath;
-
+                              var leftVarPath = leftVarBaseName + '.' + leftVarExtName;*/
+                              console.log(leftVarPath + ' funName '+funName);
                               if (leftVarPath === funName) {
                                   console.log("Replacing " + node + ' with ' + funName);
                                   return createStubFunctionExpression(funName, right.params, left);
@@ -95,9 +97,13 @@ function replace(ast, funName, functionLocId){
                        */
                       if (right.type == 'FunctionExpression') {
                           if (left.type == 'MemberExpression') {
+                              var leftVarPath = getMemberExpressionName(left);
+
+/*
                               var leftVarBaseName = left.object.name;
                               var leftVarExtName = left.property.name;
                               var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+*/
                               result = leftVarPath;
                               if (leftVarPath === funName) {
                                   return createStubFunctionExpression(funName, right.params, left);
@@ -157,14 +163,14 @@ function createStubAnonymousFunctionExpression(funName, params){
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
-    var callEvalStmt = 'eval(\"original_'+funName+' = \" \+loadedBody); '+funName+' = '+'original_'+funName+';';
+    var callEvalStmt = 'eval(\"original_'+funName.replace('.','_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
-
-    var ifStatement = 'if (original_' + funName + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    // a name like exports.clone must be changed to original_exports_clone
+    var ifStatement = 'if (original_' + funName.replace('.','_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
     var _ifStatement = esprima.parse(ifStatement);
 
-     var invokeStatement = 'return original_'+funName+ '.apply(this, _param);';
+     var invokeStatement = 'return original_'+funName.replace('.','_')+ '.apply(this, _param);';
     _ifStatement['consequent'] = esprima.parse('lazyLoader.lazyLoad(' + funName + ')   ;' + callEvalStmt).body[0];
 
     var paramList = [];
@@ -175,9 +181,9 @@ function createStubAnonymousFunctionExpression(funName, params){
         }
     }
     if(paramList.length > 0)
-        var applyStatement = 'var ret = original_'+funName+'.apply(this, '+paramList.toString() +');';
+        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this, '+paramList.toString() +');';
     else
-        var applyStatement = 'var ret = original_'+funName+'.apply(this);';
+        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this);';
 
     var _applyStatement = esprima.parse(applyStatement);
 
@@ -209,11 +215,11 @@ function createStubFunctionDeclaration (funName, params){
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
 
-    var callEvalStmt = 'eval(\"original_'+funName+' = \" \+loadedBody); '+funName+' = '+'original_'+funName+';';
+    var callEvalStmt = 'eval(\"original_'+funName.replace('.','_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
 
-    var ifStatement = 'if (original_' + funName + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    var ifStatement = 'if (original_' + funName.replace('.','_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
     var _ifStatement = esprima.parse(ifStatement);
 
     var paramList = [];
@@ -225,9 +231,9 @@ function createStubFunctionDeclaration (funName, params){
     }
 
     if(paramList.length > 0)
-        var applyStatement = 'var ret = original_'+funName+'.apply(this, '+paramList.toString() +');';
+        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this, '+paramList.toString() +');';
     else
-        var applyStatement = 'var ret = original_'+funName+'.apply(this);';
+        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this);';
 
     var _applyStatement = esprima.parse(applyStatement);
 
@@ -264,21 +270,20 @@ function createStubFunctionDeclaration (funName, params){
 function createStubFunctionExpression (funName, params, left) { // returns the code used as a replacement of the original code
 
     // function expression assignment
-
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(' + funName +', srcFile )';
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
-    var callEvalStmt = 'eval(\"original_'+funName+' = \" \+loadedBody); '+funName+' = '+'original_'+funName+';';
+    var callEvalStmt = 'eval(\"original_'+funName.replace('.','_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
 
-    var ifStatement = 'if (original_' + funName + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    var ifStatement = 'if (original_' + funName.replace('.','_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
 
 
 
     var _ifStatement = esprima.parse(ifStatement);
-    var invokeStatement = 'return original_'+funName+ '.apply(this, _param);';
+    var invokeStatement = 'return original_'+funName.replace('.','_')+ '.apply(this, _param);';
     _ifStatement['consequent'] = esprima.parse('lazyLoader.lazyLoad(' + funName + ')   ;' + callEvalStmt).body[0];
 
     var paramList = [];
@@ -290,9 +295,9 @@ function createStubFunctionExpression (funName, params, left) { // returns the c
     }
 
     if(paramList.length > 0)
-        var applyStatement = 'var ret = original_'+funName+'.apply(this, '+paramList.toString() +');';
+        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this, '+paramList.toString() +');';
     else
-        var applyStatement = 'var ret = original_'+funName+'.apply(this);';
+        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this);';
 
     var _applyStatement = esprima.parse(applyStatement);
 
@@ -406,9 +411,13 @@ function addOriginalDeclaration(astForInput, functionName){
 
                      if (right.type == 'FunctionExpression') {
                          if (left.type == 'MemberExpression') {
+                             var leftVarPath = getMemberExpressionName(left);
+
+/*
                              var leftVarBaseName = left.object.name;
                              var leftVarExtName = left.property.name;
                              var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+*/
                              var functionNameFull = leftVarPath;
                              if(functionNameFull === functionName){
                                  astForInput.body.unshift(_originalDeclaration);
@@ -466,9 +475,13 @@ function extractBodies (srcFile) {
                     var right = node.expression.right;
                     if (right.type == 'FunctionExpression') {
                         if (left.type == 'MemberExpression') {
+                            var leftVarPath = getMemberExpressionName(left);
+
+/*
                             var leftVarBaseName = left.object.name;
                             var leftVarExtName = left.property.name;
                             var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+*/
                             var functionName = leftVarPath;
                             var functionBody = escodegen.generate(right);
                             cachedCode[srcFile][functionName] = functionBody;
@@ -609,6 +622,19 @@ function updateRequireDeclaration (ast, globalModifiedFilesList){
     return; // return void
 }
 
+
+function getMemberExpressionName(pathStart){
+    var prefix ='';
+    var node = pathStart;
+    while (node.type === "MemberExpression"){
+        prefix = '.'+node.property.name +prefix;
+        node = node.object;
+    }
+    if(node.type === "Identifier"){ // terminal case
+        prefix = node.name+prefix;
+    }
+    return prefix;
+}
 module.exports = {
     updateRequireDeclaration: updateRequireDeclaration,
     createLoadAndInvokeBody : createLoadAndInvokeBody,

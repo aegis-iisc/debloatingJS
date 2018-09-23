@@ -28,38 +28,41 @@ function runTests (testName) {
 
 describe('unit-tests', function () {
 
-    describe('basic logical operations', function () {
-        this.timeout(10000);
+        describe('basic logical operations', function () {
+            this.timeout(10000);
 
-        describe('conditional-execution-1', function () { runTests('conditional-execution-1'); });
-        describe('conditional-execution-2', function () { runTests('conditional-execution-2'); });
-        describe('conditional-execution-3', function () { runTests('conditional-execution-3'); });
-        describe('function-as-method', function () { runTests('function-as-method'); });
-        describe('function-constructor', function () { runTests('function-constructor'); });
-        describe('function-constructor-2', function () { runTests('function-constructor-2'); });
-        describe('function-call-1', function () { runTests('function-call-1'); });// different call expression, no unexercised function. TODO :: Handle this case in jalangi analysis
-        describe('function-call-2', function () { runTests('function-call-2'); });
-        describe('function-apply', function () { runTests('function-apply'); });
-        describe('function-apply-with-args', function () { runTests('function-apply-with-args'); });
-        describe('function-this', function () { runTests('function-this'); });
-        describe('closure-1', function () { runTests('closure-1'); });
-        describe('closure-2', function () { runTests('closure-2'); });
-        describe('closure-3', function () { runTests('closure-3'); });
-        describe('loop-1', function () { runTests('loop-1'); });
-        describe('loop-2', function () { runTests('loop-2'); });
-        describe('loop-3', function () { runTests('loop-3'); });
-        describe('callback-unexecuted', function () { runTests('callback-unexecuted'); });
-        describe('callback-unexecuted-anonymous', function () { runTests('callback-unexecuted-anonymous'); });
-        describe('callback-executed', function () { runTests('callback-executed'); });
-        describe('callback-executed-anonymous', function () { runTests('callback-executed-anonymous'); });
-        // Recursive function calls
-        describe('recursive-execution-1', function() {
-            runTests('recursive-execution-1');
+            describe('conditional-execution-1', function () { runTests('conditional-execution-1'); });
+            describe('conditional-execution-2', function () { runTests('conditional-execution-2'); });
+            describe('conditional-execution-3', function () { runTests('conditional-execution-3'); });
+            describe('function-as-method', function () { runTests('function-as-method'); });
+            describe('function-constructor', function () { runTests('function-constructor'); });
+            describe('function-constructor-2', function () { runTests('function-constructor-2'); });
+            describe('function-call-1', function () { runTests('function-call-1'); });// different call expression, no unexercised function. TODO :: Handle this case in jalangi analysis
+            describe('function-call-2', function () { runTests('function-call-2'); });
+            describe('function-apply', function () { runTests('function-apply'); });
+            describe('function-apply-with-args', function () { runTests('function-apply-with-args'); });
+            describe('function-this', function () { runTests('function-this'); });
+            describe('closure-1', function () { runTests('closure-1'); });
+            describe('closure-2', function () { runTests('closure-2'); });
+            describe('closure-3', function () { runTests('closure-3'); });
+            describe('loop-1', function () { runTests('loop-1'); });
+            describe('loop-2', function () { runTests('loop-2'); });
+            describe('loop-3', function () { runTests('loop-3'); });
+            describe('callback-unexecuted', function () { runTests('callback-unexecuted'); });
+            describe('callback-unexecuted-anonymous', function () { runTests('callback-unexecuted-anonymous'); });
+            describe('callback-executed', function () { runTests('callback-executed'); });
+            describe('callback-executed-anonymous', function () { runTests('callback-executed-anonymous'); });
+            // Recursive function calls
+            describe('recursive-execution-1', function() {
+                runTests('recursive-execution-1');
+            });
+            describe('recursive-execution-2', function() {
+                runTests('recursive-execution-2'); // => Transformer fails
+            });
+            describe('ExtendedPath-Expression', function () {
+                runTests('function-extended-path');
+            });
         });
-        describe('recursive-execution-2', function() {
-            runTests('recursive-execution-2'); // => Transformer fails
-        });
-    });
 
     describe('function expressions', function () {
         this.timeout(10000);

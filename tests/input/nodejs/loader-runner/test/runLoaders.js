@@ -110,7 +110,8 @@ describe("runLoaders", function() {
 			]);
 			result.cacheable.should.be.eql(true);
 			result.fileDependencies.should.be.eql([]);
-			result.contextDependencies.should.be.eql([]);
+			result.contextDependencies.should
+				.be.eql([]);
 			done();
 		});
 	});
@@ -256,7 +257,8 @@ describe("runLoaders", function() {
 			done();
 		});
 	});
-	it("should have to correct keys in context without resource", function(done) {
+	/************* Divide Tests Here *******************/
+	/*it("should have to correct keys in context without resource", function(done) {
 		runLoaders({
 			loaders: [
 				path.resolve(fixtures, "identity-loader.js"),
@@ -452,5 +454,5 @@ describe("runLoaders", function() {
 				getContext(testCase[0]).should.be.eql(testCase[1]);
 			});
 		});
-	});
+	});*/
 });
