@@ -62,7 +62,8 @@ describe('unit-tests', function () {
     describe('callback-unexecuted-anonymous', function () { runTests('callback-unexecuted-anonymous'); });
     describe('callback-executed', function () { runTests('callback-executed'); });
     describe('callback-executed-anonymous', function () { runTests('callback-executed-anonymous'); });
-   describe('function-expression', function() {
+
+    describe('function-expression', function() {
 
         runTests('function-expression-2');
     });

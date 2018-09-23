@@ -11,6 +11,8 @@ var argparse = require('argparse');
 var transformer = require('./Transformer.js');
 var copydir = require('copy-dir');
 const path = require('path');
+var mkdirp = require('mkdirp');
+
 
 // records for each fileName f, an array of function locations to be replaced by stubs
 var fileName_Func_Location = {};
@@ -37,13 +39,15 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
 const LOCATION_DELTA_THRESSHOLD = 2;
 
 (function () {
+    console.log(typeof args.isNode );
     var isNode = false;
-    if(!args.isNode || args.isNode === false) { // unit application case
+    if(!args.isNode || args.isNode === false || args.isNode === 'false') { // unit application case
         console.log("S2STransformer:Transforming a unit test");
-        //var stubListFile = path.resolve(args.sl);
+        var stubListFile = path.resolve(args.sl);
         var pathToRoot = path.resolve(args.in);
         var pathToOutput = path.resolve(args.o);
         preprocessInput(stubListFile);
+        console.log("S2STransformer:Preporcessing Finihsed");
         var changes = mainTransformer(fileName_Func_Location, pathToOutput);
         if (changes === NO_CHANGES_NEEDED)
             generateModifiedAsOriginal(stubListFile);
@@ -134,6 +138,7 @@ function readStubListJSON(outFileJSON) {
  * Main code transformer function
  */
 function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
+    console.log("Running mainTransformer");
     var updatedASTList = {};
     // if no stub generated the transformed file is similar to original and return;
     //TODO : why constructor === Object
@@ -148,9 +153,10 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
             var startLineNumber = location[0];
 
             // Ignore the files outside the input project directory
-            if(path.resolve(fileName).toString().indexOf(path.sep+'input'+path.sep) === -1){
+            /*if(path.resolve(fileName).toString().indexOf(path.sep+'input'+path.sep) === -1){
+                console.log("/input/ assumption");
                 continue;
-            }
+            }*/
             console.log(" Searching for file " +fileName+ ":: function at line number "+startLineNumber);
             var functionName = findFun(fileName, location, startLineNumber);
 
@@ -176,6 +182,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
             if (functionName.type == utility.UNIQUE_ID_TYPE) {
                 transformer.replace(astForInput, null, functionName);
                 // create and add a body for lazy Loading
+                console.log("transformation finished");
                 var modifiedProgram = escodegen.generate(astForInput);
 
 
@@ -183,6 +190,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
 
               transformer.replace(astForInput, functionName);
                 // create and add a body for lazy Loading
+                console.log("transformation finished");
                 var modifiedProgram = escodegen.generate(astForInput);
 
             }
@@ -206,6 +214,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
             // decide if we want to update the unused files outside the application directory.          
             if(fullOriginalPath.toString().indexOf(path.sep+'input'+path.sep) === -1){
                // console.log("S2STransformer: Not replacing the file "+fullOriginalPath);
+                console.log("Input path does not contain /input/");
                 continue;
 
             }
@@ -216,6 +225,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
            var modifiedAbsolutePath = path.join(pathToOutput,modifiedBase);
            */
             console.log("fileName-to-be-written " +fullModifiedPath );
+            mkdirp.sync(path.dirname(fullModifiedPath));
             fs.writeFileSync(fullModifiedPath, escodegen.generate(updatedASTList[fileN]));
         }
     } catch (Fileerror) {
@@ -248,6 +258,7 @@ function findFun(fileName, location, startLineNumber) {
                         }
                     } // lhs = function(){ }
                     else if (node.type === 'ExpressionStatement') {
+
                         if (node.expression.type === 'AssignmentExpression') {
                             var left = node.expression.left;
                             var right = node.expression.right;
@@ -256,11 +267,16 @@ function findFun(fileName, location, startLineNumber) {
                                 if (right.type === 'FunctionExpression') {
                                     // lhs = MemberExpression rhs = FunctionExpression
 
-                                    if (left.type === 'MemberExpression') {
+                                    if (left.type === 'MemberExpression') {//TODO Handle case like Protototype.a.b.c....n = function(){ };
+                                        var leftPath = getMemberExpressionName(left);
+                                        /*
+
                                         var leftVarBaseName = left.object.name;
                                         var leftVarExtName = left.property.name;
                                         var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
                                         result = leftVarPath;
+                                        */
+                                        result = leftPath;
                                         this.break();
 
                                     }
@@ -365,4 +381,17 @@ function populateGlobalModifiedFilesList(fileName_Func_Location){
     }
     return globalModifiedFilesList;
 
+}
+
+function getMemberExpressionName(pathStart){
+    var prefix ='';
+    var node = pathStart;
+      while (node.type === "MemberExpression"){
+        prefix = '.'+node.property.name +prefix;
+        node = node.object;
+    }
+    if(node.type === "Identifier"){ // terminal case
+       prefix = node.name+prefix;
+    }
+    return prefix;
 }
