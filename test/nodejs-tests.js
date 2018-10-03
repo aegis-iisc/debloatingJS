@@ -59,31 +59,41 @@ describe('execute node.js tests', function () {
 describe('all tests for nodejs', function () {
     this.timeout(200000);
 
-    describe('sample application', function () {
-        var testFile = path.join(nodejsTestsPath, projectName, testFileName);
-        console.log("TestFile "+testFile);
-        runNodeTests(testFile);
-        //shell.exec('node ' + testFile);
-    });
-
     /*describe('sample application 2', function () {
-        var testFile = path.join(nodejsTestsPath, projectName, testFileName);
-        console.log("TestFile "+testFile);
+    var testFile = path.join(nodejsTestsPath, projectName, testFileName);
+    console.log("TestFile "+testFile);
+    runNodeTests(testFile);
+    //shell.exec('node ' + testFile);
+});
+*/
+
+    var testFile = path.join(nodejsTestsPath, projectName, testFileName);
+    describe('sample application', function () {
         runNodeTests(testFile);
-        //shell.exec('node ' + testFile);
     });
-    */
 
     projectName = 'loader-runner';
-    var testFile = path.join(nodejsTestsPath, projectName, testFileName);
+    testFile = path.join(nodejsTestsPath, projectName, testFileName);
     describe(projectName + ' application', function () {
         runNodeTests(testFile);
     });
 
     projectName = 'node-directory-tree';
-    var testFile = path.join(nodejsTestsPath, projectName, testFileName);
+    testFile = path.join(nodejsTestsPath, projectName, testFileName);
     describe(projectName + ' application', function () {
         runNodeTests(testFile);
-    })
+    });
+
+    projectName = 'node-serialport';
+    testFile = path.join(nodejsTestsPath, projectName, testFileName);
+    describe(projectName + ' application', function () {
+        runNodeTests(testFile);
+    });
+
+    projectName = 'node-fetch';
+    testFile = path.join(nodejsTestsPath, projectName, testFileName);
+    describe(projectName + ' application', function () {
+        runNodeTests(testFile);
+    });
 
 });
