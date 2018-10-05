@@ -4,7 +4,6 @@ var shell = require('shelljs');
 const commons = require("../commons.js");
 
 var nodejsTestsPath = './tests/input/nodejs',
-    projectName = 'sample-project',
     testFileName = 'debloatingJS/__run_tests.js';
 
 
@@ -20,7 +19,6 @@ function runNodeTests (appName) {
          commons.compareOutputs(testName, 'unit');
      });
  */
-    /*
     it('run both phases', function (){
         console.log("Running bothe the phases for "+appName);
         var exitCode = commons.runBothPhases(appName, true);
@@ -39,7 +37,6 @@ function runNodeTests (appName) {
         var modifiedFile = commons.getModifiedPathOrDir(commons.remainingTest(appName), false);
         commons.interceptAppExecution(originalFile, modifiedFile, [], done);
     });
-    */
 }
 
 
@@ -59,13 +56,13 @@ describe('execute node.js tests', function () {
 describe('all tests for nodejs', function () {
     this.timeout(200000);
 
-    describe('sample application', function () {
+  /*  describe('sample application', function () {
         var testFile = path.join(nodejsTestsPath, projectName, testFileName);
         console.log("TestFile "+testFile);
         runNodeTests(testFile);
         //shell.exec('node ' + testFile);
     });
-
+*/
     /*describe('sample application 2', function () {
         var testFile = path.join(nodejsTestsPath, projectName, testFileName);
         console.log("TestFile "+testFile);
