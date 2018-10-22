@@ -14,22 +14,30 @@ var utility = require('./Utility.js');
 var path = require('path');
 var fs = require('fs');
 
+
 //A test transformer JS -> AST -> AST' -> JS'
 
 /*
  * replace function for a given  AST and a function name
  */
-function replace(ast, funName, functionLocId){
-
-  if(funName !== null) { // replace a named function
-      console.log("Transforming the AST for the function " + JSON.stringify(funName));
+function replace(ast, funName, functionLocId, logfile){
+    var transformed = false;
+    if(funName !== null) { // replace a named function
+      console.log("Transforming the AST for the function ");
+      //+ JSON.stringify(funName));
       addOriginalDeclaration(ast, funName);
       var result = estraverse.replace(ast, {
           enter: function (node) {
               if (node.type == 'FunctionDeclaration') {
                   if (node.id.name === funName) {
                       var params = node.params;
-                      return createStubFunctionDeclaration(node.id.name, params);
+                      if(logfile) {
+                          transformed = true;
+                          return createStubFunctionDeclaration(node.id.name, params, logfile);
+                      }else {
+                          transformed = true;
+                          return createStubFunctionDeclaration(node.id.name, params);
+                      }
                   } else {
                       estraverse.VisitorOption.skip;
                   }
@@ -45,14 +53,15 @@ function replace(ast, funName, functionLocId){
                           if (left.type == 'MemberExpression') {
                               var leftVarPath = getMemberExpressionName(left);
 
-/*
-                              var leftVarBaseName = left.object.name;
-                              var leftVarExtName = left.property.name;
-                              var leftVarPath = leftVarBaseName + '.' + leftVarExtName;*/
-                              console.log(leftVarPath + ' funName '+funName);
                               if (leftVarPath === funName) {
                                   console.log("Replacing " + node + ' with ' + funName);
-                                  return createStubFunctionExpression(funName, right.params, left);
+                                  if(logfile) {
+                                      transformed = true;
+                                      return createStubFunctionExpression(funName, right.params, left, logfile);
+                                  }else {
+                                      transformed = true;
+                                      return createStubFunctionExpression(funName, right.params, left);
+                                  }
                               } else {
                                   estraverse.VisitorOption.skip;
                               }
@@ -72,17 +81,23 @@ function replace(ast, funName, functionLocId){
       });
       }
   else{ // Anonymous 'FunctionExpression case.
-      console.log("Transforming the AST for the anonymous function with id " + JSON.stringify(functionLocId));
+      console.log("Transforming the AST for the anonymous function with id " );
+          //JSON.stringify(functionLocId));
       var fNameForId =   createUniqueFunction(functionLocId);
       addOriginalDeclaration(ast, fNameForId);
       var result = estraverse.replace(ast, {
           enter: function (node) {
 
               if (node.type == 'FunctionDeclaration') {
-
                   if (node.id.name === funName) {
                       var params = node.params;
-                      return createStubFunctionDeclaration(node.id.name, params);
+                      if(logfile) {
+                          transformed = true;
+                          return createStubFunctionDeclaration(node.id.name, params, logfile);
+                      }else {
+                          transformed = true;
+                          return createStubFunctionDeclaration(node.id.name, params);
+                      }
                   } else {
                       estraverse.VisitorOption.skip;
                   }
@@ -98,15 +113,15 @@ function replace(ast, funName, functionLocId){
                       if (right.type == 'FunctionExpression') {
                           if (left.type == 'MemberExpression') {
                               var leftVarPath = getMemberExpressionName(left);
-
-/*
-                              var leftVarBaseName = left.object.name;
-                              var leftVarExtName = left.property.name;
-                              var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
-*/
                               result = leftVarPath;
                               if (leftVarPath === funName) {
-                                  return createStubFunctionExpression(funName, right.params, left);
+                                  if(logfile) {
+                                      transformed = true;
+                                      return createStubFunctionExpression(funName, right.params, left, logfile);
+                                  }else {
+                                      transformed = true;
+                                      return createStubFunctionExpression(funName, right.params, left);
+                                  }
                               } else {
                                   estraverse.VisitorOption.skip;
                               }
@@ -121,9 +136,13 @@ function replace(ast, funName, functionLocId){
                       if(node.loc){ // Skip if node.loc for the generated AST node is undefined.
                           if (utility.compareLoc(node.loc, functionLocId)) {
                               var uniqueFunId = createUniqueFunction(functionLocId);
-                              console.log("Txfrm @@@@@@@@@@@@@@@ ");
-                              console.log(JSON.stringify(node.body));
-                              return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
+                              if(logfile) {
+                                  transformed = true;
+                                  return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null, logfile);
+                              }else {
+                                  transformed = true;
+                                  return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
+                              }
                           } else {
                               estraverse.VisitorOption.skip;
                           }
@@ -145,7 +164,10 @@ function replace(ast, funName, functionLocId){
 
   }
 
-    console.log("replace ends");
+  if(transformed)
+      console.error('Replace Ended with Replacement');
+  else
+    console.log("Replace Ended w/o Replacement");
 }
 
 function createUniqueFunction(id){
@@ -157,33 +179,36 @@ function createUniqueFunction(id){
 
 
 
-function createStubAnonymousFunctionExpression(funName, params){
+function createStubAnonymousFunctionExpression(funName, params, left, logfile){
     console.log("Creating stub for anonymous function expression");
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\')';
+    var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
-    var callEvalStmt = 'eval(\"original_'+funName.replace('.','_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
+    var callEvalStmt = 'eval(\"original_'+funName.replace((/\./g ,'_'))+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
     // a name like exports.clone must be changed to original_exports_clone
-    var ifStatement = 'if (original_' + funName.replace('.','_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    var _underscoredName = funName.replace(/\./g, '_');
+
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
     var _ifStatement = esprima.parse(ifStatement);
 
-     var invokeStatement = 'return original_'+funName.replace('.','_')+ '.apply(this, _param);';
+     var invokeStatement = 'return original_'+funName.replace(/\./g ,'_')+ '.apply(this, _param);';
     _ifStatement['consequent'] = esprima.parse('lazyLoader.lazyLoad(' + funName + ')   ;' + callEvalStmt).body[0];
 
     var paramList = [];
     if (params.length > 0 ){
         for (elem in params){
-           // console.log(params[elem]);
             paramList.push(params[elem].name);
         }
     }
     if(paramList.length > 0)
-        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this, '+paramList.toString() +');';
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, ['+paramList.toString() +']);';
     else
-        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this);';
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
 
     var _applyStatement = esprima.parse(applyStatement);
 
@@ -195,10 +220,10 @@ function createStubAnonymousFunctionExpression(funName, params){
 
 
 
-    var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
+    var _stubFunExpresison = {type: 'FunctionExpression', id : {type: 'Identifier', name: ' '+funName}, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _ifStatement,_applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _ifStatement,_applyStatement, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
@@ -207,19 +232,21 @@ function createStubAnonymousFunctionExpression(funName, params){
     return _stubFunExpresison;
 }
 
-function createStubFunctionDeclaration (funName, params){
+function createStubFunctionDeclaration (funName, params, logfile){
     console.log("Creating stub for FunctioneDeclaration "+funName);
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\')';
+    var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
 
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"'+funName+ '\", srcFile )';
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
 
-    var callEvalStmt = 'eval(\"original_'+funName.replace('.','_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
+    var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace(/\./g ,'_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
 
-    var ifStatement = 'if (original_' + funName.replace('.','_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
     var _ifStatement = esprima.parse(ifStatement);
 
     var paramList = [];
@@ -231,9 +258,9 @@ function createStubFunctionDeclaration (funName, params){
     }
 
     if(paramList.length > 0)
-        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this, '+paramList.toString() +');';
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, ['+paramList.toString() +']);';
     else
-        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this);';
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
 
     var _applyStatement = esprima.parse(applyStatement);
 
@@ -246,20 +273,13 @@ function createStubFunctionDeclaration (funName, params){
 
     var _stubFunDecl = {type: 'FunctionDeclaration', params: params, id: {type: 'Identifier', name: ' '+funName},
         body: { type: 'BlockStatement',
-            body: [_ifStatement, _applyStatement, _conditionalReturn] },
+            body: [_callStubInfoLogger, _ifStatement, _applyStatement, _conditionalReturn] },
         generator: false,
         async: false,
         expression: false
 
     };
 
-
-    /*var _BlockStatement = {
-        type: 'BlockStatement',
-        body: [{type: 'VariableDeclaration', declarations: [{type: 'VariableDeclarator', id: {type: 'Identifier', name: "original_"+funName}, init: null}], kind: 'var'},
-            _stubFunDecl]};
-*/
-   // return _BlockStatement;
     return _stubFunDecl;
 
 
@@ -267,23 +287,24 @@ function createStubFunctionDeclaration (funName, params){
 
 // generate stub for fully classified AssignmentExpression
 
-function createStubFunctionExpression (funName, params, left) { // returns the code used as a replacement of the original code
+function createStubFunctionExpression (funName, params, left, logfile) { // returns the code used as a replacement of the original code
 
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\')';
+    var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     // function expression assignment
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(' + funName +', srcFile )';
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
-    var callEvalStmt = 'eval(\"original_'+funName.replace('.','_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
+    var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace(/\./g ,'_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
 
-    var ifStatement = 'if (original_' + funName.replace('.','_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
 
 
 
     var _ifStatement = esprima.parse(ifStatement);
-    var invokeStatement = 'return original_'+funName.replace('.','_')+ '.apply(this, _param);';
     _ifStatement['consequent'] = esprima.parse('lazyLoader.lazyLoad(' + funName + ')   ;' + callEvalStmt).body[0];
 
     var paramList = [];
@@ -295,9 +316,9 @@ function createStubFunctionExpression (funName, params, left) { // returns the c
     }
 
     if(paramList.length > 0)
-        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this, '+paramList.toString() +');';
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, ['+paramList.toString() +']);';
     else
-        var applyStatement = 'var ret = original_'+funName.replace('.','_')+'.apply(this);';
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
 
     var _applyStatement = esprima.parse(applyStatement);
 
@@ -311,7 +332,7 @@ function createStubFunctionExpression (funName, params, left) { // returns the c
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                 _ifStatement,_applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _ifStatement,_applyStatement, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
@@ -364,89 +385,109 @@ function createLazyLoad (funName) {
 
 
 function addHeaderInstructions (ast){
-   var headerInstructions = 'var fs = require(\'fs\');\n' +
+  /* var headerInstructions = 'var fs = require(\'fs\');\n' +
         'var esprima = require(\'esprima\');\n' +
         'var estraverse = require(\'estraverse\');\n' +
        // 'var cutility = require(\'./cutility.js\');\n' +
         'var escodegen = require(\'escodegen\'); \n' +
-         'var lazyLoader = require(\'/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/src/lazyLoading-helper.js\');'; //TODO give an exact path of the helper file
-        //'var lazyLoader = require("' + path.resolve(__dirname, 'lazyLoading-helper.js') + '")';
+  */  var headerInstructions =  'var lazyLoader = require(\'/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/src/lazyLoading-helper.js\');'; //TODO give an exact path of the helper file
+
+    //'var lazyLoader = require("' + path.resolve(__dirname, 'lazyLoading-helper.js') + '")';
       var _headerInstructions = esprima.parse(headerInstructions.toString(), {range: true, loc : true, tokens: true});
       ast.body.unshift(_headerInstructions);
       return ast;
 
 }
 
-function addOriginalDeclaration(astForInput, functionName){
-  var originalDeclaration = '';
+function addOriginalDeclaration(astForInput, functionName) {
+    var originalDeclaration = '';
 
-  // simple function name
-  if(functionName.toString().indexOf('.') === -1 ){
-      originalDeclaration = originalDeclaration+' var original_'+functionName+ ' = null;';
+    if (functionName.type === 'UniqueFunctionId') {
+        var uniqueFnName = createUniqueFunction(functionName);
+        originalDeclaration = originalDeclaration + ' var original_' + uniqueFnName + ' = null;';
+        var _originalDeclaration = esprima.parse(originalDeclaration.toString(), {
+            range: true,
+            loc: true,
+            tokens: false
+        });
+        astForInput.body.unshift(_originalDeclaration);
+        return;
+    } else {
+        // simple function name
+        if (functionName.toString().indexOf('.') === -1) {
+            originalDeclaration = originalDeclaration + ' var original_' + functionName + ' = null;';
 
-  }else{
-      //repalce a.b.c -> a_b_c
-      var _underscoredName = functionName.replace(/\./g, '_');
-      originalDeclaration = originalDeclaration+' var original_'+_underscoredName+ ' = null;'
+        } else { // member expression
+            //repalce a.b.c -> a_b_c
+            var _underscoredName = functionName.replace(/\./g, '_');
+            originalDeclaration = originalDeclaration + ' var original_' + _underscoredName + ' = null;'
+        }
 
-  }
+        var _originalDeclaration = esprima.parse(originalDeclaration.toString(), {
+            range: true,
+            loc: true,
+            tokens: false
+        });
+        astForInput.body.unshift(_originalDeclaration);
 
-  var _originalDeclaration = esprima.parse(originalDeclaration.toString(), {range: true, loc : true, tokens: false});
-  estraverse.traverse(astForInput,
-      {
-         enter : function (node, parent){
-             if (node.type == 'FunctionDeclaration') {
-                   var nodeFunctionName = node.id.name;
-                 if(nodeFunctionName === functionName){
-                    // add the originalDeclaration statement
+        /*
+              estraverse.traverse(astForInput,
+                  {
+                      enter: function (node, parent) {
 
-                     astForInput.body.unshift(_originalDeclaration);
-                 }
+                          if (node.type == 'FunctionDeclaration') {
+                              var nodeFunctionName = node.id.name;
+                              if (nodeFunctionName === functionName) {
+                                  // add the originalDeclaration statement
 
-             } else if (node.type == 'ExpressionStatement') {
+                                  astForInput.body.unshift(_originalDeclaration);
+                              }
 
-                 if (node.expression.type == 'AssignmentExpression') {
-                     var left = node.expression.left;
-                     var right = node.expression.right;
+                          } else if (node.type == 'ExpressionStatement') {
 
-                     if (right.type == 'FunctionExpression') {
-                         if (left.type == 'MemberExpression') {
-                             var leftVarPath = getMemberExpressionName(left);
+                              if (node.expression.type == 'AssignmentExpression') {
+                                  var left = node.expression.left;
+                                  var right = node.expression.right;
 
-/*
-                             var leftVarBaseName = left.object.name;
-                             var leftVarExtName = left.property.name;
-                             var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
-*/
-                             var functionNameFull = leftVarPath;
-                             if(functionNameFull === functionName){
-                                 astForInput.body.unshift(_originalDeclaration);
+                                  if (right.type == 'FunctionExpression') {
+                                      if (left.type == 'MemberExpression') {
+                                          var leftVarPath = getMemberExpressionName(left);
 
-                             }
+                                          /!*
+                                                                       var leftVarBaseName = left.object.name;
+                                                                       var leftVarExtName = left.property.name;
+                                                                       var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
+                                          *!/
+                                          var functionNameFull = leftVarPath;
+                                          if (functionNameFull === functionName) {
+                                              astForInput.body.unshift(_originalDeclaration);
 
-                         }
-                     }
-                 } else {
-                     estraverse.VisitorOption.skip;
-                 }
-             } else {
-                 estraverse.VisitorOption.skip;
-             }
-         },
-         leave : function (node, parent){
+                                          }
 
-             estraverse.VisitorOption.skip;
+                                      }
+                                  }
+                              } else {
+                                  estraverse.VisitorOption.skip;
+                              }
+                          } else {
+                              estraverse.VisitorOption.skip;
+                          }
+                      },
+                      leave: function (node, parent) {
 
-         }
-      });
+                          estraverse.VisitorOption.skip;
 
+                      }
+                  });
+
+          }
+        */
+        return;
+    }
 }
 
 function addSrcfileDeclaration (astForInput, filename) {
-    //console.log("SRC "+filename);
-    console.log("Transformer[D]: fileName " + filename);
     var normalized = path.normalize(path.resolve(filename));
-
     var srcFileDeclaration = '';
     var srcFileDeclaration = srcFileDeclaration + ' var srcFile = \'' + normalized.toString() + '.js\';';
     var _srcFileDeclaration = esprima.parse(srcFileDeclaration.toString(), {range: true, loc: true, tokens: false});
@@ -459,7 +500,6 @@ function addSrcfileDeclaration (astForInput, filename) {
 
 function extractBodies (srcFile) {
     var code = fs.readFileSync(srcFile, 'utf8');
-    //console.log("code "+code);
     // TODO : Add the range and location code to the generated code
     var ast = esprima.parse(code.toString(), {range: true, loc: true, tokens: false});
     cachedCode[srcFile] = {};

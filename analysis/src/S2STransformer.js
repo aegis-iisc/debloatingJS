@@ -27,8 +27,10 @@ var parser = new argparse.ArgumentParser({
 parser.addArgument(['-sl'], {help: 'potential stub list' } );
 parser.addArgument(['-in'], {help: 'input path, the directory containing files to be transofrmed' });
 parser.addArgument(['-o'], {help: 'output path, the directory where transformed files are written' });
+parser.addArgument(['-log'], {help: 'logfile for writing stub Expansion Info'});
 parser.addArgument(['-isNode'], {help: 'true if the input is a node, -in will be the root directory of the node app ' +
     'and -o will the root directory for the app in the output-actual'});
+
 var args = parser.parseArgs();
 // verify the argumensts
 if(!args.sl || !args.in || !args.o){
@@ -39,7 +41,6 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
 const LOCATION_DELTA_THRESSHOLD = 2;
 
 (function () {
-    console.log(typeof args.isNode );
     var isNode = false;
     if(!args.isNode || args.isNode === false || args.isNode === 'false') { // unit application case
         console.log("S2STransformer:Transforming a unit test");
@@ -48,7 +49,10 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         var pathToOutput = path.resolve(args.o);
         preprocessInput(stubListFile);
         console.log("S2STransformer:Preporcessing Finihsed");
-        var changes = mainTransformer(fileName_Func_Location, pathToOutput);
+        if(args.log)
+            var changes = mainTransformer(fileName_Func_Location, pathToOutput, args.log);
+        else
+            var changes = mainTransformer(fileName_Func_Location, pathToOutput);
         if (changes === NO_CHANGES_NEEDED)
             generateModifiedAsOriginal(stubListFile);
 
@@ -56,7 +60,7 @@ const LOCATION_DELTA_THRESSHOLD = 2;
     }else{ // node js case
         isNode = true;
         console.log("S2STransformer:Transforming a Nodejs Application");
-        console.log("parameters to Transformer "+args.sl, args.in, args.o);
+        console.log("parameters to Transformer "+args.sl, args.in, args.o, args.log);
         var stubListFile = path.resolve(args.sl);
         var inputAppDir = path.resolve(args.in);
         var outputAppDir = path.resolve(args.o);
@@ -64,8 +68,10 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         preprocessInput(stubListFile);
         console.log("S2STransformer:stubs list preprocessing done");
         console.log("S2STransformer:starting tranformation of potentially unused function")
-
-        var changes = mainTransformer(fileName_Func_Location, outputAppDir);
+        if(args.log)
+            var changes = mainTransformer(fileName_Func_Location, outputAppDir, args.log);
+        else
+            var changes = mainTransformer(fileName_Func_Location, outputAppDir);
         if (changes === NO_CHANGES_NEEDED)
             generateModifiedAsOriginal(stubListFile);
 
@@ -76,16 +82,33 @@ const LOCATION_DELTA_THRESSHOLD = 2;
 
 function generateModifiedAsOriginal(stubFile){ // File -> File -> ()
 
-    console.log("No changes in the file, keeping the original file");
 
+
+    console.log("No changes in the file, keeping the original file");
     var outputPathDir = path.dirname(stubFile);
-    var inputPathDir = path.resolve(outputPathDir, '../../input', path.basename(outputPathDir));
-    var stubFileBase = path.basename(stubFile);
+    var inputPathDir = path.resolve(outputPathDir.toString().replace('output-actual','input'));
+
+//    var inputPathDir = path.resolve(outputPathDir, '../../input', path.basename(outputPathDir));
+
+    if(inputPathDir.toString().indexOf(path.sep+'input'+path.sep) === -1){
+        console.error("Input path does not contain /input/");
+
+    }
+
+
+    /*/!********** Copy the original Application to the Target *******************!/
+
+    // copy the directory structure of the input application to the actual output-directory
+    createDirectoryStructure(inputPathDir, outputPathDir);
+
+
+
+*/
+    /*var stubFileBase = path.basename(stubFile);
     var basefileName = getActualPath(stubFileBase);
     var basefileModified = getModifiedPath(basefileName); //Identity fn now
     var outputFilePath = path.join(outputPathDir, basefileModified);
     var inputFilePath = path.join(inputPathDir, basefileName);
-
 
     try{
         console.log("writing "+inputFilePath+ " to "+outputFilePath);
@@ -93,8 +116,9 @@ function generateModifiedAsOriginal(stubFile){ // File -> File -> ()
 
     }catch (error) {
         console.error(error);
-    }
+    }*/
 }
+
 
 function getActualPath(_outPath){
     return _outPath.replace('_out.json','.js');
@@ -137,7 +161,7 @@ function readStubListJSON(outFileJSON) {
 /*
  * Main code transformer function
  */
-function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
+function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
     console.log("Running mainTransformer");
     var updatedASTList = {};
     // if no stub generated the transformed file is similar to original and return;
@@ -153,10 +177,10 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
             var startLineNumber = location[0];
 
             // Ignore the files outside the input project directory
-            /*if(path.resolve(fileName).toString().indexOf(path.sep+'input'+path.sep) === -1){
+            if(path.resolve(fileName).toString().indexOf(path.sep+'input'+path.sep) === -1){
                 console.log("/input/ assumption");
                 continue;
-            }*/
+            }
             console.log(" Searching for file " +fileName+ ":: function at line number "+startLineNumber);
             var functionName = findFun(fileName, location, startLineNumber);
 
@@ -178,20 +202,25 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
                 transformer.addSrcfileDeclaration(astForInput, fileName);
              }
 
-            //transformer.addOriginalDeclaration(astForInput, functionName);
+//            transformer.addOriginalDeclaration(astForInput, functionName);
             if (functionName.type == utility.UNIQUE_ID_TYPE) {
-                transformer.replace(astForInput, null, functionName);
+                if(logfile)
+                    transformer.replace(astForInput, null, functionName, logfile);
+                else
+                    transformer.replace(astForInput, null, functionName);
                 // create and add a body for lazy Loading
                 console.log("transformation finished");
                 var modifiedProgram = escodegen.generate(astForInput);
 
 
             } else {
-
-              transformer.replace(astForInput, functionName);
+              if(logfile)
+                  transformer.replace(astForInput, functionName, null, logfile);
+              else
+                    transformer.replace(astForInput, functionName, null);
                 // create and add a body for lazy Loading
-                console.log("transformation finished");
-                var modifiedProgram = escodegen.generate(astForInput);
+               console.log("transformation finished");
+               var modifiedProgram = escodegen.generate(astForInput);
 
             }
             updatedASTList[fileName] = astForInput;
@@ -206,7 +235,6 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput) {
     try {
         // writing the modified files corresponding to the changed original file
         for(fileN in updatedASTList){
-            //TODO :: The output generated is flattened out, need to recursively write out the file in correct location.
             var baseFileName = path.basename(fileN);
             var fullOriginalPath = path.resolve(fileN);
 
