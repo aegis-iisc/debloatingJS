@@ -236,6 +236,18 @@ function remainingTest(mainTestFilePath){
     return path.resolve(path.dirname(mainTestFilePath), '__run_remaining_tests.js');
 }
 
+function getMemberExpressionName(pathStart){
+    var prefix ='';
+    var node = pathStart;
+    while (node.type === "MemberExpression"){
+        prefix = '.'+node.property.name +prefix;
+        node = node.object;
+    }
+    if(node.type === "Identifier"){ // terminal case
+        prefix = node.name+prefix;
+    }
+    return prefix;
+}
 module.exports = {
     interceptAppExecution: interceptAppExecution,
     compareOutputs: compareOutputs,
@@ -245,6 +257,7 @@ module.exports = {
     runTransformer: runTransformer,
     getOriginalPathOrDir: getOriginalPathOrDir,
     getModifiedPathOrDir: getModifiedPathOrDir,
-    remainingTest : remainingTest
+    remainingTest : remainingTest,
+    getMemberExpressionName :getMemberExpressionName
 
 };

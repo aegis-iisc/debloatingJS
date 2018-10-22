@@ -2,9 +2,10 @@ var fs = require('fs');
 var esprima = require('esprima');
 var estraverse = require('estraverse');
 var escodegen = require('escodegen');
+var logger = require('./logger.js');
+var commons = require('../../commons.js');
 
 var cachedCode = {};
-
 function lazyLoad(funName, fileName, srcFile) {
     var code = fs.readFileSync(fileName, 'utf8');
     var ast = esprima.parse(code.toString(), {
@@ -35,10 +36,7 @@ function extractBodies(srcFile) {
                     var right = node.expression.right;
                     if (right.type == 'FunctionExpression') {
                         if (left.type == 'MemberExpression') {
-                            var leftVarBaseName = left.object.name;
-                            var leftVarExtName = left.property.name;
-                            var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
-                            var functionName = leftVarPath;
+                            var functionName = commons.getMemberExpressionName(left);
                             var functionBody = escodegen.generate(right);
                             cachedCode[srcFile][functionName] = functionBody;
                         }
@@ -79,11 +77,25 @@ function loadAndInvoke(funName, srcFile) {
     }
 }
 
+/*
+* A function to log the information of the stubs being executed
+* @params functionName being invoked.
+* @params timestamp
+* @returns 0 / -1
+*
+*/
+function stubInfoLogger(funName, logFile){
+
+    logger.logStubInfo(funName, logFile);
+}
+
+
 module.exports={
 
 lazyLoad: lazyLoad,
 extractBodies: extractBodies,
-loadAndInvoke: loadAndInvoke
+loadAndInvoke: loadAndInvoke,
+stubInfoLogger : stubInfoLogger
 
 };
 
