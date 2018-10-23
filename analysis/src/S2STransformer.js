@@ -88,8 +88,6 @@ function generateModifiedAsOriginal(stubFile){ // File -> File -> ()
     var outputPathDir = path.dirname(stubFile);
     var inputPathDir = path.resolve(outputPathDir.toString().replace('output-actual','input'));
 
-//    var inputPathDir = path.resolve(outputPathDir, '../../input', path.basename(outputPathDir));
-
     if(inputPathDir.toString().indexOf(path.sep+'input'+path.sep) === -1){
         console.error("Input path does not contain /input/");
 
@@ -284,38 +282,25 @@ function findFun(fileName, location, startLineNumber) {
                             result = node.id.name;
                             this.break();
                         }
-                    } // lhs = function(){ }
-                    else if (node.type === 'ExpressionStatement') {
-
+                    }else if (node.type === 'ExpressionStatement') { // lhs = function(){ }
                         if (node.expression.type === 'AssignmentExpression') {
                             var left = node.expression.left;
                             var right = node.expression.right;
-
                             if (startLineNumber === node.loc.start.line.toString()) {
                                 if (right.type === 'FunctionExpression') {
                                     // lhs = MemberExpression rhs = FunctionExpression
-
                                     if (left.type === 'MemberExpression') {//TODO Handle case like Protototype.a.b.c....n = function(){ };
                                         var leftPath = getMemberExpressionName(left);
-                                        /*
-
-                                        var leftVarBaseName = left.object.name;
-                                        var leftVarExtName = left.property.name;
-                                        var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
-                                        result = leftVarPath;
-                                        */
                                         result = leftPath;
                                         this.break();
 
-                                    }
-                                    // lhs = Identifier , rhs = function expression
-                                    else if(left.type === 'Identifier'){
+                                    }else if(left.type === 'Identifier'){// lhs = Identifier , rhs = function expression
                                         if(left.name){
                                             var functionName = left.name;
                                             result = functionName;
                                             this.break();
                                         }else{
-
+                                            // handled in another case for anonymous
                                             throw("No name of the Identifier ");
                                         }
 
