@@ -189,7 +189,7 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile){
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
-    var callEvalStmt = 'eval(\"original_'+funName.replace((/\./g ,'_'))+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
+    var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
     // a name like exports.clone must be changed to original_exports_clone
