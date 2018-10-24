@@ -171,8 +171,15 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
             var startLineNumber = location[0];
 
             // Ignore the files outside the input project directory
-            if(path.resolve(fileName).toString().indexOf(path.sep+'input'+path.sep) === -1){
-                console.log("/input/ assumption");
+            var filePath = path.resolve(fileName);
+            if((filePath.toString().indexOf(path.sep+'input'+path.sep) === -1)
+                || (filePath.toString().indexOf(path.sep+'node_modules'+path.sep+'mocha'+path.sep) > -1)
+                    || (filePath.toString().indexOf(path.sep+'debloatingJS'+path.sep) > -1 )){
+                //console.log("/input/ assumption :: Skipping transformation "+filePath);
+                continue;
+            }
+            if(path.resolve(fileName).toString().indexOf(path.sep+'node_modules'+path.sep+'mocha'+path.sep) > -1){
+                console.log("/node_modules/mocha assumption");
                 continue;
             }
 
@@ -192,6 +199,8 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                     tokens: true,
                     ecmaVersion: 6
                 });
+                // set the fileName
+                astForInput.attr = {'fileName': fileName+'.js'};
                 transformer.addCachedCodeDeclaration(astForInput);
                 transformer.addHeaderInstructions(astForInput);
                 transformer.addSrcfileDeclaration(astForInput, fileName);

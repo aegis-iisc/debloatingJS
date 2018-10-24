@@ -21,6 +21,11 @@ var DYNAMIC_PATH = process.env.DYNAMIC_PATH;
 
 /*
  * replace function for a given  AST and a function name
+ * @param1 : ast to be transformed
+ * @param2 : funName to replace
+ * @param3 : functionLocId for anonymous functions to be replaced, @param2 will be null in this case
+ * @param4 : logfile, where the stubs will log their expansion
+ * @param4 : fileName for the current ast
  */
 function replace(ast, funName, functionLocId, logfile){
     var transformed = false;
@@ -33,7 +38,7 @@ function replace(ast, funName, functionLocId, logfile){
                       var params = node.params;
                       if(logfile) {
                           transformed = true;
-                          return createStubFunctionDeclaration(node.id.name, params, logfile);
+                          return createStubFunctionDeclaration(node.id.name, params, logfile, ast.attr.fileName);
                       }else {
                           transformed = true;
                           return createStubFunctionDeclaration(node.id.name, params);
@@ -56,7 +61,7 @@ function replace(ast, funName, functionLocId, logfile){
                               if (leftVarPath === funName) {
                                   if(logfile) {
                                       transformed = true;
-                                      return createStubFunctionExpression(funName, right.params, left, logfile);
+                                      return createStubFunctionExpression(funName, right.params, left, logfile, ast.attr.fileName);
                                   }else {
                                       transformed = true;
                                       return createStubFunctionExpression(funName, right.params, left);
@@ -92,7 +97,7 @@ function replace(ast, funName, functionLocId, logfile){
                       var params = node.params;
                       if(logfile) {
                           transformed = true;
-                          return createStubFunctionDeclaration(node.id.name, params, logfile);
+                          return createStubFunctionDeclaration(node.id.name, params, logfile, ast.attr.fileName);
                       }else {
                           transformed = true;
                           return createStubFunctionDeclaration(node.id.name, params);
@@ -116,7 +121,7 @@ function replace(ast, funName, functionLocId, logfile){
                               if (leftVarPath === funName) {
                                   if(logfile) {
                                       transformed = true;
-                                      return createStubFunctionExpression(funName, right.params, left, logfile);
+                                      return createStubFunctionExpression(funName, right.params, left, logfile, ast.attr.fileName);
                                   }else {
                                       transformed = true;
                                       return createStubFunctionExpression(funName, right.params, left);
@@ -137,7 +142,7 @@ function replace(ast, funName, functionLocId, logfile){
                               var uniqueFunId = createUniqueFunction(functionLocId);
                               if(logfile) {
                                   transformed = true;
-                                  return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null, logfile);
+                                  return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null, logfile, ast.attr.fileName);
                               }else {
                                   transformed = true;
                                   return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
@@ -179,23 +184,32 @@ function createUniqueFunction(id){
 
 
 
-function createStubAnonymousFunctionExpression(funName, params, left, logfile){
-    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\')';
+function createStubAnonymousFunctionExpression(funName, params, left, logfile, fileName){
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
+
+    var tempFunctionStmt = 'var temp = '+funName;
+    var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
+
     var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace('.','_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
     // a name like exports.clone must be changed to original_exports_clone
     var _underscoredName = funName.replace(/\./g, '_');
 
-    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +tempFunctionStmt+ ';' + callEvalStmt + '}';
     var _ifStatement = esprima.parse(ifStatement);
 
-     var invokeStatement = 'return original_'+funName.replace(/\./g ,'_')+ '.apply(this, _param);';
+    var original_Name = 'original_'+ funName.replace(/\./g ,'_');
+    var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
+    var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
+
+
+    var invokeStatement = 'return original_'+funName.replace(/\./g ,'_')+ '.apply(this, _param);';
     _ifStatement['consequent'] = esprima.parse('lazyLoader.lazyLoad(' + funName + ')   ;' + callEvalStmt).body[0];
 
     var paramList = [];
@@ -222,7 +236,7 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile){
     var _stubFunExpresison = {type: 'FunctionExpression', id : {type: 'Identifier', name: ' '+funName}, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _ifStatement,_applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _ifStatement,_callCopyFunctionProperties, _applyStatement, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
@@ -231,8 +245,8 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile){
     return _stubFunExpresison;
 }
 
-function createStubFunctionDeclaration (funName, params, logfile){
-    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\')';
+function createStubFunctionDeclaration (funName, params, logfile, fileName){
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
 
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"'+funName+ '\", srcFile )';
@@ -240,11 +254,17 @@ function createStubFunctionDeclaration (funName, params, logfile){
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
 
+    var tempFunctionStmt = 'var temp = '+funName;
+    var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
+
     var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace(/\./g ,'_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
+    var original_Name = 'original_'+ funName.replace(/\./g ,'_');
+    var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
+    var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
 
-    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +tempFunctionStmt +';' +callEvalStmt + '}';
     var _ifStatement = esprima.parse(ifStatement);
 
     var paramList = [];
@@ -270,7 +290,7 @@ function createStubFunctionDeclaration (funName, params, logfile){
 
     var _stubFunDecl = {type: 'FunctionDeclaration', params: params, id: {type: 'Identifier', name: ' '+funName},
         body: { type: 'BlockStatement',
-            body: [_callStubInfoLogger, _ifStatement, _applyStatement, _conditionalReturn] },
+            body: [_callStubInfoLogger, _ifStatement, _callCopyFunctionProperties,  _applyStatement, _conditionalReturn] },
         generator: false,
         async: false,
         expression: false
@@ -284,21 +304,29 @@ function createStubFunctionDeclaration (funName, params, logfile){
 
 // generate stub for fully classified AssignmentExpression
 
-function createStubFunctionExpression (funName, params, left, logfile) { // returns the code used as a replacement of the original code
+function createStubFunctionExpression (funName, params, left, logfile, fileName) { // returns the code used as a replacement of the original code
 
-    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\')';
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     // function expression assignment
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(' + funName +', srcFile )';
     var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
+
+    var tempFunctionStmt = 'var temp = '+funName;
+    var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
+
+
     var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace(/\./g ,'_')+';';
     var _callEvalStmt = esprima.parse(callEvalStmt).body;
 
 
-    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +callEvalStmt + '}';
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' + tempFunctionStmt +';' +callEvalStmt + '}';
 
+    var original_Name = 'original_'+ funName.replace(/\./g ,'_');
+    var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
+    var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
 
 
     var _ifStatement = esprima.parse(ifStatement);
@@ -328,7 +356,7 @@ function createStubFunctionExpression (funName, params, left, logfile) { // retu
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _ifStatement,_applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _ifStatement, _callCopyFunctionProperties, _applyStatement, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
@@ -379,17 +407,8 @@ function createLazyLoad (funName) {
 
 
 function addHeaderInstructions (ast){
-  /* var headerInstructions = 'var fs = require(\'fs\');\n' +
-        'var esprima = require(\'esprima\');\n' +
-        'var estraverse = require(\'estraverse\');\n' +
-       // 'var cutility = require(\'./cutility.js\');\n' +
-        'var escodegen = require(\'escodegen\'); \n' +
-  // */ // var headerInstructions =  'var lazyLoader = require(\'/home/ashish/work/NEU/jalangi2/project/dynamic/analysis/src/lazyLoading-helper.js\');'; //TODO give an exact path of the helper file
         var lazyLoaderPath = path.resolve(DYNAMIC_PATH, 'analysis/src/lazyLoading-helper.js');
         var headerInstructions = 'var lazyLoader = require(\'' + lazyLoaderPath + '\');';
-
-
-    //'var lazyLoader = require("' + path.resolve(__dirname, 'lazyLoading-helper.js') + '")';
       var _headerInstructions = esprima.parse(headerInstructions.toString(), {range: true, loc : true, tokens: true});
       ast.body.unshift(_headerInstructions);
       return ast;
