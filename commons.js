@@ -74,7 +74,7 @@ function interceptAppExecution (originalFileName, modifiedFileName, params, done
         });
     }
     catch (error) {
-        console.err(error);
+        console.err('Error '+error);
     }
 }
 

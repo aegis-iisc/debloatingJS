@@ -15,5 +15,5 @@ var logTimeStamp = function(){
 module.exports.logStubInfo = function(funcName, logfile){
 
   var line = 'Expanded stub '+funcName+ ' @ ' + logTimeStamp() + '\n';
-  fs.appendFileSync(logfile, line);
+  //fs.appendFileSync(logfile, line);
 };
