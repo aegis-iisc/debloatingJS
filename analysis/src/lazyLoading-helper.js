@@ -77,6 +77,22 @@ function loadAndInvoke(funName, srcFile) {
     }
 }
 
+function copyFunctionProperties (thisFunction, loadededFunc){
+    // copy the associated properties
+    Object.keys(thisFunction).forEach(function (key){
+       // create a key for the loadedFunc with this key
+        loadededFunc[key] = thisFunction[key];
+
+    });
+
+
+    // copy the prototype object
+    if(Object.getPrototypeOf(thisFunction))
+        Object.setPrototypeOf(loadededFunc, Object.getPrototypeOf(thisFunction));
+    return loadededFunc;
+}
+
+
 /*
 * A function to log the information of the stubs being executed
 * @params functionName being invoked.
@@ -84,9 +100,9 @@ function loadAndInvoke(funName, srcFile) {
 * @returns 0 / -1
 *
 */
-function stubInfoLogger(funName, logFile){
+function stubInfoLogger(funName, logFile, fileName){
 
-    var line = 'Expanded stub '+funName+ ' @ ' + logTimeStamp() + '\n';
+    var line = 'Expanded stub '+ fileName + ' :: ' +funName+ ' @ ' + logTimeStamp() + '\n';
     fs.appendFileSync(logFile, line);
 }
 
@@ -100,7 +116,7 @@ module.exports={
 lazyLoad: lazyLoad,
 extractBodies: extractBodies,
 loadAndInvoke: loadAndInvoke,
-stubInfoLogger : stubInfoLogger
-
+stubInfoLogger : stubInfoLogger,
+copyFunctionProperties : copyFunctionProperties
 };
 
