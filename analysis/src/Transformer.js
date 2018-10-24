@@ -25,8 +25,6 @@ var DYNAMIC_PATH = process.env.DYNAMIC_PATH;
 function replace(ast, funName, functionLocId, logfile){
     var transformed = false;
     if(funName !== null) { // replace a named function
-      console.log("Transforming the AST for the function ");
-      //+ JSON.stringify(funName));
       addOriginalDeclaration(ast, funName);
       var result = estraverse.replace(ast, {
           enter: function (node) {
@@ -56,7 +54,6 @@ function replace(ast, funName, functionLocId, logfile){
                               var leftVarPath = getMemberExpressionName(left);
 
                               if (leftVarPath === funName) {
-                                  console.log("Replacing " + node + ' with ' + funName);
                                   if(logfile) {
                                       transformed = true;
                                       return createStubFunctionExpression(funName, right.params, left, logfile);
@@ -83,7 +80,7 @@ function replace(ast, funName, functionLocId, logfile){
       });
       }
   else{ // Anonymous 'FunctionExpression case.
-      console.log("Transforming the AST for the anonymous function with id " );
+      //console.log("Transforming the AST for the anonymous function with id " );
           //JSON.stringify(functionLocId));
       var fNameForId =   createUniqueFunction(functionLocId);
       addOriginalDeclaration(ast, fNameForId);
@@ -166,10 +163,11 @@ function replace(ast, funName, functionLocId, logfile){
 
   }
 
-  if(transformed)
-      console.error('Replace Ended with Replacement');
-  else
-    console.log("Replace Ended w/o Replacement");
+  if(transformed) {
+   //   console.error('Replace Ended with Replacement');
+  }else {
+     // console.log("Replace Ended w/o Replacement :: Transformer.replace case other than FunctionExpression or Declarations");
+  }
 }
 
 function createUniqueFunction(id){
@@ -182,7 +180,6 @@ function createUniqueFunction(id){
 
 
 function createStubAnonymousFunctionExpression(funName, params, left, logfile){
-    console.log("Creating stub for anonymous function expression");
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
@@ -235,7 +232,6 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile){
 }
 
 function createStubFunctionDeclaration (funName, params, logfile){
-    console.log("Creating stub for FunctioneDeclaration "+funName);
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
 
@@ -254,7 +250,6 @@ function createStubFunctionDeclaration (funName, params, logfile){
     var paramList = [];
     if (params.length > 0 ){
         for (elem in params){
-          //  console.log(params[elem]);
             paramList.push(params[elem].name);
         }
     }
@@ -312,7 +307,6 @@ function createStubFunctionExpression (funName, params, left, logfile) { // retu
     var paramList = [];
     if (params.length > 0 ){
         for (elem in params){
-          //  console.log(params[elem]);
             paramList.push(params[elem].name);
         }
     }
@@ -358,7 +352,6 @@ function createStubFunctionExpression (funName, params, left, logfile) { // retu
 
 function lazyLoad(funName, fileName) {
     var code = fs.readFileSync(fileName, 'utf8');
-   // console.log("code "+code);
     // TODO : Add the range and location code to the generated code
     var ast = esprima.parse(code.toString(), {range: true, loc: true, tokens: false});
     cachedCode[srcFile] = {};
@@ -379,7 +372,6 @@ function addCachedCodeDeclaration(ast){
 function createLazyLoad (funName) {
 
     var astForlazyLoad = esprima.parse(lazyLoad.toString(), {range: true, loc: true, tokens: true});
-   // console.log(escodegen.generate(astForlazyLoad));
     return astForlazyLoad;
 
 
@@ -434,59 +426,6 @@ function addOriginalDeclaration(astForInput, functionName) {
             tokens: false
         });
         astForInput.body.unshift(_originalDeclaration);
-
-        /*
-              estraverse.traverse(astForInput,
-                  {
-                      enter: function (node, parent) {
-
-                          if (node.type == 'FunctionDeclaration') {
-                              var nodeFunctionName = node.id.name;
-                              if (nodeFunctionName === functionName) {
-                                  // add the originalDeclaration statement
-
-                                  astForInput.body.unshift(_originalDeclaration);
-                              }
-
-                          } else if (node.type == 'ExpressionStatement') {
-
-                              if (node.expression.type == 'AssignmentExpression') {
-                                  var left = node.expression.left;
-                                  var right = node.expression.right;
-
-                                  if (right.type == 'FunctionExpression') {
-                                      if (left.type == 'MemberExpression') {
-                                          var leftVarPath = getMemberExpressionName(left);
-
-                                          /!*
-                                                                       var leftVarBaseName = left.object.name;
-                                                                       var leftVarExtName = left.property.name;
-                                                                       var leftVarPath = leftVarBaseName + '.' + leftVarExtName;
-                                          *!/
-                                          var functionNameFull = leftVarPath;
-                                          if (functionNameFull === functionName) {
-                                              astForInput.body.unshift(_originalDeclaration);
-
-                                          }
-
-                                      }
-                                  }
-                              } else {
-                                  estraverse.VisitorOption.skip;
-                              }
-                          } else {
-                              estraverse.VisitorOption.skip;
-                          }
-                      },
-                      leave: function (node, parent) {
-
-                          estraverse.VisitorOption.skip;
-
-                      }
-                  });
-
-          }
-        */
         return;
     }
 }

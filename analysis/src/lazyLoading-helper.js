@@ -86,8 +86,13 @@ function loadAndInvoke(funName, srcFile) {
 */
 function stubInfoLogger(funName, logFile){
 
-    logger.logStubInfo(funName, logFile);
+    var line = 'Expanded stub '+funName+ ' @ ' + logTimeStamp() + '\n';
+    fs.appendFileSync(logFile, line);
 }
+
+var logTimeStamp = function(){
+    return Date.now();
+};
 
 
 module.exports={

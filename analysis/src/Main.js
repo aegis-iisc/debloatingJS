@@ -54,10 +54,6 @@ var parser = new argparse.ArgumentParser({
             resultJalangi = commons.runJalangi(analysis, inputFile, testsRoot);
 
     }else{
-        console.log("Main :: Nodejs case");
-
-        //resultJalangi = commons.runJalangi(analysis, inputFileName, testsRoot);
-        // for each application , we just need to run the app/debloatingJS/__run_tests.js
         var __runTestFile = args.inputFile; // mocha test file for the application
         var __inputApp = args.nodeapp;
         console.log(__inputApp);

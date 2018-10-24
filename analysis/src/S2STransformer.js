@@ -41,14 +41,15 @@ const NO_CHANGES_NEEDED = 'NO-STUB';
 const LOCATION_DELTA_THRESSHOLD = 2;
 
 (function () {
+    console.log('S2S Transformation Called');
+
     var isNode = false;
     if(!args.isNode || args.isNode === false || args.isNode === 'false') { // unit application case
-        console.log("S2STransformer:Transforming a unit test");
         var stubListFile = path.resolve(args.sl);
         var pathToRoot = path.resolve(args.in);
         var pathToOutput = path.resolve(args.o);
         preprocessInput(stubListFile);
-        console.log("S2STransformer:Preporcessing Finihsed");
+        //console.log("S2STransformer:Preporcessing Finihsed");
         if(args.log)
             var changes = mainTransformer(fileName_Func_Location, pathToOutput, args.log);
         else
@@ -59,22 +60,17 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         return;
     }else{ // node js case
         isNode = true;
-        console.log("S2STransformer:Transforming a Nodejs Application");
-        console.log("parameters to Transformer "+args.sl, args.in, args.o, args.log);
         var stubListFile = path.resolve(args.sl);
         var inputAppDir = path.resolve(args.in);
         var outputAppDir = path.resolve(args.o);
-        console.log("S2STransformer:preprocessing the generated stubs list");
         preprocessInput(stubListFile);
-        console.log("S2STransformer:stubs list preprocessing done");
-        console.log("S2STransformer:starting tranformation of potentially unused function")
         if(args.log)
             var changes = mainTransformer(fileName_Func_Location, outputAppDir, args.log);
         else
             var changes = mainTransformer(fileName_Func_Location, outputAppDir);
         if (changes === NO_CHANGES_NEEDED)
             generateModifiedAsOriginal(stubListFile);
-
+        console.log('Transformation Finished');
         return;
     }
 }());
@@ -84,7 +80,7 @@ function generateModifiedAsOriginal(stubFile){ // File -> File -> ()
 
 
 
-    console.log("No changes in the file, keeping the original file");
+    //console.log("No changes in the file, keeping the original file");
     var outputPathDir = path.dirname(stubFile);
     var inputPathDir = path.resolve(outputPathDir.toString().replace('output-actual','input'));
 
@@ -160,7 +156,7 @@ function readStubListJSON(outFileJSON) {
  * Main code transformer function
  */
 function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
-    console.log("Running mainTransformer");
+    console.log('Running Main Transformer');
     var updatedASTList = {};
     // if no stub generated the transformed file is similar to original and return;
     //TODO : why constructor === Object
@@ -179,10 +175,10 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 console.log("/input/ assumption");
                 continue;
             }
-            console.log(" Searching for file " +fileName+ ":: function at line number "+startLineNumber);
+
             var functionName = findFun(fileName, location, startLineNumber);
 
-            if (functionName === undefined)
+            if (!functionName)
                 throw "function Name could not be found";
             // if the AST is already modified, start from the modified AST
             var astForInput = {};
@@ -190,10 +186,11 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 astForInput = updatedASTList[fileName];
             }else { // performed once
                 var inputProgramFromFile = fs.readFileSync(fileName + '.js', 'utf8');
-                astForInput = esprima.parse(inputProgramFromFile.toString(), {
+                astForInput = esprima.parseModule(inputProgramFromFile.toString(), {
                     range: true,
                     loc: true,
-                    tokens: true
+                    tokens: true,
+                    ecmaVersion: 6
                 });
                 transformer.addCachedCodeDeclaration(astForInput);
                 transformer.addHeaderInstructions(astForInput);
@@ -207,7 +204,6 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 else
                     transformer.replace(astForInput, null, functionName);
                 // create and add a body for lazy Loading
-                console.log("transformation finished");
                 var modifiedProgram = escodegen.generate(astForInput);
 
 
@@ -217,14 +213,15 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
               else
                     transformer.replace(astForInput, functionName, null);
                 // create and add a body for lazy Loading
-               console.log("transformation finished");
                var modifiedProgram = escodegen.generate(astForInput);
 
             }
             updatedASTList[fileName] = astForInput;
         }
         catch (error) {
-            console.log(error.stack);
+            //console.log('2');
+
+//            console.error(error.stack);
 
         }
 
@@ -236,22 +233,13 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
             var baseFileName = path.basename(fileN);
             var fullOriginalPath = path.resolve(fileN);
 
-            //TODO : A bug, changes the files not under /input right in place , for example
-            // decide if we want to update the unused files outside the application directory.          
             if(fullOriginalPath.toString().indexOf(path.sep+'input'+path.sep) === -1){
-               // console.log("S2STransformer: Not replacing the file "+fullOriginalPath);
                 console.log("Input path does not contain /input/");
                 continue;
 
             }
             var fullModifiedPath = path.resolve(fullOriginalPath.toString().replace('input', 'output-actual') + '.js');
-            console.log("S2STransformer: resolved outputPath "+fullModifiedPath);
-
-           /* var modifiedBase = path.join(baseFileName+'.js');
-           var modifiedAbsolutePath = path.join(pathToOutput,modifiedBase);
-           */
-            console.log("fileName-to-be-written " +fullModifiedPath );
-            mkdirp.sync(path.dirname(fullModifiedPath));
+             mkdirp.sync(path.dirname(fullModifiedPath));
             fs.writeFileSync(fullModifiedPath, escodegen.generate(updatedASTList[fileN]));
         }
     } catch (Fileerror) {
@@ -262,6 +250,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
 
 // location = [a:b:c:d]
 // a := start line number, b : column info for start, c : end line number, d : column info for end
+//TODO :; Handle cases where function could not be located
 function findFun(fileName, location, startLineNumber) {
     var _fn = fileName.toString();
     var _loc = location;
@@ -271,12 +260,10 @@ function findFun(fileName, location, startLineNumber) {
 
         //read the whole input file
         var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
-        var astForInput = esprima.parse(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false});
+        var astForInput = esprima.parseModule(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false, ecmaVersion: 6});
         estraverse.traverse(astForInput,
-            { // define the visitor as an object with two properties/functions defining task at enter and leave
-                enter: function (node, parent) { // check for function name and replace
+            {  enter: function (node, parent) { // check for function name and replace
                     if (node.type == 'FunctionDeclaration') {
-
                         if (startLineNumber == node.loc.start.line) {
                             // found the function name .
                             result = node.id.name;
@@ -372,12 +359,11 @@ function findFun(fileName, location, startLineNumber) {
 
     }
 
-    console.log("Returned function name " + JSON.stringify(result));
     if (result !== null)
         return result;
-    else
-        console.log("No function found for the input file and location");
-
+    else {
+        //  console.log("No function found for the input file and location");
+    }
 
 }
 
@@ -388,8 +374,8 @@ function populateGlobalModifiedFilesList(fileName_Func_Location){
             var fileName = fileName_Func_Location[elem].fileName;
             var fileNameRelative =fileName.substring(fileName.lastIndexOf('/')+1, fileName.length);
             globalModifiedFilesList[fileNameRelative+'.js'] = fileNameRelative+ '.js';
-        }catch (error){
-            console.error(error.toString());
+        }catch (err){
+           console.error('ModifiedList Error Case '+err);
         }
     }
     return globalModifiedFilesList;
