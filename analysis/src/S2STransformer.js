@@ -12,6 +12,7 @@ var transformer = require('./Transformer.js');
 var copydir = require('copy-dir');
 const path = require('path');
 var mkdirp = require('mkdirp');
+const IgnoreFunction = 'IgnoreFunction';
 
 
 // records for each fileName f, an array of function locations to be replaced by stubs
@@ -49,7 +50,6 @@ const LOCATION_DELTA_THRESSHOLD = 2;
         var pathToRoot = path.resolve(args.in);
         var pathToOutput = path.resolve(args.o);
         preprocessInput(stubListFile);
-        //console.log("S2STransformer:Preporcessing Finihsed");
         if(args.log)
             var changes = mainTransformer(fileName_Func_Location, pathToOutput, args.log);
         else
@@ -125,7 +125,7 @@ function getModifiedPath(_fileName){
 /* preprocesses the input, read the stubList,
    populates the fineName_Func_Location
    populates the globalModifiedFileList
-   @params stubFile
+   @params stubFile :  The json file containing the list of potentially stub-able functions
 
  */
 function preprocessInput(stubFile){ // file -> Map -> ()
@@ -133,11 +133,8 @@ function preprocessInput(stubFile){ // file -> Map -> ()
     globalModifiedFilesList = populateGlobalModifiedFilesList(fileName_Func_Location);
 }
 
-
-
 // read the JSON file and create a fileName and function Location to be replaced by stubs
 function readStubListJSON(outFileJSON) {
-
     var obj = JSON.parse(fs.readFileSync(outFileJSON, 'utf8'));
     // an Array [{stubLocation : }, {stubLocation: },]
     var unexecutedFunctions = obj.unexecutedFunctions;
@@ -150,10 +147,10 @@ function readStubListJSON(outFileJSON) {
 
     }
     return fileName_Func_Location;
-
 }
 /*
  * Main code transformer function
+ * Runs the code transformation for each potentially stub
  */
 function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
     console.log('Running Main Transformer');
@@ -174,7 +171,9 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
             var filePath = path.resolve(fileName);
             if((filePath.toString().indexOf(path.sep+'input'+path.sep) === -1)
                 || (filePath.toString().indexOf(path.sep+'node_modules'+path.sep+'mocha'+path.sep) > -1)
-                    || (filePath.toString().indexOf(path.sep+'debloatingJS'+path.sep) > -1 )){
+                    || (filePath.toString().indexOf(path.sep+'debloatingJS'+path.sep) > -1 )
+                        || (filePath.toString().indexOf(path.sep+'node_modules'+path.sep+'chai'+path.sep) > -1)
+                            || (filePath.toString().indexOf('.min') > -1)){
                 //console.log("/input/ assumption :: Skipping transformation "+filePath);
                 continue;
             }
@@ -185,13 +184,14 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
 
             var functionName = findFun(fileName, location, startLineNumber);
 
-            if (!functionName)
+            if (!functionName) {
+                utility.printObjWithMsg(location+'@'+fileName, 'NOT FOUND');
                 throw "function Name could not be found";
-            // if the AST is already modified, start from the modified AST
+            }
             var astForInput = {};
             if (updatedASTList.hasOwnProperty(fileName)) {
                 astForInput = updatedASTList[fileName];
-            }else { // performed once
+            }else{ // performed once
                 var inputProgramFromFile = fs.readFileSync(fileName + '.js', 'utf8');
                 astForInput = esprima.parseModule(inputProgramFromFile.toString(), {
                     range: true,
@@ -199,15 +199,14 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                     tokens: true,
                     ecmaVersion: 6
                 });
-                // set the fileName
+                // set the   fileName
                 astForInput.attr = {'fileName': fileName+'.js'};
                 transformer.addCachedCodeDeclaration(astForInput);
                 transformer.addHeaderInstructions(astForInput);
                 transformer.addSrcfileDeclaration(astForInput, fileName);
              }
 
-//            transformer.addOriginalDeclaration(astForInput, functionName);
-            if (functionName.type == utility.UNIQUE_ID_TYPE) {
+             if (functionName.type == utility.UNIQUE_ID_TYPE) {
                 if(logfile)
                     transformer.replace(astForInput, null, functionName, logfile);
                 else
@@ -215,12 +214,11 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 // create and add a body for lazy Loading
                 var modifiedProgram = escodegen.generate(astForInput);
 
-
-            } else {
+            }else{
               if(logfile)
                   transformer.replace(astForInput, functionName, null, logfile);
               else
-                    transformer.replace(astForInput, functionName, null);
+                 transformer.replace(astForInput, functionName, null);
                 // create and add a body for lazy Loading
                var modifiedProgram = escodegen.generate(astForInput);
 
@@ -230,7 +228,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
         catch (error) {
             //console.log('2');
 
-//            console.error(error.stack);
+           console.error('[Error:: S2STransformer] '+error);
 
         }
 
@@ -249,6 +247,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
             }
             var fullModifiedPath = path.resolve(fullOriginalPath.toString().replace('input', 'output-actual') + '.js');
              mkdirp.sync(path.dirname(fullModifiedPath));
+             utility.printObjWithMsg(fullModifiedPath, 'Writing Transformed');
             fs.writeFileSync(fullModifiedPath, escodegen.generate(updatedASTList[fileN]));
         }
     } catch (Fileerror) {
@@ -264,7 +263,7 @@ function findFun(fileName, location, startLineNumber) {
     var _fn = fileName.toString();
     var _loc = location;
     var result = null;
-
+    var err_result;
     if (_fn.length > 0) {
 
         //read the whole input file
@@ -285,7 +284,7 @@ function findFun(fileName, location, startLineNumber) {
                             if (startLineNumber === node.loc.start.line.toString()) {
                                 if (right.type === 'FunctionExpression') {
                                     // lhs = MemberExpression rhs = FunctionExpression
-                                    if (left.type === 'MemberExpression') {//TODO Handle case like Protototype.a.b.c....n = function(){ };
+                                    if (left.type === 'MemberExpression') {
                                         var leftPath = getMemberExpressionName(left);
                                         result = leftPath;
                                         this.break();
@@ -300,9 +299,7 @@ function findFun(fileName, location, startLineNumber) {
                                             throw("No name of the Identifier ");
                                         }
 
-                                    }
-                                    // TODO : Handle other cases
-                                    else{
+                                    }else{
                                         estraverse.VisitorOption.skip;
                                     }
                                 }
@@ -350,10 +347,45 @@ function findFun(fileName, location, startLineNumber) {
                                 this.break();
                             }
                         }
-                    }
+                    }else if(node.type === 'NewExpression'){
+                        if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
+                            err_result = node.type;
+                         /*   if (node.callee.name !== null) {// has an id
+                                result = node.callee.name;
+                                this.break();
+                            } else { // anonymous function case, create a unique-Id based on the function location
+                                result = utility.cerateUniqueId(node.loc);
+                                this.break();
+                            }*/
+                        }
+                    }else if(node.type === 'ArrayExpression'){
+                        if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
+                            err_result = node.type;
+                            this.break();
 
+                        }else{
+                            estraverse.VisitorOption.skip;
+                        }
+
+
+                    }else if(node.type === 'MemberExpression'){
+                        if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
+                            err_result = node.type;
+                            this.break();
+
+                        }else{
+                            estraverse.VisitorOption.skip;
+                        }
+                    }
                     else{
-                        estraverse.VisitorOption.skip;
+                        if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
+                            err_result = node.type;
+                            this.break();
+
+                        }else{
+                            estraverse.VisitorOption.skip;
+                        }
+
                     }
                 },
 
@@ -371,7 +403,11 @@ function findFun(fileName, location, startLineNumber) {
     if (result !== null)
         return result;
     else {
-        //  console.log("No function found for the input file and location");
+        if(err_result === 'NewExpression')
+            return IgnoreFunction;
+        else {
+            console.log("No function found for the input file and location for node.type " + err_result);
+        }
     }
 
 }

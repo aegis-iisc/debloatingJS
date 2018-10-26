@@ -34,10 +34,17 @@ function getReletivePath (absolutePath) {
     return relativePath;
 }
 
+
+function printObjWithMsg(obj, msg){
+    console.log(msg);
+    console.log(obj);
+}
+
 module.exports = {
     cerateUniqueId: cerateUniqueId,
     compareLoc: compareLoc,
     printObject: printObject,
     UNIQUE_ID_TYPE: 'UniqueFunctionId',
-    getReletivePath: getReletivePath
+    getReletivePath: getReletivePath,
+    printObjWithMsg : printObjWithMsg
 };
