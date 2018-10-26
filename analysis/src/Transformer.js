@@ -85,8 +85,6 @@ function replace(ast, funName, functionLocId, logfile){
       });
       }
   else{ // Anonymous 'FunctionExpression case.
-      //console.log("Transforming the AST for the anonymous function with id " );
-          //JSON.stringify(functionLocId));
       var fNameForId =   createUniqueFunction(functionLocId);
       addOriginalDeclaration(ast, fNameForId);
       var result = estraverse.replace(ast, {
@@ -169,9 +167,9 @@ function replace(ast, funName, functionLocId, logfile){
   }
 
   if(transformed) {
-   //   console.error('Replace Ended with Replacement');
+      //console.error('Replace Ended with Replacement');
   }else {
-     // console.log("Replace Ended w/o Replacement :: Transformer.replace case other than FunctionExpression or Declarations");
+     //console.log("Replace Ended w/o Replacement :: Transformer.replace case other than FunctionExpression or Declarations");
   }
 }
 
@@ -184,7 +182,7 @@ function createUniqueFunction(id){
 
 
 
-function createStubAnonymousFunctionExpression(funName, params, left, logfile, fileName){
+function createStubAnonymousFunctionExpressionOlder(funName, params, left, logfile, fileName){
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
@@ -233,7 +231,18 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
 
 
 
+/*
     var _stubFunExpresison = {type: 'FunctionExpression', id : {type: 'Identifier', name: ' '+funName}, params : params,
+        body: { type: 'BlockStatement',
+            body: [
+                _callStubInfoLogger, _ifStatement,_callCopyFunctionProperties, _applyStatement, _conditionalReturn]},
+        generator: false,
+        async: false,
+        expression: false
+
+    };
+*/
+    var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
                 _callStubInfoLogger, _ifStatement,_callCopyFunctionProperties, _applyStatement, _conditionalReturn]},
@@ -244,6 +253,53 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
     };
     return _stubFunExpresison;
 }
+
+function createStubAnonymousFunctionExpression(funName, params, left, logfile, fileName){
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
+    var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
+    var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
+    var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
+    var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
+    var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
+
+    var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody);';
+    var _callEvalStmt = esprima.parse(callEvalStmt);
+
+
+
+    var paramList = [];
+    if (params.length > 0 ){
+        for (elem in params){
+            paramList.push(params[elem].name);
+        }
+    }
+    if(paramList.length > 0)
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, ['+paramList.toString() +']);';
+    else
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
+
+    var _applyStatement = esprima.parse(applyStatement);
+
+    var _conditionalReturn = {"type":"IfStatement",
+        "test":{"type":"Identifier","name":"ret"},
+        "consequent":{"type":"BlockStatement",
+            "body":[{"type":"ReturnStatement","argument":{"type":"Identifier","name":"ret"}}]},
+        "alternate":null};
+
+
+
+    var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
+        body: { type: 'BlockStatement',
+            body: [
+                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _callEvalStmt, _applyStatement, _conditionalReturn]},
+        generator: false,
+        async: false,
+        expression: false
+
+    };
+    return _stubFunExpresison;
+}
+
 
 function createStubFunctionDeclaration (funName, params, logfile, fileName){
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';

@@ -18,10 +18,11 @@ function lazyLoad(funName, fileName, srcFile) {
 }
 function extractBodies(srcFile) {
     var code = fs.readFileSync(srcFile, 'utf8');
-    var ast = esprima.parse(code.toString(), {
+    var ast = esprima.parseModule(code.toString(), {
         range: true,
         loc: true,
-        tokens: false
+        tokens: false,
+        ecmaVersion : 6,
     });
     cachedCode[srcFile] = {};
     estraverse.traverse(ast, {
@@ -79,6 +80,8 @@ function loadAndInvoke(funName, srcFile) {
 
 function copyFunctionProperties (thisFunction, loadededFunc){
     // copy the associated properties
+    if(!thisFunction || thisFunction === null)
+    	return loadededFunc;
     Object.keys(thisFunction).forEach(function (key){
        // create a key for the loadedFunc with this key
         loadededFunc[key] = thisFunction[key];
