@@ -123,10 +123,9 @@ function getModifiedPath(_fileName){
    return  _fileName;
 }
 /* preprocesses the input, read the stubList,
-   populates the fineName_Func_Location
-   populates the globalModifiedFileList
-   @params stubFile :  The json file containing the list of potentially stub-able functions
-
+ *  populates the fineName_Func_Location
+ * populates the globalModifiedFileList
+ * @params stubFile :  The json file containing the list of potentially stub-able functions
  */
 function preprocessInput(stubFile){ // file -> Map -> ()
     fileName_Func_Location = readStubListJSON(stubFile);
@@ -173,7 +172,8 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 || (filePath.toString().indexOf(path.sep+'node_modules'+path.sep+'mocha'+path.sep) > -1)
                     || (filePath.toString().indexOf(path.sep+'debloatingJS'+path.sep) > -1 )
                         || (filePath.toString().indexOf(path.sep+'node_modules'+path.sep+'chai'+path.sep) > -1)
-                            || (filePath.toString().indexOf('.min') > -1)){
+                            || (filePath.toString().indexOf('.min') > -1)
+                                || (filePath.toString().indexOf('-min') > -1)){
                 //console.log("/input/ assumption :: Skipping transformation "+filePath);
                 continue;
             }
@@ -205,6 +205,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 transformer.addHeaderInstructions(astForInput);
                 transformer.addSrcfileDeclaration(astForInput, fileName);
              }
+
 
              if (functionName.type == utility.UNIQUE_ID_TYPE) {
                 if(logfile)
@@ -272,7 +273,7 @@ function findFun(fileName, location, startLineNumber) {
         estraverse.traverse(astForInput,
             {  enter: function (node, parent) { // check for function name and replace
                     if (node.type == 'FunctionDeclaration') {
-                        if (startLineNumber == node.loc.start.line) {
+                        if (startLineNumber == node.loc.start.line || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))) {
                             // found the function name .
                             result = node.id.name;
                             this.break();
@@ -281,7 +282,7 @@ function findFun(fileName, location, startLineNumber) {
                         if (node.expression.type === 'AssignmentExpression') {
                             var left = node.expression.left;
                             var right = node.expression.right;
-                            if (startLineNumber === node.loc.start.line.toString()) {
+                            if (startLineNumber === node.loc.start.line.toString() || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))) {
                                 if (right.type === 'FunctionExpression') {
                                     // lhs = MemberExpression rhs = FunctionExpression
                                     if (left.type === 'MemberExpression') {
@@ -360,6 +361,38 @@ function findFun(fileName, location, startLineNumber) {
                         }
                     }else if(node.type === 'ArrayExpression'){
                         if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
+                            var elementsForExp = node.elements;
+                         /*   elementsForExp.forEach(function(elem){
+                                switch (elem.type){
+                                    // Expressions
+                                    case 'FunctionExpression':
+
+                                        err_result = node.type +' with '+elem.type;
+                                        break;
+                                    case 'AssignmentExpression':
+                                        err_result = node.type +' with '+elem.type;
+
+
+                                        break;
+
+                                    // SpreadElements
+                                    case 'SpreadElement':
+                                        var argument = elem.argument;
+                                        // Expression
+                                        err_result = node.type +' with '+elem.type;
+                                        break;
+                                        /!*switch (argument.type){
+
+
+                                        }*!/
+                                    default:
+                                        err_result = node.type +' with '+elem.type;
+                                        break;
+                                }
+
+
+                            });
+*/
                             err_result = node.type;
                             this.break();
 

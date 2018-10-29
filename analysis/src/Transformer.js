@@ -199,13 +199,13 @@ function createStubAnonymousFunctionExpressionOlder(funName, params, left, logfi
     // a name like exports.clone must be changed to original_exports_clone
     var _underscoredName = funName.replace(/\./g, '_');
 
-    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +tempFunctionStmt+ ';' + callEvalStmt + '}';
-    var _ifStatement = esprima.parse(ifStatement);
 
     var original_Name = 'original_'+ funName.replace(/\./g ,'_');
     var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
     var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
 
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +tempFunctionStmt+ ';' + callEvalStmt + '}';
+    var _ifStatement = esprima.parse(ifStatement);
 
     var invokeStatement = 'return original_'+funName.replace(/\./g ,'_')+ '.apply(this, _param);';
     _ifStatement['consequent'] = esprima.parse('lazyLoader.lazyLoad(' + funName + ')   ;' + callEvalStmt).body[0];
@@ -314,13 +314,13 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
     var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
 
     var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace(/\./g ,'_')+';';
-    var _callEvalStmt = esprima.parse(callEvalStmt).body;
+    var _callEvalStmt = esprima.parse(callEvalStmt);
 
     var original_Name = 'original_'+ funName.replace(/\./g ,'_');
     var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
     var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
 
-    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +tempFunctionStmt +';' +callEvalStmt + '}';
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' +tempFunctionStmt +';' +callEvalStmt + callCopyFunctionProperties + '}';
     var _ifStatement = esprima.parse(ifStatement);
 
     var paramList = [];
@@ -346,7 +346,7 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
 
     var _stubFunDecl = {type: 'FunctionDeclaration', params: params, id: {type: 'Identifier', name: ' '+funName},
         body: { type: 'BlockStatement',
-            body: [_callStubInfoLogger, _ifStatement, _callCopyFunctionProperties,  _applyStatement, _conditionalReturn] },
+            body: [_callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties,  _applyStatement, _conditionalReturn] },
         generator: false,
         async: false,
         expression: false
@@ -375,14 +375,15 @@ function createStubFunctionExpression (funName, params, left, logfile, fileName)
 
 
     var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody); '+funName+' = '+'original_'+funName.replace(/\./g ,'_')+';';
-    var _callEvalStmt = esprima.parse(callEvalStmt).body;
+    var _callEvalStmt = esprima.parse(callEvalStmt);
 
 
-    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' + tempFunctionStmt +';' +callEvalStmt + '}';
 
     var original_Name = 'original_'+ funName.replace(/\./g ,'_');
     var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
     var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
+
+    var ifStatement = 'if (original_' + funName.replace(/\./g ,'_') + ' == null){' + callLazyLoadStmt + ';' + loadAndInvokeStmt + ';' + tempFunctionStmt +';' +callEvalStmt  + callCopyFunctionProperties + '}';
 
 
     var _ifStatement = esprima.parse(ifStatement);
@@ -412,7 +413,7 @@ function createStubFunctionExpression (funName, params, left, logfile, fileName)
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _ifStatement, _callCopyFunctionProperties, _applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties,  _applyStatement, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false

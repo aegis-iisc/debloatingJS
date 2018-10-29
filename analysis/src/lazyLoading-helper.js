@@ -16,6 +16,11 @@ function lazyLoad(funName, fileName, srcFile) {
     cachedCode[srcFile] = {};
     extractBodies(fileName);
 }
+
+/*
+ Locates and loads all the function definition for a given source file @srcFile
+ Stores the map functionName -> functionBody for the given @srcFile   in the object cachedCode
+ */
 function extractBodies(srcFile) {
     var code = fs.readFileSync(srcFile, 'utf8');
     var ast = esprima.parseModule(code.toString(), {
@@ -61,7 +66,7 @@ function extractBodies(srcFile) {
         }
     });
 }
-function loadAndInvoke(funName, srcFile) {
+function loadAndInvokeOlder(funName, srcFile) {
     for (var elem in cachedCode) {
         if (cachedCode.hasOwnProperty(elem)) {
             if (elem === srcFile) {
@@ -78,21 +83,49 @@ function loadAndInvoke(funName, srcFile) {
     }
 }
 
-function copyFunctionProperties (thisFunction, loadededFunc){
+function loadAndInvoke(funName, srcFile) {
+    for (var elem in cachedCode) {
+        if (cachedCode.hasOwnProperty(elem)) {
+            if (elem === srcFile) {
+                var functions = cachedCode[elem];
+                for (var fun in functions) {
+                        if (fun === funName) {
+                            return functions[fun];
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+function copyFunctionProperties (thisFunction, loadedFunc){
     // copy the associated properties
-    if(!thisFunction || thisFunction === null)
-    	return loadededFunc;
-    Object.keys(thisFunction).forEach(function (key){
-       // create a key for the loadedFunc with this key
-        loadededFunc[key] = thisFunction[key];
+    try {
+        if (!thisFunction || thisFunction === null) {
+            throw new Error('thisFunction is not defined for '+loadedFunc);
+            return loadedFunc;
+        }
 
-    });
+        Object.keys(thisFunction).forEach(function (key) {
+            // create a key for the loadedFunc with this key
+            loadedFunc[key] = thisFunction[key];
 
+        });
 
-    // copy the prototype object
-    if(Object.getPrototypeOf(thisFunction))
-        Object.setPrototypeOf(loadededFunc, Object.getPrototypeOf(thisFunction));
-    return loadededFunc;
+        Object.keys(thisFunction.prototype).forEach(function (key){
+
+           loadedFunc.prototype[key] = thisFunction.prototype[key];
+        });
+
+        return loadedFunc;
+
+    }catch (error){
+
+        console.error('[copyFunctionProperties] '+error);
+        return loadedFunc;
+
+    }
 }
 
 
