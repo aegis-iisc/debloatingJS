@@ -28,6 +28,7 @@ var DYNAMIC_PATH = process.env.DYNAMIC_PATH;
  * @param4 : fileName for the current ast
  */
 function replace(ast, funName, functionLocId, logfile){
+    //utility.printObjWithMsg(ast, 'AST');
     var transformed = false;
     if(funName !== null) { // replace a named function
       addOriginalDeclaration(ast, funName);
@@ -273,10 +274,13 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
             paramList.push(params[elem].name);
         }
     }
-    if(paramList.length > 0)
+   /* if(paramList.length > 0)
         var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, ['+paramList.toString() +']);';
     else
         var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
+
+   */
+    var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, arguments);';
 
     var _applyStatement = esprima.parse(applyStatement);
 
@@ -335,6 +339,8 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
     else
         var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
 
+    var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, arguments);';
+
     var _applyStatement = esprima.parse(applyStatement);
 
     var _conditionalReturn = {"type":"IfStatement",
@@ -346,7 +352,7 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
 
     var _stubFunDecl = {type: 'FunctionDeclaration', params: params, id: {type: 'Identifier', name: ' '+funName},
         body: { type: 'BlockStatement',
-            body: [_callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties,  _applyStatement, _conditionalReturn] },
+            body: [_callStubInfoLogger, _ifStatement,  _applyStatement, _conditionalReturn] },
         generator: false,
         async: false,
         expression: false
@@ -396,10 +402,14 @@ function createStubFunctionExpression (funName, params, left, logfile, fileName)
         }
     }
 
+/*
     if(paramList.length > 0)
         var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, ['+paramList.toString() +']);';
     else
         var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
+*/
+
+    var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, arguments);';
 
     var _applyStatement = esprima.parse(applyStatement);
 
@@ -413,7 +423,7 @@ function createStubFunctionExpression (funName, params, left, logfile, fileName)
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties,  _applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _ifStatement, _applyStatement, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false

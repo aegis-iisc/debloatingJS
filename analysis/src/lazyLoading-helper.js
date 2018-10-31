@@ -106,19 +106,33 @@ function copyFunctionProperties (thisFunction, loadedFunc){
             throw new Error('thisFunction is not defined for '+loadedFunc);
             return loadedFunc;
         }
+     /*   console.error('**********before*********************');
+        console.error(loadedFunc.toString());
+     */
+     //TODO : Decide about which of the two approaches below is better to copy properties
+/*
+     for(var prop in thisFunction){
+         loadedFunc[prop] = thisFunction[prop];
 
+     }
+*/
         Object.keys(thisFunction).forEach(function (key) {
-            // create a key for the loadedFunc with this key
             loadedFunc[key] = thisFunction[key];
 
         });
+       loadedFunc.prototype = thisFunction.prototype;
+        /*if(thisFunction.prototype) {
 
-        Object.keys(thisFunction.prototype).forEach(function (key){
+            Object.keys(thisFunction.prototype).forEach(function (key) {
 
-           loadedFunc.prototype[key] = thisFunction.prototype[key];
-        });
+                loadedFunc.prototype[key] = thisFunction.prototype[key];
+            });
 
-        return loadedFunc;
+        }*/
+        //loadedFunc[this] = thisFunction.this;
+        /* console.error('****************after**************');
+        console.error(loadedFunc.toString());
+       */ return loadedFunc;
 
     }catch (error){
 

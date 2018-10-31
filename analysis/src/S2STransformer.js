@@ -409,8 +409,7 @@ function findFun(fileName, location, startLineNumber) {
                         }else{
                             estraverse.VisitorOption.skip;
                         }
-                    }
-                    else{
+                    }else{
                         if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
                             err_result = node.type;
                             this.break();
