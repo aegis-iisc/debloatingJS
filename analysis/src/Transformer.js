@@ -224,6 +224,12 @@ function createStubAnonymousFunctionExpressionOlder(funName, params, left, logfi
 
     var _applyStatement = esprima.parse(applyStatement);
 
+
+    var booleanRet = 'if (typeof ret === \'boolean\'){ return ret }';
+
+    var _booleanret = esprima.parse(booleanRet);
+
+
     var _conditionalReturn = {"type":"IfStatement",
         "test":{"type":"Identifier","name":"ret"},
         "consequent":{"type":"BlockStatement",
@@ -246,7 +252,7 @@ function createStubAnonymousFunctionExpressionOlder(funName, params, left, logfi
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _ifStatement,_callCopyFunctionProperties, _applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _ifStatement,_callCopyFunctionProperties, _applyStatement, _booleanret, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
@@ -284,6 +290,43 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
 
     var _applyStatement = esprima.parse(applyStatement);
 
+
+    var _boolRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "BinaryExpression",
+            "operator": "===",
+            "left": {
+                "type": "UnaryExpression",
+                "operator": "typeof",
+                "argument": {
+                    "type": "Identifier",
+                    "name": "ret"
+                },
+                "prefix": true
+            },
+            "right": {
+                "type": "Literal",
+                "value": "boolean",
+                "raw": "'boolean'"
+            }
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
+
+
     var _conditionalReturn = {"type":"IfStatement",
         "test":{"type":"Identifier","name":"ret"},
         "consequent":{"type":"BlockStatement",
@@ -295,7 +338,7 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _callEvalStmt, _applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _callEvalStmt, _applyStatement, _boolRet, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
@@ -343,6 +386,42 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
 
     var _applyStatement = esprima.parse(applyStatement);
 
+
+    var _boolRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "BinaryExpression",
+            "operator": "===",
+            "left": {
+                "type": "UnaryExpression",
+                "operator": "typeof",
+                "argument": {
+                    "type": "Identifier",
+                    "name": "ret"
+                },
+                "prefix": true
+            },
+            "right": {
+                "type": "Literal",
+                "value": "boolean",
+                "raw": "'boolean'"
+            }
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
+
     var _conditionalReturn = {"type":"IfStatement",
         "test":{"type":"Identifier","name":"ret"},
         "consequent":{"type":"BlockStatement",
@@ -352,7 +431,7 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
 
     var _stubFunDecl = {type: 'FunctionDeclaration', params: params, id: {type: 'Identifier', name: ' '+funName},
         body: { type: 'BlockStatement',
-            body: [_callStubInfoLogger, _ifStatement,  _applyStatement, _conditionalReturn] },
+            body: [_callStubInfoLogger, _ifStatement,  _applyStatement, _boolRet, _conditionalReturn] },
         generator: false,
         async: false,
         expression: false
@@ -413,6 +492,41 @@ function createStubFunctionExpression (funName, params, left, logfile, fileName)
 
     var _applyStatement = esprima.parse(applyStatement);
 
+    var _boolRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "BinaryExpression",
+            "operator": "===",
+            "left": {
+                "type": "UnaryExpression",
+                "operator": "typeof",
+                "argument": {
+                    "type": "Identifier",
+                    "name": "ret"
+                },
+                "prefix": true
+            },
+            "right": {
+                "type": "Literal",
+                "value": "boolean",
+                "raw": "'boolean'"
+            }
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
+
     var _conditionalReturn = {"type":"IfStatement",
         "test":{"type":"Identifier","name":"ret"},
         "consequent":{"type":"BlockStatement",
@@ -423,7 +537,7 @@ function createStubFunctionExpression (funName, params, left, logfile, fileName)
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _ifStatement, _applyStatement, _conditionalReturn]},
+                _callStubInfoLogger, _ifStatement, _applyStatement, _boolRet, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
