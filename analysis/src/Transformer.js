@@ -259,7 +259,7 @@ function createStubForClassConstructor(methodName, params, methodName, logfile, 
 
 
 function createStubForClassMethod(funName, params, methodName, logfile, fileName){
-    utility.printObjWithMsg(funName, 'CSTM');
+   // utility.printObjWithMsg(funName, 'CSTM');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
 
@@ -269,7 +269,7 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
 
-    var tempFunctionStmt = 'var temp = this.'+funName;
+    var tempFunctionStmt = 'var temp = this.'+methodName;
     var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
 
     var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody);';
@@ -419,7 +419,7 @@ function createStubAnonymousFunctionExpressionOlder(funName, params, left, logfi
 }
 
 function createStubAnonymousFunctionExpression(funName, params, left, logfile, fileName){
-    utility.printObjWithMsg(funName, 'CSAFM');
+   // utility.printObjWithMsg(funName, 'CSAFM');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
@@ -546,7 +546,7 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
 
 
 function createStubFunctionDeclaration (funName, params, logfile, fileName){
-    utility.printObjWithMsg(funName, 'CSFD');
+    //utility.printObjWithMsg(funName, 'CSFD');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
 
@@ -684,7 +684,6 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
 
 function createStubFunctionExpression (funName, params, left, logfile, fileName) { // returns the code used as a replacement of the original code
 
-    utility.printObjWithMsg(funName, 'CSFE');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     // function expression assignment
