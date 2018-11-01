@@ -29,6 +29,7 @@ var DYNAMIC_PATH = process.env.DYNAMIC_PATH;
  */
 function replace(ast, funName, functionLocId, logfile){
    // utility.printObjWithMsg(ast, 'AST');
+ //   utility.printObjWithMsg('replace-called', 'REPLACE-CALLED');
     var transformed = false;
     if(funName !== null) { // replace a named function
       addOriginalDeclaration(ast, funName);
@@ -134,13 +135,13 @@ function replace(ast, funName, functionLocId, logfile){
                   }
               } else if (node.type === 'FunctionExpression') { // replace the function expression if it is anonymous function
                   // compare the unique id for the function
-                  utility.printObjWithMsg(node, 'NODE');
                   if (node.id === null) { // Two cases either ClassMethod or Anonymous Function Expression
-                      if(node.attr && node.attr.type === 'ClassMethod'){
+                      /*if(node.attr && node.attr.type === 'ClassMethod'){
                           utility.printObjWithMsg(node.attr, 'MethodAttr');
                           var methodName = node.attr.methodName;
                           var methodKind = node.attr.kind;
                           if(node.loc){ // Skip if node.loc for the generated AST node is undefined.
+                              utility.printObjWithMsg(functionLocId, 'CALLING COMPARE LOC 145');
                               if (utility.compareLoc(node.loc, functionLocId)) {
                                   var uniqueFunId = createUniqueFunction(functionLocId);
                                   transformed = true;
@@ -157,7 +158,7 @@ function replace(ast, funName, functionLocId, logfile){
                               estraverse.VisitorOption.skip;
                           }
                       }else {
-                          utility.printObjWithMsg(node.attr, 'MethodAttr-Else');
+                      */  //  utility.printObjWithMsg(node.attr, 'MethodAttr-Else');
                           if(node.loc){ // Skip if node.loc for the generated AST node is undefined.
                               if (utility.compareLoc(node.loc, functionLocId)) {
                                   var uniqueFunId = createUniqueFunction(functionLocId);
@@ -168,21 +169,13 @@ function replace(ast, funName, functionLocId, logfile){
                                       transformed = true;
                                       return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
                                   }
-                              } else {
+                              } else
                                   estraverse.VisitorOption.skip;
-                              }
-                          }else{
+                          }else
                               estraverse.VisitorOption.skip;
-                          }
                       }
-                  }else {
+                  }else
                         estraverse.VisitorOption.skip;
-
-                  }
-
-              }else
-                  estraverse.VisitorOption.skip;
-
           },
           leave: function (node) {
               estraverse.VisitorOption.skip;
@@ -199,30 +192,34 @@ function replace(ast, funName, functionLocId, logfile){
   }
 }
 
-function replaceClassMethod(ast, functionName, logfile){
+
+function replaceClassMethod(ast, functionName, uniqueId, logfile){
     var transformed = false;
-    var fName = functionName.name;
+    var methodName = functionName.name;
     var fKind = functionName.kind;
     var fLoc = functionName.loc;
+    var uniqueNameForId = createUniqueFunction(uniqueId);
+
     if(!ast || !functionName)
         throw Error('AST or functionName to be replaced is undefined');
-    addOriginalDeclaration(ast, fName)
+    addOriginalDeclaration(ast, uniqueNameForId)
     var result = estraverse.replace(ast, {
         enter: function (node) {
+            if(node.id !== null)
+                estraverse.VisitorOption.skip;
             switch (node.type){
-                case 'MethodDefinition':
-                    var nodeKey = node.key
-                    var nodeValue = node.value;
-                    if(nodeValue.type === 'FunctionExpression'){
-                        // compare the loc
-                        if(utility.compareLoc(functionName.loc, nodeValue.loc )){
-                            transformed = true;
-                            return createStubClassMethod(fName, fKind, fLoc)
+                case 'FunctionExpression':
+                    if(node.attr) {
+                        var methodName = node.attr.methodName;
+                        var methodKind = node.attr.kind;
+                        if ((node.loc.start.line === fLoc.start.line) && (node.loc.start.column === fLoc.start.column)) {
+                                transformed = true;
+                                return createStubForClassMethod(uniqueNameForId, node.params, methodName, logfile, ast.attr.fileName)
 
-                        }
+                            }
 
-                    }else
-                        estraverse.VisitorOption.skip;
+                        }else
+                            estraverse.VisitorOption.skip;
 
                     break;
 
@@ -237,10 +234,8 @@ function replaceClassMethod(ast, functionName, logfile){
 
         }
     });
-
-
-
 }
+
 
 
 function createUniqueFunction(id){
@@ -334,6 +329,7 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
         expression: false
 
     };
+
     return _stubFunExpresison;
 
 
@@ -419,7 +415,7 @@ function createStubAnonymousFunctionExpressionOlder(funName, params, left, logfi
 }
 
 function createStubAnonymousFunctionExpression(funName, params, left, logfile, fileName){
-   // utility.printObjWithMsg(funName, 'CSAFM');
+    //utility.printObjWithMsg(funName, 'CSAFM');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
@@ -1107,7 +1103,8 @@ module.exports = {
     createStubAnonymousFunctionExpression: createStubAnonymousFunctionExpression,
     replace: replace,
     addCachedCodeDeclaration: addCachedCodeDeclaration,
-    createLazyLoad:createLazyLoad
+    createLazyLoad:createLazyLoad,
+    replaceClassMethod : replaceClassMethod
 
 };
 

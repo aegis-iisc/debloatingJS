@@ -16,9 +16,16 @@ function printObject (obj){
 }
 
 function compareLoc (loc1, loc2){
-    if(loc1.start.line === loc2.startline && loc1.start.column === loc2.startcol)
-        return true;
-    return false;
+    try {
+        if (loc1.start.line === loc2.startline && loc1.start.column === loc2.startcol) {
+            return true;
+        } else {
+            return false;
+        }
+    }catch (error){
+        console.error('[compareLoc ]'+error);
+    }
+
 }
 
 /*
