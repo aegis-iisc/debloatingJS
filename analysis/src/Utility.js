@@ -28,6 +28,11 @@ function cerateUniqueId (locFrom){
     return {"type": 'UniqueFunctionId', "startline" : locFrom.start.line, "startcol":locFrom.start.column};
 }
 
+function createClassMethodName(methodName, kind, methodLoc){
+
+    return {"type": 'ClassMethod', "name":methodName, "kind": kind, "loc":methodLoc};
+}
+
 function getReletivePath (absolutePath) {
     absolutePath = absolutePath.substring(1, absolutePath.length - 1);
     var relativePath = path.relative(process.cwd(), absolutePath);
@@ -46,5 +51,6 @@ module.exports = {
     printObject: printObject,
     UNIQUE_ID_TYPE: 'UniqueFunctionId',
     getReletivePath: getReletivePath,
-    printObjWithMsg : printObjWithMsg
+    printObjWithMsg : printObjWithMsg,
+    createClassMethodName : createClassMethodName
 };

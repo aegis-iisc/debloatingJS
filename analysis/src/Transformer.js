@@ -28,7 +28,7 @@ var DYNAMIC_PATH = process.env.DYNAMIC_PATH;
  * @param4 : fileName for the current ast
  */
 function replace(ast, funName, functionLocId, logfile){
-    //utility.printObjWithMsg(ast, 'AST');
+   // utility.printObjWithMsg(ast, 'AST');
     var transformed = false;
     if(funName !== null) { // replace a named function
       addOriginalDeclaration(ast, funName);
@@ -84,14 +84,13 @@ function replace(ast, funName, functionLocId, logfile){
 
           }
       });
-      }
-  else{ // Anonymous 'FunctionExpression case.
+    }else{ // Anonymous 'FunctionExpression case.
       var fNameForId =   createUniqueFunction(functionLocId);
       addOriginalDeclaration(ast, fNameForId);
       var result = estraverse.replace(ast, {
           enter: function (node) {
 
-              if (node.type == 'FunctionDeclaration') {
+              if (node.type === 'FunctionDeclaration') {
                   if (node.id.name === funName) {
                       var params = node.params;
                       if(logfile) {
@@ -106,7 +105,7 @@ function replace(ast, funName, functionLocId, logfile){
                   }
 
               }
-              if (node.type == 'ExpressionStatement') {
+              if (node.type === 'ExpressionStatement') {
                   if (node.expression.type == 'AssignmentExpression') {
                       var left = node.expression.left;
                       var right = node.expression.right;
@@ -133,31 +132,57 @@ function replace(ast, funName, functionLocId, logfile){
                       }
 
                   }
-              } else if (node.type == 'FunctionExpression') { // replace the function expression if it is anaonymous function
+              } else if (node.type === 'FunctionExpression') { // replace the function expression if it is anonymous function
                   // compare the unique id for the function
-                  if (node.id == null) {
-                      if(node.loc){ // Skip if node.loc for the generated AST node is undefined.
-                          if (utility.compareLoc(node.loc, functionLocId)) {
-                              var uniqueFunId = createUniqueFunction(functionLocId);
-                              if(logfile) {
+                  utility.printObjWithMsg(node, 'NODE');
+                  if (node.id === null) { // Two cases either ClassMethod or Anonymous Function Expression
+                      if(node.attr && node.attr.type === 'ClassMethod'){
+                          utility.printObjWithMsg(node.attr, 'MethodAttr');
+                          var methodName = node.attr.methodName;
+                          var methodKind = node.attr.kind;
+                          if(node.loc){ // Skip if node.loc for the generated AST node is undefined.
+                              if (utility.compareLoc(node.loc, functionLocId)) {
+                                  var uniqueFunId = createUniqueFunction(functionLocId);
                                   transformed = true;
-                                  return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null, logfile, ast.attr.fileName);
-                              }else {
-                                  transformed = true;
-                                  return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
+                                  if(methodKind === 'constructor') {//TODO : Handle Class Inheritance later
+                                      return createStubForClassMethod(uniqueFunId, node.params, methodName, logfile, ast.attr.fileName);
+                                      //return createStubForClassConstructor(uniqueFunId, node.params, methodName, logfile, ast.attr.fileName);
+                                  }else
+                                    return createStubForClassMethod(uniqueFunId, node.params, methodName, logfile, ast.attr.fileName);
+
+                              } else {
+                                  estraverse.VisitorOption.skip;
                               }
-                          } else {
+                          }else{
                               estraverse.VisitorOption.skip;
                           }
-                      }else{
-                          estraverse.VisitorOption.skip;
+                      }else {
+                          utility.printObjWithMsg(node.attr, 'MethodAttr-Else');
+                          if(node.loc){ // Skip if node.loc for the generated AST node is undefined.
+                              if (utility.compareLoc(node.loc, functionLocId)) {
+                                  var uniqueFunId = createUniqueFunction(functionLocId);
+                                  if(logfile) {
+                                      transformed = true;
+                                      return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null, logfile, ast.attr.fileName);
+                                  }else {
+                                      transformed = true;
+                                      return createStubAnonymousFunctionExpression(uniqueFunId, node.params, null);
+                                  }
+                              } else {
+                                  estraverse.VisitorOption.skip;
+                              }
+                          }else{
+                              estraverse.VisitorOption.skip;
+                          }
                       }
-                  } else {
+                  }else {
                         estraverse.VisitorOption.skip;
 
                   }
 
-              }
+              }else
+                  estraverse.VisitorOption.skip;
+
           },
           leave: function (node) {
               estraverse.VisitorOption.skip;
@@ -174,13 +199,145 @@ function replace(ast, funName, functionLocId, logfile){
   }
 }
 
+function replaceClassMethod(ast, functionName, logfile){
+    var transformed = false;
+    var fName = functionName.name;
+    var fKind = functionName.kind;
+    var fLoc = functionName.loc;
+    if(!ast || !functionName)
+        throw Error('AST or functionName to be replaced is undefined');
+    addOriginalDeclaration(ast, fName)
+    var result = estraverse.replace(ast, {
+        enter: function (node) {
+            switch (node.type){
+                case 'MethodDefinition':
+                    var nodeKey = node.key
+                    var nodeValue = node.value;
+                    if(nodeValue.type === 'FunctionExpression'){
+                        // compare the loc
+                        if(utility.compareLoc(functionName.loc, nodeValue.loc )){
+                            transformed = true;
+                            return createStubClassMethod(fName, fKind, fLoc)
+
+                        }
+
+                    }else
+                        estraverse.VisitorOption.skip;
+
+                    break;
+
+                default:
+                    estraverse.VisitorOption.skip;
+                    break;
+
+            }
+         },
+        leave: function (node) {
+            estraverse.VisitorOption.skip;
+
+        }
+    });
+
+
+
+}
+
+
 function createUniqueFunction(id){
     var name = '_'+id.startline+'_'+id.startcol;
     return name;
 
 
 }
+/*
 
+function createStubForClassConstructor(methodName, params, methodName, logfile, fileName) {
+
+
+}
+*/
+
+
+function createStubForClassMethod(funName, params, methodName, logfile, fileName){
+    utility.printObjWithMsg(funName, 'CSTM');
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
+    var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
+
+    var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
+    var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
+
+    var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
+    var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
+
+    var tempFunctionStmt = 'var temp = this.'+funName;
+    var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
+
+    var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody);';
+    var _callEvalStmt = esprima.parse(callEvalStmt);
+
+
+    var original_Name = 'original_'+ funName.replace(/\./g ,'_');
+    var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
+    var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
+
+    var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, arguments);';
+
+    var _applyStatement = esprima.parse(applyStatement);
+
+    var _notUndefinedRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "UnaryExpression",
+            "operator": "!",
+            "argument": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                    "type": "UnaryExpression",
+                    "operator": "typeof",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    },
+                    "prefix": true
+                },
+                "right": {
+                    "type": "Literal",
+                    "value": "undefined",
+                    "raw": "'undefined'"
+                }
+            },
+            "prefix": true
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
+
+
+    var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
+        body: { type: 'BlockStatement',
+            body: [
+                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet ]},// _boolRet, _conditionalReturn]},
+        generator: false,
+        async: false,
+        expression: false
+
+    };
+    return _stubFunExpresison;
+
+
+}
 
 
 function createStubAnonymousFunctionExpressionOlder(funName, params, left, logfile, fileName){
@@ -262,6 +419,7 @@ function createStubAnonymousFunctionExpressionOlder(funName, params, left, logfi
 }
 
 function createStubAnonymousFunctionExpression(funName, params, left, logfile, fileName){
+    utility.printObjWithMsg(funName, 'CSAFM');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
@@ -290,6 +448,45 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
 
     var _applyStatement = esprima.parse(applyStatement);
 
+    var _notUndefinedRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "UnaryExpression",
+            "operator": "!",
+            "argument": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                    "type": "UnaryExpression",
+                    "operator": "typeof",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    },
+                    "prefix": true
+                },
+                "right": {
+                    "type": "Literal",
+                    "value": "undefined",
+                    "raw": "'undefined'"
+                }
+            },
+            "prefix": true
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
 
     var _boolRet = {
         "type": "IfStatement",
@@ -338,7 +535,7 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _callEvalStmt, _applyStatement, _boolRet, _conditionalReturn]},
+                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _callEvalStmt, _applyStatement, _notUndefinedRet ]},// _boolRet, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
@@ -349,6 +546,7 @@ function createStubAnonymousFunctionExpression(funName, params, left, logfile, f
 
 
 function createStubFunctionDeclaration (funName, params, logfile, fileName){
+    utility.printObjWithMsg(funName, 'CSFD');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
 
@@ -386,6 +584,45 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
 
     var _applyStatement = esprima.parse(applyStatement);
 
+    var _notUndefinedRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "UnaryExpression",
+            "operator": "!",
+            "argument": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                    "type": "UnaryExpression",
+                    "operator": "typeof",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    },
+                    "prefix": true
+                },
+                "right": {
+                    "type": "Literal",
+                    "value": "undefined",
+                    "raw": "'undefined'"
+                }
+            },
+            "prefix": true
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
 
     var _boolRet = {
         "type": "IfStatement",
@@ -431,7 +668,7 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
 
     var _stubFunDecl = {type: 'FunctionDeclaration', params: params, id: {type: 'Identifier', name: ' '+funName},
         body: { type: 'BlockStatement',
-            body: [_callStubInfoLogger, _ifStatement,  _applyStatement, _boolRet, _conditionalReturn] },
+            body: [_callStubInfoLogger, _ifStatement,  _applyStatement, _notUndefinedRet]},//_boolRet, _conditionalReturn] },
         generator: false,
         async: false,
         expression: false
@@ -447,6 +684,7 @@ function createStubFunctionDeclaration (funName, params, logfile, fileName){
 
 function createStubFunctionExpression (funName, params, left, logfile, fileName) { // returns the code used as a replacement of the original code
 
+    utility.printObjWithMsg(funName, 'CSFE');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
     // function expression assignment
@@ -491,6 +729,45 @@ function createStubFunctionExpression (funName, params, left, logfile, fileName)
     var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, arguments);';
 
     var _applyStatement = esprima.parse(applyStatement);
+    var _notUndefinedRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "UnaryExpression",
+            "operator": "!",
+            "argument": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                    "type": "UnaryExpression",
+                    "operator": "typeof",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    },
+                    "prefix": true
+                },
+                "right": {
+                    "type": "Literal",
+                    "value": "undefined",
+                    "raw": "'undefined'"
+                }
+            },
+            "prefix": true
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
 
     var _boolRet = {
         "type": "IfStatement",
@@ -537,7 +814,7 @@ function createStubFunctionExpression (funName, params, left, logfile, fileName)
     var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
         body: { type: 'BlockStatement',
             body: [
-                _callStubInfoLogger, _ifStatement, _applyStatement, _boolRet, _conditionalReturn]},
+                _callStubInfoLogger, _ifStatement, _applyStatement, _notUndefinedRet]},//_boolRet, _conditionalReturn]},
         generator: false,
         async: false,
         expression: false
