@@ -164,7 +164,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
         try {
             var fileName = fileName_Func_Location[elem].fileName;
             var location = fileName_Func_Location[elem].funcLoc;
-            var startLineNumber = location[0];
+            var startLineNumber = parseInt(location[0]);
 
             // Ignore the files outside the input project directory
             var filePath = path.resolve(fileName);
@@ -182,12 +182,6 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 continue;
             }
 
-            var functionName = findFun(fileName, location, startLineNumber);
-
-            if (!functionName) {
-                utility.printObjWithMsg(location+'@'+fileName, 'NOT FOUND');
-                throw "function Name could not be found";
-            }
             var astForInput = {};
             if (updatedASTList.hasOwnProperty(fileName)) {
                 astForInput = updatedASTList[fileName];
@@ -204,10 +198,19 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 transformer.addCachedCodeDeclaration(astForInput);
                 transformer.addHeaderInstructions(astForInput);
                 transformer.addSrcfileDeclaration(astForInput, fileName);
+            }
+
+            var functionName = findFun(fileName, location, startLineNumber, astForInput);
+            if (!functionName) {
+                utility.printObjWithMsg(location+'@'+fileName, 'NOT FOUND');
+                throw "function Name could not be found";
+            }
+             if(functionName.type === 'ClassMethod'){
+               // transformer.replaceClassMethod(astForInput, functionName, logfile)
+                 var functionNameForMethodBody = utility.cerateUniqueId(functionName.loc);
+                 transformer.replace(astForInput, null, functionNameForMethodBody, logfile);
              }
-
-
-             if (functionName.type == utility.UNIQUE_ID_TYPE) {
+             else if (functionName.type == utility.UNIQUE_ID_TYPE) {
                 if(logfile)
                     transformer.replace(astForInput, null, functionName, logfile);
                 else
@@ -215,7 +218,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 // create and add a body for lazy Loading
                 var modifiedProgram = escodegen.generate(astForInput);
 
-            }else{
+            }else{ // general function expression and declaration
               if(logfile)
                   transformer.replace(astForInput, functionName, null, logfile);
               else
@@ -260,20 +263,20 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
 // location = [a:b:c:d]
 // a := start line number, b : column info for start, c : end line number, d : column info for end
 //TODO :; Handle cases where function could not be located
-function findFun(fileName, location, startLineNumber) {
+function findFun(fileName, location, startLineNumber, astForInput) {
     var _fn = fileName.toString();
     var _loc = location;
     var result = null;
     var err_result;
     if (_fn.length > 0) {
-
+    var startcol = parseInt(_loc[1]);
         //read the whole input file
         var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
-        var astForInput = esprima.parseModule(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false, ecmaVersion: 6});
+        //var astForInput = esprima.parseModule(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false, ecmaVersion: 6});
         estraverse.traverse(astForInput,
             {  enter: function (node, parent) { // check for function name and replace
                     if (node.type == 'FunctionDeclaration') {
-                        if (startLineNumber == node.loc.start.line || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))) {
+                        if ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))) {
                             // found the function name .
                             result = node.id.name;
                             this.break();
@@ -282,7 +285,7 @@ function findFun(fileName, location, startLineNumber) {
                         if (node.expression.type === 'AssignmentExpression') {
                             var left = node.expression.left;
                             var right = node.expression.right;
-                            if (startLineNumber === node.loc.start.line.toString() || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))) {
+                            if ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))) {
                                 if (right.type === 'FunctionExpression') {
                                     // lhs = MemberExpression rhs = FunctionExpression
                                     if (left.type === 'MemberExpression') {
@@ -334,23 +337,51 @@ function findFun(fileName, location, startLineNumber) {
                             estraverse.VisitorOption.skip;
                         }
                     }else if(node.type === 'CallExpression'){
+                        estraverse.VisitorOption.skip;
+
                         /*   console.log("node type callExpression");
                            console.log(node);
 */
+                    }else if(node.type === 'MethodDefinition'){ // ES6  class Var{ method1 () {}}
+                        var methodKey = node.key;
+                        var methodValue = node.value;
+                        var methodKind = node.kind;
+                        if(methodValue.type === 'FunctionExpression') {
+                            utility.printObjWithMsg(methodValue , 'MD');
+                            if (methodValue.loc.start.line === parseInt(_loc[0]) && (Math.abs(methodValue.loc.start.column - _loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
+                                switch (methodKey.type) {
+                                    case 'Identifier':
+                                        var methodName = methodKey.name;
+                                        result = utility.createClassMethodName(methodName, methodKind, methodValue.loc);
+                                        methodValue.attr = {"type": 'ClassMethod', "methodName": methodName, "loc":methodValue.loc, "kind":methodKind};
+                                        this.break();
+                                        break;
+                                    default:
+                                        throw Error('Unhandled Method Definition type ' + methodKey.type);
+                                }
+                            }
+                        }else
+                            estraverse.VisitorOption.skip;
                     }else if(node.type === 'FunctionExpression') {
+                        utility.printObjWithMsg(node , 'SEPFE');
                         //compare the location
                         if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
                             if (node.id !== null) {// has an id
                                 result = node.id.name;
+                                node.attr = {"type": "FunctionExpression"};
                                 this.break();
                             } else { // anonymous function case, create a unique-Id based on the function location
                                 result = utility.cerateUniqueId(node.loc);
+                                node.attr = {"type": "AnonymousFunctionExpression", "loc":node.loc};
                                 this.break();
                             }
-                        }
+                        }else
+                            estraverse.VisitorOption.skip;
+
                     }else if(node.type === 'NewExpression'){
                         if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
                             err_result = node.type;
+                            this.break();
                          /*   if (node.callee.name !== null) {// has an id
                                 result = node.callee.name;
                                 this.break();
@@ -358,7 +389,9 @@ function findFun(fileName, location, startLineNumber) {
                                 result = utility.cerateUniqueId(node.loc);
                                 this.break();
                             }*/
-                        }
+                        }else
+                            estraverse.VisitorOption.skip;
+
                     }else if(node.type === 'ArrayExpression'){
                         if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
                             var elementsForExp = node.elements;
@@ -409,7 +442,8 @@ function findFun(fileName, location, startLineNumber) {
                         }else{
                             estraverse.VisitorOption.skip;
                         }
-                    }else{
+                    }
+                    else{
                         if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
                             err_result = node.type;
                             this.break();
@@ -422,6 +456,8 @@ function findFun(fileName, location, startLineNumber) {
                 },
 
                 leave: function (node, parent) {
+                    estraverse.VisitorOption.skip;
+
                 }
 
             });
