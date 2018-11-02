@@ -252,6 +252,137 @@ function createStubForClassConstructor(methodName, params, methodName, logfile, 
 }
 */
 
+function replaceArrowFunctionExpression(ast, functionName, uniqueId, logfile){
+    console.error(functionName, 'Transforming Arrow');
+    var transformed = false;
+    var uniqueNameForId = createUniqueFunction(uniqueId);
+
+    if(!ast || !functionName)
+        throw Error('AST or functionName to be replaced is undefined');
+    addOriginalDeclaration(ast, uniqueNameForId);
+    var result = estraverse.replace(ast, {
+        enter: function (node) {
+            if(node.id !== null)
+                estraverse.VisitorOption.skip;
+            switch (node.type){
+                case 'ArrowFunctionExpression':
+                    if(node.attr) {
+                        if ((node.loc.start.line === functionName.startline) && (node.loc.start.column === functionName.startcol)) {
+                            transformed = true;
+                            return createStubForArrowFunctionExpression(uniqueNameForId, node.params, logfile, ast.attr.fileName)
+                         }
+
+                    }else
+                        estraverse.VisitorOption.skip;
+
+                    break;
+
+                default:
+                    estraverse.VisitorOption.skip;
+                    break;
+
+            }
+        },
+        leave: function (node) {
+            estraverse.VisitorOption.skip;
+
+        }
+    });
+}
+
+function createStubForArrowFunctionExpression(funName, params, logfile, fileName){
+
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
+    var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
+
+    var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
+    var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
+
+    var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
+    var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
+
+    var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody);';
+    var _callEvalStmt = esprima.parse(callEvalStmt);
+
+
+    var original_Name = 'original_'+ funName.replace(/\./g ,'_');
+    var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
+    var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
+
+    /* parse the params*/
+    var paramList = [];
+    if (params.length > 0 ){
+        for (elem in params){
+            paramList.push(params[elem].name);
+        }
+    }
+    if(paramList.length > 0)
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, ['+paramList.toString() +']);';
+    else
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
+
+    var _applyStatement = esprima.parse(applyStatement);
+
+
+
+
+    var _notUndefinedRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "UnaryExpression",
+            "operator": "!",
+            "argument": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                    "type": "UnaryExpression",
+                    "operator": "typeof",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    },
+                    "prefix": true
+                },
+                "right": {
+                    "type": "Literal",
+                    "value": "undefined",
+                    "raw": "'undefined'"
+                }
+            },
+            "prefix": true
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
+
+
+    var _stubArrowFunctionExpression = {type: 'ArrowFunctionExpression', id : null, params : params,
+        body: { type: 'BlockStatement',
+            body: [
+                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _callEvalStmt, _applyStatement, _notUndefinedRet ]},// _boolRet, _conditionalReturn]},
+        generator: false,
+        async: false,
+        expression: false
+
+    };
+
+    return _stubArrowFunctionExpression;
+
+
+
+}
+
 
 function createStubForClassMethod(funName, params, methodName, logfile, fileName){
    // utility.printObjWithMsg(funName, 'CSTM');
@@ -1104,7 +1235,8 @@ module.exports = {
     replace: replace,
     addCachedCodeDeclaration: addCachedCodeDeclaration,
     createLazyLoad:createLazyLoad,
-    replaceClassMethod : replaceClassMethod
+    replaceClassMethod : replaceClassMethod,
+    replaceArrowFunctionExpression: replaceArrowFunctionExpression
 
 };
 

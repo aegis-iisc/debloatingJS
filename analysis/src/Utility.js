@@ -28,6 +28,10 @@ function compareLoc (loc1, loc2){
 
 }
 
+function createArrowFunctionName(locFrom){
+    return {"type": 'UniqueArrowFunctionId', "startline" : locFrom.start.line, "startcol":locFrom.start.column};
+}
+
 /*
     function to create unique Id from a loc
  */
@@ -59,5 +63,6 @@ module.exports = {
     UNIQUE_ID_TYPE: 'UniqueFunctionId',
     getReletivePath: getReletivePath,
     printObjWithMsg : printObjWithMsg,
-    createClassMethodName : createClassMethodName
+    createClassMethodName : createClassMethodName,
+    createArrowFunctionName:createArrowFunctionName
 };

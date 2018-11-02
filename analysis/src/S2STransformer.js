@@ -19,6 +19,12 @@ const IgnoreFunction = 'IgnoreFunction';
 var fileName_Func_Location = {};
 var globalModifiedFilesList = {};
 
+var found= 0;
+var notfound = 0;
+
+var methodsLostnFound = {"lost":[], "found":[]};
+var ignoreExpressions = ['NewExpression'];
+
 var parser = new argparse.ArgumentParser({
     version : 0.1,
     addHelp : true,
@@ -180,17 +186,26 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
             var functionName = findFun(fileName, location, startLineNumber, astForInput);
             /* No functionName found , log appropriately */
             if (!functionName || functionName === null){
+                notfound++;
                 throw Error("[FindFun] function Name could not be found : ");
                 continue;
             }else if(functionName.error){
-                utility.printObjWithMsg(location+'@'+fileName, 'NOT FOUND');
-                throw Error("[FindFun] function Name could not be found : "+functionName.error);
-                  continue;
+                if(ignoreExpressions.includes(functionName.error)) {
+                    continue;
+                }else {
+                    notfound++;
+                    methodsLostnFound.lost.push({'location': location + '@' + fileName, 'error': functionName.error});
+                    throw Error("[FindFun] function Name could not be found : " + functionName.error);
+                    continue;
+                }
             }
-
-
-             if(functionName.type === 'ClassMethod'){
-                 var uniqueIdForMethodBody = utility.cerateUniqueId(functionName.loc);
+            /* functionName or  uniqueId found for the location */
+            found++;
+            methodsLostnFound.found.push({'location': location+'@'+fileName});
+            if(functionName.type === 'UniqueArrowFunctionId'){
+                transformer.replaceArrowFunctionExpression(astForInput, functionName,functionName, logfile);
+            }else if(functionName.type === 'ClassMethod'){
+                    var uniqueIdForMethodBody = utility.cerateUniqueId(functionName.loc);
                  transformer.replaceClassMethod(astForInput, functionName,uniqueIdForMethodBody, logfile);
              }else if (functionName.type == utility.UNIQUE_ID_TYPE) {
                 if(logfile)
@@ -198,7 +213,6 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 else
                     transformer.replace(astForInput, null, functionName);
                 // create and add a body for lazy Loading
-                var modifiedProgram = escodegen.generate(astForInput);
 
             }else{ // general function expression and declaration
               if(logfile)
@@ -206,7 +220,6 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
               else
                  transformer.replace(astForInput, functionName, null);
                 // create and add a body for lazy Loading
-               var modifiedProgram = escodegen.generate(astForInput);
 
             }
             updatedASTList[fileName] = astForInput;
@@ -219,7 +232,14 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
         }
 
     }
+    try {
+        mkdirp.sync(path.resolve(pathToOutput));
+        fs.writeFileSync(path.resolve(pathToOutput,'found.txt'), 'found '+found+ '\n'+ 'not-found '+notfound);
+        fs.writeFileSync(path.resolve(pathToOutput, 'lostnfound.json'), JSON.stringify(methodsLostnFound, null, 2));
+    }catch(e) {
 
+        console.error(e);
+    }
     try {
         // writing the modified files corresponding to the changed original file
         for(fileN in updatedASTList){
@@ -263,7 +283,7 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                         //console.error('node has no line number associated skipping this node');
                         estraverse.VisitorOption.skip;
                     }else if (node.type == 'FunctionDeclaration') {
-                        if ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))) {
+                        if ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD))) {
                             result = node.id.name;
                             this.break();
                         }
@@ -271,7 +291,7 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                         if (node.expression.type === 'AssignmentExpression') {
                             var left = node.expression.left;
                             var right = node.expression.right;
-                            if ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))) {
+                            if ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD))) {
                                 if (right.type === 'FunctionExpression') {
                                     // lhs = MemberExpression rhs = FunctionExpression
                                     if (left.type === 'MemberExpression') {
@@ -297,7 +317,7 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                                 estraverse.VisitorOption.skip;
                             }
                         } else if(node.expression.type === 'FunctionExpression'){
-                            if((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1])))){
+                            if((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) || (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD))){
                                 var functionID = node.expression.id;
                                 if(functionID !== null){
                                     var funExpName = functionID.name;
@@ -311,9 +331,16 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                         } else if(node.expression.type === 'ObjectExpression'){
                             estraverse.VisitorOption.skip;
                         }else if(node.expression.type === 'ArrowFunctionExpression'){
+                             if( (startLineNumber === node.loc.start.line && startcol === node.loc.start.column) ||
+                                (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD))) {
+                                // node.id will always be null for an ArrowFunctionExpression
+                                result = utility.createArrowFunctionName(node.loc);
+                                node.attr = {"type": "ArrowFunctionExpression", "loc":node.loc};
+                                this.break();
 
-                            estraverse.VisitorOption.skip;
-
+                            }else{
+                                estraverse.VisitorOption.skip;
+                            }
                         }else if(node.expression.type === 'CallExpression'){
                             estraverse.VisitorOption.skip;
 
@@ -426,9 +453,22 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                         }else{
                             estraverse.VisitorOption.skip;
                         }
-                    } else{
+                    }else if(node.type === 'ArrowFunctionExpression'){
+                       if( (startLineNumber === node.loc.start.line && startcol === node.loc.start.column) ||
+                            (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD))) {
+                            // node.id will always be null for an ArrowFunctionExpression
+                            result = utility.createArrowFunctionName(node.loc);
+                            node.attr = {"type": "ArrowFunctionExpression", "loc":node.loc};
+                            this.break();
+
+                        }else{
+                            estraverse.VisitorOption.skip;
+                        }
+                    }
+
+                    else{
                         if( ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) && (endLine === node.loc.end.line && endcol === node.loc.end.column)) ||
-                                ((node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]))) && (endLine === node.loc.end.line && endcol === node.loc.end.column))) {
+                                ((node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) && (endLine === node.loc.end.line && endcol === node.loc.end.column))) {
                             err_result = node.type;
                             this.break();
 
