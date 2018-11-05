@@ -83,28 +83,22 @@ const LOCATION_DELTA_THRESSHOLD = 2;
 
 
 function generateModifiedAsOriginal(stubFile){ // File -> File -> ()
-
-
-
-    //console.log("No changes in the file, keeping the original file");
     var outputPathDir = path.dirname(stubFile);
     var inputPathDir = path.resolve(outputPathDir.toString().replace('output-actual','input'));
-
     if(inputPathDir.toString().indexOf(path.sep+'input'+path.sep) === -1){
         console.error("Input path does not contain /input/");
-
     }
 }
 
 
 function getActualPath(_outPath){
     return _outPath.replace('_out.json','.js');
-
 }
 
 function getModifiedPath(_fileName){
-   return  _fileName;
+    return  _fileName;
 }
+
 /* preprocesses the input, read the stubList,
  *  populates the fineName_Func_Location
  * populates the globalModifiedFileList
@@ -120,7 +114,6 @@ function readStubListJSON(outFileJSON) {
     var obj = JSON.parse(fs.readFileSync(outFileJSON, 'utf8'));
     // an Array [{stubLocation : }, {stubLocation: },]
     var unexecutedFunctions = obj.unexecutedFunctions;
-
     for(var i = 0 ; i< unexecutedFunctions.length ; i++){
         var stubLoction_elem = unexecutedFunctions[i].stubLocation;
         var filePath_LineNo = stubLoction_elem.split(".js:");
@@ -130,6 +123,7 @@ function readStubListJSON(outFileJSON) {
     }
     return fileName_Func_Location;
 }
+
 /*
  * Main code transformer function
  * Runs the code transformation for each potentially stub
@@ -138,25 +132,24 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
     console.log('Running Main Transformer');
     var updatedASTList = {};
     // if no stub generated the transformed file is similar to original and return;
-    //TODO : why constructor === Object
     if (Object.keys(fileName_Func_Loctaion).length === 0 && fileName_Func_Loctaion.constructor === Object) {
         console.error("No potentially unreachable functions found by the analysis");
         return NO_CHANGES_NEEDED;
     }
-    for (elem in fileName_Func_Location) {
+    for (var elem in fileName_Func_Location) {
         try {
             var fileName = fileName_Func_Location[elem].fileName;
             var location = fileName_Func_Location[elem].funcLoc;
             var startLineNumber = parseInt(location[0]);
 
-            // Ignore the files outside the input project directory
+            /* Ignore the files outside the input project directory and other few packages*/
             var filePath = path.resolve(fileName);
             if((filePath.toString().indexOf(path.sep+'input'+path.sep) === -1)
                 || (filePath.toString().indexOf(path.sep+'node_modules'+path.sep+'mocha'+path.sep) > -1)
-                    || (filePath.toString().indexOf(path.sep+'debloatingJS'+path.sep) > -1 )
-                        || (filePath.toString().indexOf(path.sep+'node_modules'+path.sep+'chai'+path.sep) > -1)
-                            || (filePath.toString().indexOf('.min') > -1)
-                                || (filePath.toString().indexOf('-min') > -1)){
+                || (filePath.toString().indexOf(path.sep+'debloatingJS'+path.sep) > -1 )
+                || (filePath.toString().indexOf(path.sep+'node_modules'+path.sep+'chai'+path.sep) > -1)
+                || (filePath.toString().indexOf('.min') > -1)
+                || (filePath.toString().indexOf('-min') > -1)){
                 //console.log("/input/ assumption :: Skipping transformation "+filePath);
                 continue;
             }
@@ -164,6 +157,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 console.log("/node_modules/mocha assumption");
                 continue;
             }
+
 
             var astForInput = {};
             if (updatedASTList.hasOwnProperty(fileName)) {
@@ -181,13 +175,13 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 transformer.addCachedCodeDeclaration(astForInput);
                 transformer.addHeaderInstructions(astForInput);
                 transformer.addSrcfileDeclaration(astForInput, fileName);
+                updatedASTList[fileName] = astForInput;
             }
-
             var functionName = findFun(fileName, location, startLineNumber, astForInput);
             /* No functionName found , log appropriately */
             if (!functionName || functionName === null){
                 notfound++;
-                throw Error("[FindFun] function Name could not be found : ");
+                //console.error("[FindFun] function Name could not be found : ");
                 continue;
             }else if(functionName.error){
                 if(ignoreExpressions.includes(functionName.error)) {
@@ -195,53 +189,50 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
                 }else {
                     notfound++;
                     methodsLostnFound.lost.push({'location': location + '@' + fileName, 'error': functionName.error});
-                    throw Error("[FindFun] function Name could not be found : " + functionName.error);
+                   // console.error("[FindFun] function Name could not be found : " + functionName.error);
                     continue;
                 }
             }
             /* functionName or  uniqueId found for the location */
             found++;
             methodsLostnFound.found.push({'location': location+'@'+fileName});
+            var replaced = false;
             if(functionName.type === 'UniqueArrowFunctionId'){
-                transformer.replaceArrowFunctionExpression(astForInput, functionName,functionName, logfile);
+                replaced = transformer.replaceArrowFunctionExpression(astForInput, functionName,functionName, logfile);
             }else if(functionName.type === 'ClassMethod'){
-                    var uniqueIdForMethodBody = utility.cerateUniqueId(functionName.loc);
-                 transformer.replaceClassMethod(astForInput, functionName,uniqueIdForMethodBody, logfile);
-             }else if (functionName.type == utility.UNIQUE_ID_TYPE) {
+                var uniqueIdForMethodBody = utility.cerateUniqueId(functionName.loc);
+                replaced = transformer.replaceClassMethod(astForInput, functionName,uniqueIdForMethodBody, logfile);
+            }else if (functionName.type == utility.UNIQUE_ID_TYPE) {
                 if(logfile)
-                    transformer.replace(astForInput, null, functionName, logfile);
+                   replaced =  transformer.replace(astForInput, null, functionName, logfile);
                 else
-                    transformer.replace(astForInput, null, functionName);
-                // create and add a body for lazy Loading
-
+                    replaced = transformer.replace(astForInput, null, functionName);
             }else{ // general function expression and declaration
-              if(logfile)
-                  transformer.replace(astForInput, functionName, null, logfile);
-              else
-                 transformer.replace(astForInput, functionName, null);
-                // create and add a body for lazy Loading
-
+                if(logfile)
+                   replaced =  transformer.replace(astForInput, functionName, null, logfile);
+                else
+                    replaced = transformer.replace(astForInput, functionName, null);
             }
-            updatedASTList[fileName] = astForInput;
+            if(replaced)
+                updatedASTList[fileName] = astForInput;
+            continue;
         }
-        catch (error) {
+        catch (s2serror) {
             //console.log('2');
-
-           console.error('[Error:: S2STransformer] '+error);
-
+            console.error('[Error:: S2STransformer] '+s2serror);
+            continue;
         }
 
     }
+    utility.printObjWithMsg(updatedASTList, 'Transformed files Calculated');
+
     try {
         mkdirp.sync(path.resolve(pathToOutput));
         fs.writeFileSync(path.resolve(pathToOutput,'found.txt'), 'found '+found+ '\n'+ 'not-found '+notfound);
         fs.writeFileSync(path.resolve(pathToOutput, 'lostnfound.json'), JSON.stringify(methodsLostnFound, null, 2));
-    }catch(e) {
 
-        console.error(e);
-    }
-    try {
         // writing the modified files corresponding to the changed original file
+        var numTransformedFiles = 0;
         for(fileN in updatedASTList){
             var baseFileName = path.basename(fileN);
             var fullOriginalPath = path.resolve(fileN);
@@ -252,12 +243,14 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
 
             }
             var fullModifiedPath = path.resolve(fullOriginalPath.toString().replace('input', 'output-actual') + '.js');
-             mkdirp.sync(path.dirname(fullModifiedPath));
-             utility.printObjWithMsg(fullModifiedPath, 'Writing Transformed');
+            mkdirp.sync(path.dirname(fullModifiedPath));
+            utility.printObjWithMsg(fullModifiedPath, 'Writing Transformed');
             fs.writeFileSync(fullModifiedPath, escodegen.generate(updatedASTList[fileN]));
+            numTransformedFiles++;
         }
-    } catch (Fileerror) {
-        console.log("File Error " + Fileerror.stack);
+        fs.writeFileSync(path.resolve(pathToOutput, 'transformed.txt'), 'Total Number of Transformed Files '+numTransformedFiles);
+    } catch (errorMsg) {
+        console.log("[S2STransformer :: File Error] " + errorMsg);
     }
 }
 
@@ -271,12 +264,9 @@ function findFun(fileName, location, startLineNumber, astForInput) {
     var result = null;
     var err_result;
     if (_fn.length > 0) {
-    var startcol = parseInt(_loc[1]);
-    var endLine = parseInt(_loc[2]);
-    var endcol = parseInt(_loc[3]);
-     //read the whole input file
-     //var inputProgramFromFile = fs.readFileSync(_fn + '.js', 'utf8');
-        //var astForInput = esprima.parseModule(inputProgramFromFile.toString(), {range: true, loc: true, tokens: false, ecmaVersion: 6});
+        var startcol = parseInt(_loc[1]);
+        var endLine = parseInt(_loc[2]);
+        var endcol = parseInt(_loc[3]);
         estraverse.traverse(astForInput,
             {  enter: function (node, parent) { // check for function name and replace
                     if(!node.loc){
@@ -329,9 +319,11 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                                 estraverse.VisitorOption.skip;
                             }
                         } else if(node.expression.type === 'ObjectExpression'){
+
+
                             estraverse.VisitorOption.skip;
                         }else if(node.expression.type === 'ArrowFunctionExpression'){
-                             if( (startLineNumber === node.loc.start.line && startcol === node.loc.start.column) ||
+                            if( (startLineNumber === node.loc.start.line && startcol === node.loc.start.column) ||
                                 (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD))) {
                                 // node.id will always be null for an ArrowFunctionExpression
                                 result = utility.createArrowFunctionName(node.loc);
@@ -352,9 +344,7 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                     }else if(node.type === 'CallExpression'){
                         estraverse.VisitorOption.skip;
 
-                        /*   console.log("node type callExpression");
-                           console.log(node);
-*/
+
                     }else if(node.type === 'MethodDefinition'){ // ES6  class Var{ method1 () {}}
                         var methodKey = node.key;
                         var methodValue = node.value;
@@ -393,50 +383,50 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                         if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)){
                             err_result = node.type;
                             this.break();
-                         /*   if (node.callee.name !== null) {// has an id
-                                result = node.callee.name;
-                                this.break();
-                            } else { // anonymous function case, create a unique-Id based on the function location
-                                result = utility.cerateUniqueId(node.loc);
-                                this.break();
-                            }*/
+                            /*   if (node.callee.name !== null) {// has an id
+                                   result = node.callee.name;
+                                   this.break();
+                               } else { // anonymous function case, create a unique-Id based on the function location
+                                   result = utility.cerateUniqueId(node.loc);
+                                   this.break();
+                               }*/
                         }else
                             estraverse.VisitorOption.skip;
 
                     }else if(node.type === 'ArrayExpression'){
                         if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
                             var elementsForExp = node.elements;
-                         /*   elementsForExp.forEach(function(elem){
-                                switch (elem.type){
-                                    // Expressions
-                                    case 'FunctionExpression':
+                            /*   elementsForExp.forEach(function(elem){
+                                   switch (elem.type){
+                                       // Expressions
+                                       case 'FunctionExpression':
 
-                                        err_result = node.type +' with '+elem.type;
-                                        break;
-                                    case 'AssignmentExpression':
-                                        err_result = node.type +' with '+elem.type;
-
-
-                                        break;
-
-                                    // SpreadElements
-                                    case 'SpreadElement':
-                                        var argument = elem.argument;
-                                        // Expression
-                                        err_result = node.type +' with '+elem.type;
-                                        break;
-                                        /!*switch (argument.type){
+                                           err_result = node.type +' with '+elem.type;
+                                           break;
+                                       case 'AssignmentExpression':
+                                           err_result = node.type +' with '+elem.type;
 
 
-                                        }*!/
-                                    default:
-                                        err_result = node.type +' with '+elem.type;
-                                        break;
-                                }
+                                           break;
+
+                                       // SpreadElements
+                                       case 'SpreadElement':
+                                           var argument = elem.argument;
+                                           // Expression
+                                           err_result = node.type +' with '+elem.type;
+                                           break;
+                                           /!*switch (argument.type){
 
 
-                            });
-*/
+                                           }*!/
+                                       default:
+                                           err_result = node.type +' with '+elem.type;
+                                           break;
+                                   }
+
+
+                               });
+   */
                             err_result = node.type;
                             this.break();
 
@@ -446,7 +436,8 @@ function findFun(fileName, location, startLineNumber, astForInput) {
 
 
                     }else if(node.type === 'MemberExpression'){
-                        if( node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) {
+                        if ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) ||
+                        (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD))){
                             err_result = node.type;
                             this.break();
 
@@ -454,7 +445,7 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                             estraverse.VisitorOption.skip;
                         }
                     }else if(node.type === 'ArrowFunctionExpression'){
-                       if( (startLineNumber === node.loc.start.line && startcol === node.loc.start.column) ||
+                        if( (startLineNumber === node.loc.start.line && startcol === node.loc.start.column) ||
                             (node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD))) {
                             // node.id will always be null for an ArrowFunctionExpression
                             result = utility.createArrowFunctionName(node.loc);
@@ -468,7 +459,7 @@ function findFun(fileName, location, startLineNumber, astForInput) {
 
                     else{
                         if( ((startLineNumber === node.loc.start.line && startcol === node.loc.start.column) && (endLine === node.loc.end.line && endcol === node.loc.end.column)) ||
-                                ((node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) && (endLine === node.loc.end.line && endcol === node.loc.end.column))) {
+                            ((node.loc.start.line === parseInt(_loc[0]) && (Math.abs(node.loc.start.column -_loc[1]) <= LOCATION_DELTA_THRESSHOLD)) && (endLine === node.loc.end.line && endcol === node.loc.end.column))) {
                             err_result = node.type;
                             this.break();
 
@@ -515,7 +506,7 @@ function populateGlobalModifiedFilesList(fileName_Func_Location){
             var fileNameRelative =fileName.substring(fileName.lastIndexOf('/')+1, fileName.length);
             globalModifiedFilesList[fileNameRelative+'.js'] = fileNameRelative+ '.js';
         }catch (err){
-           console.error('ModifiedList Error Case '+err);
+            console.error('ModifiedList Error Case '+err);
         }
     }
     return globalModifiedFilesList;
@@ -525,12 +516,12 @@ function populateGlobalModifiedFilesList(fileName_Func_Location){
 function getMemberExpressionName(pathStart){
     var prefix ='';
     var node = pathStart;
-      while (node.type === "MemberExpression"){
+    while (node.type === "MemberExpression"){
         prefix = '.'+node.property.name +prefix;
         node = node.object;
     }
     if(node.type === "Identifier"){ // terminal case
-       prefix = node.name+prefix;
+        prefix = node.name+prefix;
     }
     return prefix;
 }

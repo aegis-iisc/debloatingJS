@@ -28,8 +28,6 @@ var DYNAMIC_PATH = process.env.DYNAMIC_PATH;
  * @param4 : fileName for the current ast
  */
 function replace(ast, funName, functionLocId, logfile){
-   // utility.printObjWithMsg(ast, 'AST');
- //   utility.printObjWithMsg('replace-called', 'REPLACE-CALLED');
     var transformed = false;
     if(funName !== null) { // replace a named function
       addOriginalDeclaration(ast, funName);
@@ -186,9 +184,10 @@ function replace(ast, funName, functionLocId, logfile){
   }
 
   if(transformed) {
-      //console.error('Replace Ended with Replacement');
+        return true;
+
   }else {
-     //console.log("Replace Ended w/o Replacement :: Transformer.replace case other than FunctionExpression or Declarations");
+     return false;
   }
 }
 

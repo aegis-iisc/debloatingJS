@@ -123,12 +123,10 @@ function copyFunctionProperties (thisFunction, loadedFunc){
         console.error(loadedFunc.toString());
      */
      //TODO : Decide about which of the two approaches below is better to copy properties
-/*
      for(var prop in thisFunction){
          loadedFunc[prop] = thisFunction[prop];
 
      }
-*/
         Object.keys(thisFunction).forEach(function (key) {
             loadedFunc[key] = thisFunction[key];
 
