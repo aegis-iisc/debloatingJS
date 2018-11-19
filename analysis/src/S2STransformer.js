@@ -13,6 +13,7 @@ var copydir = require('copy-dir');
 const path = require('path');
 var mkdirp = require('mkdirp');
 const IgnoreFunction = 'IgnoreFunction';
+var commons = require('../../commons.js');
 
 
 // records for each fileName f, an array of function locations to be replaced by stubs
@@ -130,6 +131,7 @@ function readStubListJSON(outFileJSON) {
  */
 function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
     console.log('Running Main Transformer');
+    var errroFile = path.resolve(pathToOutput, 'errorlog.log');
     var updatedASTList = {};
     // if no stub generated the transformed file is similar to original and return;
     if (Object.keys(fileName_Func_Loctaion).length === 0 && fileName_Func_Loctaion.constructor === Object) {
@@ -161,7 +163,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
 
             var astForInput = {};
             if (updatedASTList.hasOwnProperty(fileName)) {
-                astForInput = updatedASTList[fileName];
+                                    astForInput = updatedASTList[fileName];
             }else{ // performed once
                 var inputProgramFromFile = fs.readFileSync(fileName + '.js', 'utf8');
                 astForInput = esprima.parseModule(inputProgramFromFile.toString(), {
@@ -197,40 +199,44 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
             found++;
             methodsLostnFound.found.push({'location': location+'@'+fileName});
             var replaced = false;
-            if(functionName.type === 'UniqueArrowFunctionId'){
-                replaced = transformer.replaceArrowFunctionExpression(astForInput, functionName,functionName, logfile);
-            }else if(functionName.type === 'ClassMethod'){
-                var uniqueIdForMethodBody = utility.cerateUniqueId(functionName.loc);
-                replaced = transformer.replaceClassMethod(astForInput, functionName,uniqueIdForMethodBody, logfile);
-            }else if (functionName.type == utility.UNIQUE_ID_TYPE) {
-                if(logfile)
-                   replaced =  transformer.replace(astForInput, null, functionName, logfile);
-                else
-                    replaced = transformer.replace(astForInput, null, functionName);
-            }else{ // general function expression and declaration
-                if(logfile)
-                   replaced =  transformer.replace(astForInput, functionName, null, logfile);
-                else
-                    replaced = transformer.replace(astForInput, functionName, null);
+            try {
+                if (functionName.type === 'UniqueArrowFunctionId') {
+                    replaced = transformer.replaceArrowFunctionExpression(astForInput, functionName, functionName, logfile);
+                } else if (functionName.type === 'ClassMethod') {
+                    var uniqueIdForMethodBody = utility.cerateUniqueId(functionName.loc);
+                    replaced = transformer.replaceClassMethod(astForInput, functionName, uniqueIdForMethodBody, logfile);
+                } else if (functionName.type == utility.UNIQUE_ID_TYPE) {
+                    if (logfile)
+                        replaced = transformer.replace(astForInput, null, functionName, logfile);
+                    else
+                        replaced = transformer.replace(astForInput, null, functionName);
+                } else { // general function expression and declaration
+                    if (logfile)
+                        replaced = transformer.replace(astForInput, functionName, null, logfile);
+                    else
+                        replaced = transformer.replace(astForInput, functionName, null);
+                }
+                if (replaced)
+                    updatedASTList[fileName] = astForInput;
+                continue;
+            }catch (e){
+                commons.logErrorToFile(e.stack, errroFile);
+                throw Error(e);
             }
-            if(replaced)
-                updatedASTList[fileName] = astForInput;
-            continue;
         }
         catch (s2serror) {
             //console.log('2');
-            console.error('[Error:: S2STransformer] '+s2serror);
+            console.error('[Error:: S2STransformer] '+s2serror.stack);
             continue;
         }
 
     }
-    utility.printObjWithMsg(updatedASTList, 'Transformed files Calculated');
+    utility.printObjWithMsg('', 'Transformed files Calculated successfully');
 
     try {
         mkdirp.sync(path.resolve(pathToOutput));
         fs.writeFileSync(path.resolve(pathToOutput,'found.txt'), 'found '+found+ '\n'+ 'not-found '+notfound);
         fs.writeFileSync(path.resolve(pathToOutput, 'lostnfound.json'), JSON.stringify(methodsLostnFound, null, 2));
-
         // writing the modified files corresponding to the changed original file
         var numTransformedFiles = 0;
         for(fileN in updatedASTList){
@@ -250,7 +256,7 @@ function mainTransformer(fileName_Func_Loctaion, pathToOutput, logfile) {
         }
         fs.writeFileSync(path.resolve(pathToOutput, 'transformed.txt'), 'Total Number of Transformed Files '+numTransformedFiles);
     } catch (errorMsg) {
-        console.log("[S2STransformer :: File Error] " + errorMsg);
+        console.log("[S2STransformer :: File Error] " + errorMsg.stack);
     }
 }
 

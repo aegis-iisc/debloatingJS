@@ -252,7 +252,7 @@ function createStubForClassConstructor(methodName, params, methodName, logfile, 
 */
 
 function replaceArrowFunctionExpression(ast, functionName, uniqueId, logfile){
-    console.error(functionName, 'Transforming Arrow');
+    //console.error(functionName, 'Transforming Arrow');
     var transformed = false;
     var uniqueNameForId = createUniqueFunction(uniqueId);
 
@@ -393,6 +393,18 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
 
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
+    var superInvokeStmt = null;
+    var _superInvokeStmt = null;
+    if(methodName === 'constructor'){
+        var paramString = '';
+        params.forEach(function(pi){
+
+           paramString = paramString+pi+' ';
+        });
+        superInvokeStmt = 'super( '+paramString+ ' );'
+        _superInvokeStmt =  esprima.parse(superInvokeStmt);
+
+    }
 
     var tempFunctionStmt = 'var temp = this.'+methodName;
     var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
@@ -449,17 +461,33 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
         "alternate": null
     };
 
+    if(superInvokeStmt === null) {
+        var _stubFunExpresison = {
+            type: 'FunctionExpression', id: null, params: params,
+            body: {
+                type: 'BlockStatement',
+                body: [
+                    _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet]
+            },// _boolRet, _conditionalReturn]},
+            generator: false,
+            async: false,
+            expression: false
 
-    var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
-        body: { type: 'BlockStatement',
-            body: [
-                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet ]},// _boolRet, _conditionalReturn]},
-        generator: false,
-        async: false,
-        expression: false
+        };
+    }else{
+        var _stubFunExpresison = {
+            type: 'FunctionExpression', id: null, params: params,
+            body: {
+                type: 'BlockStatement',
+                body: [
+                    _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _superInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet]
+            },// _boolRet, _conditionalReturn]},
+            generator: false,
+            async: false,
+            expression: false
 
-    };
-
+        };
+    }
     return _stubFunExpresison;
 
 

@@ -8,10 +8,12 @@ var commons = require('../../commons.js');
 var cachedCode = {};
 function lazyLoad(funName, fileName, srcFile) {
     var code = fs.readFileSync(fileName, 'utf8');
-    var ast = esprima.parse(code.toString(), {
+    var ast = esprima.parseModule(code.toString(), {
         range: true,
         loc: true,
-        tokens: false
+        tokens: false,
+        ecmaVersion: 6
+
     });
     cachedCode[srcFile] = {};
     extractBodies(fileName);
@@ -163,8 +165,8 @@ function copyFunctionProperties (thisFunction, loadedFunc){
 */
 function stubInfoLogger(funName, logFile, fileName){
 
-    var line = 'Expanded stub '+ fileName + ' :: ' +funName+ ' @ ' + logTimeStamp() + '\n';
-    fs.appendFileSync(logFile, line);
+   /* var line = 'Expanded stub '+ fileName + ' :: ' +funName+ ' @ ' + logTimeStamp() + '\n';
+    fs.appendFileSync(logFile, line);*/
 }
 
 var logTimeStamp = function(){
