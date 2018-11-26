@@ -28,8 +28,6 @@ var DYNAMIC_PATH = process.env.DYNAMIC_PATH;
  * @param4 : fileName for the current ast
  */
 function replace(ast, funName, functionLocId, logfile){
-   // utility.printObjWithMsg(ast, 'AST');
- //   utility.printObjWithMsg('replace-called', 'REPLACE-CALLED');
     var transformed = false;
     if(funName !== null) { // replace a named function
       addOriginalDeclaration(ast, funName);
@@ -186,9 +184,10 @@ function replace(ast, funName, functionLocId, logfile){
   }
 
   if(transformed) {
-      //console.error('Replace Ended with Replacement');
+        return true;
+
   }else {
-     //console.log("Replace Ended w/o Replacement :: Transformer.replace case other than FunctionExpression or Declarations");
+     return false;
   }
 }
 
@@ -198,13 +197,14 @@ function replaceClassMethod(ast, functionName, uniqueId, logfile){
     var methodName = functionName.name;
     var fKind = functionName.kind;
     var fLoc = functionName.loc;
+    var superClass = functionName.superClass;
     var uniqueNameForId = createUniqueFunction(uniqueId);
 
     if(!ast || !functionName)
         throw Error('AST or functionName to be replaced is undefined');
     addOriginalDeclaration(ast, uniqueNameForId)
     var result = estraverse.replace(ast, {
-        enter: function (node) {
+        enter: function (node, parent) {
             if(node.id !== null)
                 estraverse.VisitorOption.skip;
             switch (node.type){
@@ -214,8 +214,10 @@ function replaceClassMethod(ast, functionName, uniqueId, logfile){
                         var methodKind = node.attr.kind;
                         if ((node.loc.start.line === fLoc.start.line) && (node.loc.start.column === fLoc.start.column)) {
                                 transformed = true;
-                                return createStubForClassMethod(uniqueNameForId, node.params, methodName, logfile, ast.attr.fileName)
-
+                                if(superClass === null)
+                                    return createStubForClassMethod(uniqueNameForId, node.params, methodName, logfile, ast.attr.fileName, null);
+                                else
+                                    return createStubForClassMethod(uniqueNameForId, node.params, methodName, logfile, ast.attr.fileName, superClass);
                             }
 
                         }else
@@ -252,9 +254,46 @@ function createStubForClassConstructor(methodName, params, methodName, logfile, 
 }
 */
 
+function replaceArrowFunctionExpression(ast, functionName, uniqueId, logfile){
+    //console.error(functionName, 'Transforming Arrow');
+    var transformed = false;
+    var uniqueNameForId = createUniqueFunction(uniqueId);
 
-function createStubForClassMethod(funName, params, methodName, logfile, fileName){
-   // utility.printObjWithMsg(funName, 'CSTM');
+    if(!ast || !functionName)
+        throw Error('AST or functionName to be replaced is undefined');
+    addOriginalDeclaration(ast, uniqueNameForId);
+    var result = estraverse.replace(ast, {
+        enter: function (node) {
+            if(node.id !== null)
+                estraverse.VisitorOption.skip;
+            switch (node.type){
+                case 'ArrowFunctionExpression':
+                    if(node.attr) {
+                        if ((node.loc.start.line === functionName.startline) && (node.loc.start.column === functionName.startcol)) {
+                            transformed = true;
+                            return createStubForArrowFunctionExpression(uniqueNameForId, node.params, logfile, ast.attr.fileName)
+                         }
+
+                    }else
+                        estraverse.VisitorOption.skip;
+
+                    break;
+
+                default:
+                    estraverse.VisitorOption.skip;
+                    break;
+
+            }
+        },
+        leave: function (node) {
+            estraverse.VisitorOption.skip;
+
+        }
+    });
+}
+
+function createStubForArrowFunctionExpression(funName, params, logfile, fileName){
+
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
 
@@ -264,6 +303,119 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
 
+    var callEvalStmt = 'eval(\"original_'+funName.replace(/\./g ,'_')+' = \" \+loadedBody);';
+    var _callEvalStmt = esprima.parse(callEvalStmt);
+
+
+    var original_Name = 'original_'+ funName.replace(/\./g ,'_');
+    var callCopyFunctionProperties = original_Name +' = lazyLoader.copyFunctionProperties( temp, '+original_Name +')';
+    var _callCopyFunctionProperties = esprima.parse(callCopyFunctionProperties);
+
+    /* parse the params*/
+    var paramList = [];
+    if (params.length > 0 ){
+        for (elem in params){
+            paramList.push(params[elem].name);
+        }
+    }
+    if(paramList.length > 0)
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this, ['+paramList.toString() +']);';
+    else
+        var applyStatement = 'var ret = original_'+funName.replace(/\./g ,'_')+'.apply(this);';
+
+    var _applyStatement = esprima.parse(applyStatement);
+
+
+
+
+    var _notUndefinedRet = {
+        "type": "IfStatement",
+        "test": {
+            "type": "UnaryExpression",
+            "operator": "!",
+            "argument": {
+                "type": "BinaryExpression",
+                "operator": "===",
+                "left": {
+                    "type": "UnaryExpression",
+                    "operator": "typeof",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    },
+                    "prefix": true
+                },
+                "right": {
+                    "type": "Literal",
+                    "value": "undefined",
+                    "raw": "'undefined'"
+                }
+            },
+            "prefix": true
+        },
+        "consequent": {
+            "type": "BlockStatement",
+            "body": [
+                {
+                    "type": "ReturnStatement",
+                    "argument": {
+                        "type": "Identifier",
+                        "name": "ret"
+                    }
+                }
+            ]
+        },
+        "alternate": null
+    };
+
+
+    var _stubArrowFunctionExpression = {type: 'ArrowFunctionExpression', id : null, params : params,
+        body: { type: 'BlockStatement',
+            body: [
+                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _callEvalStmt, _applyStatement, _notUndefinedRet ]},// _boolRet, _conditionalReturn]},
+        generator: false,
+        async: false,
+        expression: false
+
+    };
+
+    return _stubArrowFunctionExpression;
+
+
+
+}
+
+
+function createStubForClassMethod(funName, params, methodName, logfile, fileName, superClass){
+    utility.printObjWithMsg(methodName, 'CSTM');
+    var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
+    var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
+
+    var callLazyLoadStmt = 'lazyLoader.lazyLoad(\"' + funName +'\", srcFile )';
+    var _callLazyLoadStmt = esprima.parse(callLazyLoadStmt);
+
+    var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
+    var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
+
+    var _superInvokeStmt = null;
+    if(methodName === 'constructor' && superClass !== null){
+        var paramString = '';
+        params.forEach(function(pi){
+
+           paramString = paramString+pi.toString()+' ';
+        });
+
+        var _superInvokeStmt = {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "Super"
+                },
+                "arguments": params
+            }
+        };
+    }
     var tempFunctionStmt = 'var temp = this.'+methodName;
     var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
 
@@ -319,16 +471,38 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
         "alternate": null
     };
 
+    if(_superInvokeStmt !== null){
+        utility.printObjWithMsg(_superInvokeStmt, 'TRUE-SUPERINVOKESTMT');
+        var _stubFunExpresison = {
+            type: 'FunctionExpression', id: null, params: params,
+            body: {
+                type: 'BlockStatement',
+                body: [
+                    _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _superInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet]
+            },// _boolRet, _conditionalReturn]},
+            generator: false,
+            async: false,
+            expression: false
 
-    var _stubFunExpresison = {type: 'FunctionExpression', id : null, params : params,
-        body: { type: 'BlockStatement',
-            body: [
-                _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet ]},// _boolRet, _conditionalReturn]},
-        generator: false,
-        async: false,
-        expression: false
+        };
+    }else{
+        utility.printObjWithMsg(_superInvokeStmt, 'FALSE-SUPERINVOKESTMT');
 
-    };
+        var _stubFunExpresison = {
+            type: 'FunctionExpression', id: null, params: params,
+            body: {
+                type: 'BlockStatement',
+                body: [
+                    _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet]
+            },// _boolRet, _conditionalReturn]},
+            generator: false,
+            async: false,
+            expression: false
+
+        };
+    }
+
+
 
     return _stubFunExpresison;
 
@@ -1104,7 +1278,8 @@ module.exports = {
     replace: replace,
     addCachedCodeDeclaration: addCachedCodeDeclaration,
     createLazyLoad:createLazyLoad,
-    replaceClassMethod : replaceClassMethod
+    replaceClassMethod : replaceClassMethod,
+    replaceArrowFunctionExpression: replaceArrowFunctionExpression
 
 };
 

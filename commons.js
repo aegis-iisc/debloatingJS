@@ -248,6 +248,19 @@ function getMemberExpressionName(pathStart){
     }
     return prefix;
 }
+
+function logErrorToFile(error, file){
+
+    try{
+       var errorFile =  path.resolve(file);
+       fs.appendFileSync(errorFile, error.stack);
+    }catch (err){
+        console.error(err.stack);
+        throw err;
+    }
+
+}
+
 module.exports = {
     interceptAppExecution: interceptAppExecution,
     compareOutputs: compareOutputs,
@@ -258,6 +271,7 @@ module.exports = {
     getOriginalPathOrDir: getOriginalPathOrDir,
     getModifiedPathOrDir: getModifiedPathOrDir,
     remainingTest : remainingTest,
-    getMemberExpressionName :getMemberExpressionName
+    getMemberExpressionName :getMemberExpressionName,
+    logErrorToFile : logErrorToFile
 
 };
