@@ -360,8 +360,14 @@ function findFun(fileName, location, startLineNumber, astForInput) {
                                 switch (methodKey.type) {
                                     case 'Identifier':
                                         var methodName = methodKey.name;
-                                        result = utility.createClassMethodName(methodName, methodKind, methodValue.loc);
-                                        methodValue.attr = {"type": 'ClassMethod', "methodName": methodName, "loc":methodValue.loc, "kind":methodKind};
+                                        var enclosingClass = getEnclosingClassDefinitionNode(astForInput,parent);
+
+                                        if(enclosingClass !== null)
+                                            result = utility.createClassMethodName(methodName, methodKind, methodValue.loc, enclosingClass.superClass);
+                                        else
+                                            throw Error('[findFun ] cannot locate the enclosing class for the methodDefinition '+methodKey);
+
+                                        methodValue.attr = {"type": 'ClassMethod', "methodName": methodName, "loc":methodValue.loc, "kind":methodKind, "superClass":enclosingClass.superClass};
                                         this.break();
                                         break;
                                     default:
@@ -501,6 +507,41 @@ function findFun(fileName, location, startLineNumber, astForInput) {
             //console.log("No function found for the input file and location for node.type " + err_result);
         }
     }
+
+}
+
+
+function getEnclosingClassDefinitionNode(ast, parentNode) {
+    if(!parentNode || parentNode === null)
+        return null;
+    var classDec = null;
+    if (parentNode.type === 'ClassDeclaration')
+        return parentNode;
+    else{
+        estraverse.traverse(ast,
+            { enter : function (node, parent) {
+                    if(node === parentNode){
+                        classDec = getEnclosingClassDefinitionNode(ast, parent);
+                        this.break();
+                    }else
+                        estraverse.VisitorOption.skip;
+
+                },
+
+
+                leave : function (node, parent) {
+                    estraverse.VisitorOption.skip;
+
+                }
+
+            });
+
+    }
+    return classDec;
+
+
+
+
 
 }
 

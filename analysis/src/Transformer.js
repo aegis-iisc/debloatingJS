@@ -197,13 +197,14 @@ function replaceClassMethod(ast, functionName, uniqueId, logfile){
     var methodName = functionName.name;
     var fKind = functionName.kind;
     var fLoc = functionName.loc;
+    var superClass = functionName.superClass;
     var uniqueNameForId = createUniqueFunction(uniqueId);
 
     if(!ast || !functionName)
         throw Error('AST or functionName to be replaced is undefined');
     addOriginalDeclaration(ast, uniqueNameForId)
     var result = estraverse.replace(ast, {
-        enter: function (node) {
+        enter: function (node, parent) {
             if(node.id !== null)
                 estraverse.VisitorOption.skip;
             switch (node.type){
@@ -213,8 +214,10 @@ function replaceClassMethod(ast, functionName, uniqueId, logfile){
                         var methodKind = node.attr.kind;
                         if ((node.loc.start.line === fLoc.start.line) && (node.loc.start.column === fLoc.start.column)) {
                                 transformed = true;
-                                return createStubForClassMethod(uniqueNameForId, node.params, methodName, logfile, ast.attr.fileName)
-
+                                if(superClass === null)
+                                    return createStubForClassMethod(uniqueNameForId, node.params, methodName, logfile, ast.attr.fileName, null);
+                                else
+                                    return createStubForClassMethod(uniqueNameForId, node.params, methodName, logfile, ast.attr.fileName, superClass);
                             }
 
                         }else
@@ -383,8 +386,8 @@ function createStubForArrowFunctionExpression(funName, params, logfile, fileName
 }
 
 
-function createStubForClassMethod(funName, params, methodName, logfile, fileName){
-   // utility.printObjWithMsg(funName, 'CSTM');
+function createStubForClassMethod(funName, params, methodName, logfile, fileName, superClass){
+    utility.printObjWithMsg(methodName, 'CSTM');
     var callStubInfoLogger = 'lazyLoader.stubInfoLogger(\'' +funName + '\',\''+logfile +'\',\''+fileName +'\')';
     var _callStubInfoLogger = esprima.parse(callStubInfoLogger);
 
@@ -393,19 +396,26 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
 
     var loadAndInvokeStmt = 'var loadedBody = lazyLoader.loadAndInvoke(\"'+funName+'\", srcFile)';
     var _loadAndInvokeStmt = esprima.parse(loadAndInvokeStmt);
-    var superInvokeStmt = null;
+
     var _superInvokeStmt = null;
-    if(methodName === 'constructor'){
+    if(methodName === 'constructor' && superClass !== null){
         var paramString = '';
         params.forEach(function(pi){
 
-           paramString = paramString+pi+' ';
+           paramString = paramString+pi.toString()+' ';
         });
-        superInvokeStmt = 'super( '+paramString+ ' );'
-        _superInvokeStmt =  esprima.parse(superInvokeStmt);
 
+        var _superInvokeStmt = {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "Super"
+                },
+                "arguments": params
+            }
+        };
     }
-
     var tempFunctionStmt = 'var temp = this.'+methodName;
     var _tempFunctionStmt = esprima.parse(tempFunctionStmt);
 
@@ -461,20 +471,8 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
         "alternate": null
     };
 
-    if(superInvokeStmt === null) {
-        var _stubFunExpresison = {
-            type: 'FunctionExpression', id: null, params: params,
-            body: {
-                type: 'BlockStatement',
-                body: [
-                    _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet]
-            },// _boolRet, _conditionalReturn]},
-            generator: false,
-            async: false,
-            expression: false
-
-        };
-    }else{
+    if(_superInvokeStmt !== null){
+        utility.printObjWithMsg(_superInvokeStmt, 'TRUE-SUPERINVOKESTMT');
         var _stubFunExpresison = {
             type: 'FunctionExpression', id: null, params: params,
             body: {
@@ -487,7 +485,25 @@ function createStubForClassMethod(funName, params, methodName, logfile, fileName
             expression: false
 
         };
+    }else{
+        utility.printObjWithMsg(_superInvokeStmt, 'FALSE-SUPERINVOKESTMT');
+
+        var _stubFunExpresison = {
+            type: 'FunctionExpression', id: null, params: params,
+            body: {
+                type: 'BlockStatement',
+                body: [
+                    _callStubInfoLogger, _callLazyLoadStmt, _loadAndInvokeStmt, _tempFunctionStmt, _callEvalStmt, _callCopyFunctionProperties, _applyStatement, _notUndefinedRet]
+            },// _boolRet, _conditionalReturn]},
+            generator: false,
+            async: false,
+            expression: false
+
+        };
     }
+
+
+
     return _stubFunExpresison;
 
 

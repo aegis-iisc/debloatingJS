@@ -39,9 +39,9 @@ function cerateUniqueId (locFrom){
     return {"type": 'UniqueFunctionId', "startline" : locFrom.start.line, "startcol":locFrom.start.column};
 }
 
-function createClassMethodName(methodName, kind, methodLoc){
+function createClassMethodName(methodName, kind, methodLoc, superClass){
 
-    return {"type": 'ClassMethod', "name":methodName, "kind": kind, "loc":methodLoc};
+    return {"type": 'ClassMethod', "name":methodName, "kind": kind, "loc":methodLoc, "superClass":superClass};
 }
 
 function getReletivePath (absolutePath) {
