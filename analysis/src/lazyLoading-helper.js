@@ -134,18 +134,7 @@ function copyFunctionProperties (thisFunction, loadedFunc){
 
         });
        loadedFunc.prototype = thisFunction.prototype;
-        /*if(thisFunction.prototype) {
-
-            Object.keys(thisFunction.prototype).forEach(function (key) {
-
-                loadedFunc.prototype[key] = thisFunction.prototype[key];
-            });
-
-        }*/
-        //loadedFunc[this] = thisFunction.this;
-        /* console.error('****************after**************');
-        console.error(loadedFunc.toString());
-       */ return loadedFunc;
+       return loadedFunc;
 
     }catch (error){
 
@@ -165,8 +154,29 @@ function copyFunctionProperties (thisFunction, loadedFunc){
 */
 function stubInfoLogger(funName, logFile, fileName){
 
-   /* var line = 'Expanded stub '+ fileName + ' :: ' +funName+ ' @ ' + logTimeStamp() + '\n';
-    fs.appendFileSync(logFile, line);*/
+
+  /*  var jsonObject = JSON.parse(fs.readFileSync(logFile));
+    if(jsonObject){
+        jsonObject.executed.push({"fileName": fileName, "funName": funName, "timeStamp":logTimeStamp()});
+
+    }else{
+        jsonObject = {"executed": []};
+        jsonObject.executed.push({"fileName": fileName, "funName": funName, "timeStamp":logTimeStamp()});
+    }
+    try {
+        fs.writeFileSync(path.resolve(logFile), JSON.stringify(jsonObject, null, 2));
+    }catch(e) {
+
+        console.error(e);
+    }
+  */
+  try {
+      var line = fileName + "::" +funName +"::"+ logTimeStamp() + '\n';
+      //var line = 'Expanded stub ' + fileName + ' :: ' + funName + ' @ ' + logTimeStamp() + '\n';
+      fs.appendFileSync(logFile, line);
+  }catch (err){
+      console.error(err.stack);
+  }
 }
 
 var logTimeStamp = function(){
@@ -174,12 +184,25 @@ var logTimeStamp = function(){
 };
 
 
+
+function loadFile(filePath){
+    try {
+        var loadedSrcFile = fs.readFileSync(filePath, 'utf-8');
+        return loadedSrcFile;
+    }catch (err){
+        console.error(err.stack);
+
+    }
+
+}
+
 module.exports={
 
 lazyLoad: lazyLoad,
 extractBodies: extractBodies,
 loadAndInvoke: loadAndInvoke,
 stubInfoLogger : stubInfoLogger,
-copyFunctionProperties : copyFunctionProperties
+copyFunctionProperties : copyFunctionProperties,
+loadFile : loadFile
 };
 
