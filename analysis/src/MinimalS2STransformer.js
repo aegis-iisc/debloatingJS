@@ -109,20 +109,10 @@ function mainTransformer(fileNamesList, pathToOutput, logfile) {
             updatedASTList[fileName] = astForInput;
         }
 
-        var listExports = findExportStatements(astForInput);
-        listExports.forEach(function(stmt){
-           var replaced = false;
-           try {
-               replaced = transformer.replaceExportStatement(astForInput, stmt, logfile);
-               if(replaced)
-                   updatedASTList[fileName] = astForInput;
-               return;
+        var listExports = transformer.findAndReplaceExportStatements(astForInput);
 
-           }  catch (e) {
-               commons.logErrorToFile(e.stack, errroFile);
-               throw Error(e);
-           }
-        });
+        var minimalAST = transformer.createMininalAST(astForInput, listExports);
+        updatedASTList[fileName] = minimalAST;
 
         utility.printObjWithMsg('', 'Transformed files Calculated successfully');
         console.log("Re-writing changed files");
@@ -151,50 +141,6 @@ function mainTransformer(fileNamesList, pathToOutput, logfile) {
 }
 
 
-function findExportStatements(ast){
-    var exportsNodes = [];
-    estraverse.traverse(ast, {
-       enter : function (node, parent){
-        // find export statements and replace them by the dynamically loaded functions and fields.
-        switch (node.type){
-            case 'ExpressionStatement':
-                var expression = node.expression;
-                switch (expression.type){
-                    case 'AssignmentExpression':
-                        var left = expression.left;
-                        var right  = expression.right;
-                        if(left.type === 'MemberExpression') {
-                            var memberExpressionName = getMemberExpressionName(left);
-                            if (memberExpressionName.toString().indexOf('module.exports') > -1) {//} || lhs.toString().indexOf('exports.')){
-                                exportsNodes.push(node);
-                            } else if (memberExpressionName.toString().indexOf('exports.') > -1) {//} || lhs.toString().indexOf('exports.')){
-                                exportsNodes.push(node);
-                            }
-                        }
-
-                        break;
-                    default :
-                        estraverse.VisitorOption.skip;
-                        break;
-
-
-                }
-
-                break;
-
-            default:
-                estraverse.VisitorOption.skip;
-                break;
-        }
-       },
-       leave : function (node, parent) {
-           estraverse.VisitorOption.skip;
-       }
-
-    });
-
-    return exportsNodes;
-}
 
 
 function getMemberExpressionName(pathStart){
