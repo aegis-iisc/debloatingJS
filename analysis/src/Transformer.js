@@ -19,14 +19,292 @@ var DYNAMIC_PATH = process.env.DYNAMIC_PATH;
 
 //A test transformer JS -> AST -> AST' -> JS'
 
+function findAndReplaceExportStatements(ast){
+    var exportsNodes = [];
+    estraverse.replace(ast, {
+        enter : function (node, parent){
+            // find export statements and replace them by the dynamically loaded functions and fields.
+            switch (node.type){
+                case 'ExpressionStatement':
+                    var expression = node.expression;
+                    switch (expression.type){
+                        case 'AssignmentExpression':
+                            var left = expression.left;
+                            var right  = expression.right;
+                            if(left.type === 'MemberExpression') {
+                                var memberExpressionName = getMemberExpressionName(left);
+                                if (memberExpressionName.toString().indexOf('module.exports') > -1 || memberExpressionName.toString().indexOf('exports.') > -1) {//} || lhs.toString().indexOf('exports.')){
+                                    var modifiedExportsNode =  createStubExportsStatement(node, parent);
+                                    exportsNodes.push(modifiedExportsNode);
+                                    return modifiedExportsNode;
+
+                                }else
+                                    estraverse.VisitorOption.skip;
+
+                            }
+
+                            break;
+                        default :
+                            estraverse.VisitorOption.skip;
+                            break;
+
+
+                    }
+
+                    break;
+                case 'Program':
+                    estraverse.VisitorOption.skip;
+                    break;
+
+                default:
+                    estraverse.VisitorOption.skip;
+                    break;
+            }
+        },
+        leave : function (node, parent) {
+            estraverse.VisitorOption.skip;
+        }
+
+    });
+
+    return exportsNodes;
+}
+
+
+
 /*
+ * a function returning a modified exports statement for a given export node.
+ * @param1 : node : exports node to be modified
+ * @param2 : parent : parent to the node
+ * @param3 : logfile : The logfile required for the stub
  *
+ * @return : Traverses the node and returns a modified exports statement for the original based on the type of statement
  */
-function replaceExportStatement(ast, exportsStmt, logfile){
-    var transformed = false;
+function createStubExportsStatement(node, parent, logfile) {
+    // An exportsStmt should be an ExpressionStmt
+    if (!node.type === 'ExpressionStatement')
+        return;
+
+    var expr = node.expression;
+    var modifiedExpr;
+    switch (expr.type) {
+        case 'AssignmentExpression':
+            var left = expr.left;
+            var right = expr.right;
+            switch (right.type) {
+                case 'ObjectExpression': // case module.exports = {}
+                    var propertiesArr = right.properties;
+                    var modifiedPropertiesArr = [];
+                    propertiesArr.forEach(function (prop) {
+                        var modifiedProp = getmodifiedExportsProperty(prop);
+                        modifiedPropertiesArr.push(modifiedProp);
+                    });
+                    var modifiedObjectExpression = {
+                        "type": "ObjectExpression",
+                        "properties": modifiedPropertiesArr
+                    };
+                    var modifiedAssignmentExpression = {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": left,
+                        "right": modifiedObjectExpression
+                    };
+                    modifiedExpr = modifiedAssignmentExpression;
+                    break;
+                case 'FunctionExpression':
+                    if(left.property.name  === 'exports') { // case 1 : module.exports = function(){} || module.exports = function foo(), the file is exported as a function
+                        var modifiedRightId = {'type':'Identifier', 'name':'_f'};
+                        var modifiedAssignmentExpression = {
+                            "type": "AssignmentExpression",
+                            "operator": "=",
+                            "left": left,
+                            "right": modifiedRightId
+                        };
+
+                    }else{// case 2 : module.exports.foo = function (){} || module.exports.foo = function foo(){}, a function is exported as a property of module.exports
+                        var modifiedAssignmentExpression = {
+                            "type": "AssignmentExpression",
+                            "operator": "=",
+                            "left": left,
+                            "right": left
+                        };
+                    }
+                    modifiedExpr = modifiedAssignmentExpression
+
+                   /* if (right.id === null) { // case module.exports.foo = function () {} || module.exports = function () {}
+                        if(left.property.name  === 'exports') { // case 1 : module.exports = function(){}, the file is exported as a function
+                            var modifiedRightId = {'type':'Identifier', 'name':'_f'};
+                            var modifiedAssignmentExpression = {
+                                "type": "AssignmentExpression",
+                                "operator": "=",
+                                "left": left,
+                                "right": modifiedRightId
+                            };
+                            modifiedExpr = modifiedAssignmentExpression
+                        }else{// case 2 : module.exports.foo = function (){}, a function is exported as a property of module.exports
+                            var modifiedAssignmentExpression = {
+                                "type": "AssignmentExpression",
+                                "operator": "=",
+                                "left": left,
+                                "right": left
+                            };
+                            modifiedExpr = modifiedAssignmentExpression
 
 
+                        }
 
+                    }else { // case module.exports = function foo(){} || module.exports.foo = function foo(){}
+                        var fuctionNameNode = right.id;
+                        if(left.property.name  === 'exports') { // case 1 : module.exports = function foo(), the file is exported as a function
+
+                         var modifiedRightId = {'type':'Identifier', 'name':'_f'};
+                            var modifiedAssignmentExpression = {
+                                "type": "AssignmentExpression",
+                                "operator": "=",
+                                "left": left,
+                                "right": modifiedRightId
+                            };
+                            modifiedExpr = modifiedAssignmentExpression
+                        }else{// case 2 : module.exports.foo = function Foo(), a function is exported as a property of module.exports
+                            console.log('FunctionExpression Else Case');
+                            var modifiedExportedFunction = getmodifiedExportsProperty(fuctionNameNode);
+                            var modifiedAssignmentExpression = {
+                                "type": "AssignmentExpression",
+                                "operator": "=",
+                                "left": left,
+                                "right": left
+                            };
+                            modifiedExpr = modifiedAssignmentExpression
+
+
+                        }
+                    }*/
+
+
+                    break;
+
+
+                case 'Identifier': // case module.exports.prop1 = prop1
+                    console.log('Case Identifier');
+                    //modified assignment remains same as the original assignment statement
+                    modifiedAssignmentExpression = expr;
+                    modifiedExpr = modifiedAssignmentExpression;
+                    break;
+
+                default:
+                    throw Error('Unhandled Statement Type in Transformer');
+
+                    break;
+
+            }
+
+
+            break;
+        default:
+            throw Error('Unhandled Export Statement Stub Creation for ' + expr.type);
+
+            break;
+
+
+    }
+    var modifiedExportStmt = {
+        "type": "ExpressionStatement",
+        "expression": modifiedExpr
+    };
+
+//    utility.printObjWithMsg(escodegen.generate(modifiedExportStmt), 'MODIFIED EXPORT STMT');
+    return modifiedExportStmt;
+
+
+}
+
+
+function getmodifiedExportsProperty(origPropertyNode){
+    switch (origPropertyNode.type){
+
+        case 'Property':
+            var value = origPropertyNode.value;
+            var meForvalue = getMemberExpressionName(value);
+            // update the memberexpression
+            var modifiedMEForValue = '_f.' + meForvalue + ';';
+            var _modifiedParserForME = esprima.parse(modifiedMEForValue);
+            var _modifiedMEForValue = _modifiedParserForME.body[0].expression;
+
+            //utility.printObjWithMsg(origPropertyNode, 'OriginalPropNode');
+
+
+            var modPropNode = {
+                "type": origPropertyNode.type,
+                "key": origPropertyNode.key,
+                "computed": origPropertyNode.computed,
+                "value": _modifiedMEForValue,
+                "kind": origPropertyNode.kind,
+                "method": origPropertyNode.method,
+                "shorthand": origPropertyNode.shorthand
+            };
+
+            break;
+
+        case 'Identifier':
+
+            var meForId = getMemberExpressionName(origPropertyNode);
+            var modifiedMEForId  = '_f.' + meForId + ';'
+            var _modifiedParsedForME = esprima.parse(modifiedMEForId);
+            var _modifiedMEForId = _modifiedParsedForME.body[0].expression;
+
+            var modPropNode = _modifiedMEForId;
+            utility.printObjWithMsg(modPropNode, 'MODIFIED ME');
+            break;
+        case 'MemberExpression':
+            var meForId = getMemberExpressionName(origPropertyNode);
+            var modifiedMEForId  = '_f.' + meForId + ';'
+            var _modifiedParsedForME = esprima.parse(modifiedMEForId);
+            var _modifiedMEForId = _modifiedParsedForME.body[0].expression;
+
+            var modPropNode = {
+                "type":origPropertyNode.type,
+                "name":_modifiedMEForId
+            };
+            utility.printObjWithMsg(modPropNode, 'MODIFIED ME');
+            break;
+
+    }
+    return modPropNode;
+
+}
+/*
+ * Create a minimal AST with only export and other nodes
+ */
+function createMininalAST(originalAST, exportsNodes){
+// add all the variable declaration statements
+    // add all the exported nodes list
+
+    var fileNameOriginal  = originalAST.attr.fileName;
+    var normalizedFileName = path.normalize(path.resolve(fileNameOriginal));
+    var modifiedAST = {
+        "type": "Program",
+        "body": [],
+        "sourceType": "script"
+    };
+
+    modifiedAST = addHeaderInstructions(modifiedAST);
+    modifiedAST = addSrcfileDeclaration(modifiedAST, normalizedFileName);
+
+    var lazyLoadingStmt = 'var f = lazyLoader.loadFile(srcFile);';
+    var _lazyLoadingStmt = esprima.parse(lazyLoadingStmt);
+
+    var evalStmt = 'var _f  = eval(f);';
+    var _evalStmt = esprima.parse(evalStmt);
+
+    modifiedAST.body.push(_lazyLoadingStmt);
+    modifiedAST.body.push(_evalStmt);
+
+    exportsNodes.forEach(function (exportStmt) {
+
+       modifiedAST.body.push(exportStmt);
+
+    });
+    return modifiedAST;
 }
 
 /*
@@ -491,13 +769,7 @@ function createUniqueFunction(id){
 
 
 }
-/*
 
-function createStubForClassConstructor(methodName, params, methodName, logfile, fileName) {
-
-
-}
-*/
 /* EmptyLogging Version of the ArrowFunction Replacement */
 // traverses the @ast and replaces the ArrowFunctionExpressions with @functionName
 function replaceEmptyArrowFunctionExpression(ast, functionName, uniqueId, logfile){
@@ -1403,11 +1675,15 @@ function addOriginalDeclaration(astForInput, functionName) {
 function addSrcfileDeclaration (astForInput, filename) {
     var normalized = path.normalize(path.resolve(filename));
     var srcFileDeclaration = '';
-    var srcFileDeclaration = srcFileDeclaration + ' var srcFile = \'' + normalized.toString() + '.js\';';
+    if(normalized.substr(-3) === '.js')
+        srcFileDeclaration = srcFileDeclaration + ' var srcFile = \'' + normalized.toString()+'\';';
+    else
+        srcFileDeclaration = srcFileDeclaration + ' var srcFile = \'' + normalized.toString() + '.js\';';
     var _srcFileDeclaration = esprima.parse(srcFileDeclaration.toString(), {range: true, loc: true, tokens: false});
 
     // add just after the require statements
     astForInput.body.unshift(_srcFileDeclaration);
+    return astForInput;
 
 
 }
@@ -1606,7 +1882,10 @@ module.exports = {
     replaceClassMethod : replaceClassMethod,
     replaceEmptyClassMethod : replaceEmptyClassMethod,
     replaceArrowFunctionExpression: replaceArrowFunctionExpression,
-    replaceEmptyArrowFunctionExpression : replaceEmptyArrowFunctionExpression
+    replaceEmptyArrowFunctionExpression : replaceEmptyArrowFunctionExpression,
+    createStubExportsStatement : createStubExportsStatement,
+    findAndReplaceExportStatements :findAndReplaceExportStatements,
+    createMininalAST : createMininalAST
 
 };
 
