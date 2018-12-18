@@ -46,9 +46,12 @@ function preprocessAllLoaded(stubFile){
 
 function populateFileNameList(outFileJSON) {
 // read the JSON file and create a fileName and function Location to be replaced by stubs
+
     var obj = JSON.parse(fs.readFileSync(outFileJSON, 'utf8'));
     var unexecutedFunctions = obj.unexecutedFunctions;
     var loadedFunctions = obj.loadedFunctions;
+
+
     var filePathList = [];
 
     for (var i = 0; i < loadedFunctions.length; i++) {
@@ -56,9 +59,9 @@ function populateFileNameList(outFileJSON) {
         var filePath_LineNumber = loadedLocation.split('.js:');
         var filePath = filePath_LineNumber[0];
         var locArray = filePath_LineNumber[1].split(':');
-        filePathList.push(filePath);
+        if(!filePathList.includes(filePath))
+            filePathList.push(filePath);
     }
-    utils.printObjWithMsg(filePathList, 'filePath');
     return filePathList;
 }
 
@@ -83,7 +86,6 @@ function mainTransformer(fileNamesList, pathToOutput, logfile) {
             //console.log("/input/ assumption :: Skipping transformation "+filePath);
             continue;
         }
-
 
         /* Ignore the files outside the input project directory and other few packages*/
 
